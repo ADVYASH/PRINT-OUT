@@ -59,7 +59,8 @@ button:hover{
     padding:25mm;
     margin:auto;
     font-family:"Times New Roman", serif;
-    font-size:12pt;
+    font-size:14
+  pt;
     line-height:1.6;
     text-align:justify;
     position:relative;
@@ -91,7 +92,7 @@ button:hover{
 
 .highlight{
     font-weight:bold;
-    text-decoration:underline;
+    text-decoration:none;
 }
 
 table{
@@ -233,7 +234,7 @@ th, td{
 <div id="firPrint"></div>
 
 <div class="signature">
-<img src="My Signature.png">
+<img src="signature.png.png">
 </div>
 
 </div>
@@ -288,10 +289,10 @@ if(courtType==="Supreme Court of India"){
 headerText="IN THE SUPREME COURT OF INDIA<br>NEW DELHI";
 }
 else if(courtType==="High Court"){
-headerText="IN THE HIGH COURT OF "+customCourt.toUpperCase();
+headerText="IN THE HIGH COURT"+customCourt.toUpperCase();
 }
 else if(courtType==="District Court"){
-headerText="IN THE DISTRICT COURT OF "+customCourt.toUpperCase();
+headerText="IN THE DISTRICT COURT"+customCourt.toUpperCase();
 }
 
 document.getElementById("printCourtHeader").innerHTML=headerText;
@@ -300,7 +301,8 @@ let caseName=document.getElementById("caseName").value;
 let caseNumber=document.getElementById("caseNumber").value;
 let jurisdiction=document.getElementById("jurisdiction").value;
 let caseType=document.getElementById("caseType").value;
-let petitioners=getValues("petitioners")
+let petitioners=getValues("petitioners");
+let petAdv=getValues("petAdv");
 let respondents=getValues("respondents");
 let resAdv=getValues("resAdv");
 let date=document.getElementById("date").value;
@@ -309,16 +311,45 @@ let judgmentBy=document.getElementById("judgmentBy").value;
 let citation=getValues("citationInput");
 
 let content=`
-<div style="text-align:center; font-weight:bold;">
-<span class="highlight">${caseName}</span><br>
+<div style="text-align:center; font-weight:bold; font-size:22pt;">
 सत्यमेव जयते
 </div><br>
 
-<p><b>Case Number :</b> <span class="highlight">${caseNumber}</span></p>
-<p><b>Petitioner :</b> ${petitioners}</p>
-<p><b>Advocate for Petitioner :</b> ${petAdv}</p>
-<p><b>Respondent :</b> ${respondents}</p>
-<p><b>Advocate for Respondent :</b> ${resAdv}</p>
+<div style="text-align:left; font-weight:bold; font-size:20pt;">
+<span class="highlight">${petitioners}</span><br>
+</div><br>
+
+<div style="text-align:center; font-weight:bold; font-size:20pt;">
+versus
+</div><br>
+
+<div style="text-align:right; font-weight:bold; font-size:20pt;">
+<span class="highlight">${respondents}</span><br>
+</div><br>
+
+<div class="case-details">
+    <p><span>Case Number :</span> <span>${caseNumber}</span></p>
+    <p><span>Petitioner :</span> <span>${petitioners}</span></p>
+    <p><span>Advocate for Petitioner :</span> <span>${petAdv}</span></p>
+    <p><span>Respondent :</span> <span>${respondents}</span></p>
+    <p><span>Advocate for Respondent :</span> <span>${resAdv}</span></p>
+</div>
+
+<style>
+.case-details{
+    font-size:16pt;   /* 🔥 Size changed here */
+}
+
+.case-details p {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0;
+}
+
+.case-details span:first-child {
+    font-weight: bold;
+}
+</style>
 
 <p>That the present matter is instituted before the <span class="highlight">${courtType}</span> under the title <span class="highlight">${caseName}</span>”, bearing Case Number / Diary Number <span class="highlight">${caseNumber}</span>, falling within the jurisdiction of <span class="highlight">${jurisdiction}</span>. The nature and type of the present proceedings is <span class="highlight">${caseType}</span>, and the same is being adjudicated in accordance with the applicable provisions of law.</p>
 
@@ -326,9 +357,9 @@ let content=`
 
 <p>That the Respondent(s) in the present matter is/are <span class="highlight">${respondents}</span>, and such additional parties as reflected in the memo of parties. The Respondent(s) is/are represented through their Advocate(s), namely <span class="highlight">${resAdv}</span>, and any other counsel duly appointed and authorized to represent them in the present proceedings.</p>
 
-<p>That the judgment in the present case was pronounced on <span class="highlight">${date}</span> by the Hon’ble Bench comprising Hon’ble Justice <span class="highlight">${benchInput}</span>, and such other Hon’ble Judges as constituted the Coram of the Court for hearing and deciding the present matter. The judgment was authored and delivered by Hon’ble Justice <span class="highlight">${judgmentBy}</span>.</p>
+<p>That the judgment in the present case was pronounced on <span class="highlight">${date}</span> by the Hon’ble Bench comprising Hon’ble Justice <span class="highlight">${bench}</span>, and such other Hon’ble Judges as constituted the Coram of the Court for hearing and deciding the present matter. The judgment was authored and delivered by Hon’ble Justice <span class="highlight">${judgmentBy}</span>.</p>
 
-<p>That the present judgment is reported and cited as<span class="highlight">${citationInput}</span>, and other recognized law reports where the judgment has been published and is available for reference.</p>
+<p>That the present judgment is reported and cited as<span class="highlight">${citation}</span>, and other recognized law reports where the judgment has been published and is available for reference.</p>
 `;
 
 document.getElementById("printContent").innerHTML=content;
