@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Court Registry</title>
+<title>Court Registry Professional Format</title>
 
 <style>
 
@@ -62,7 +62,6 @@ button:hover{
     font-size:14pt;
     line-height:1.6;
     text-align:justify;
-    position:relative;
 }
 
 .header{
@@ -116,9 +115,58 @@ th, td{
     text-align:right;
 }
 
+.signature{
+    margin-top:80px;
+    text-align:right;
+}
+
+.signature img{
+    width:300px;   /* Increased size */
+}
+
+.signature p{
+    margin-top:8px;
+    font-weight:bold;
+    font-size:14pt;
+}
+
+/* 🔥 QR SIZE FIX */
+.print-area #qrcode canvas{
+    width:250px !important;
+    height:250px !important;
+}
+
 .signature img{
     width:200px;
 }
+
+/* 🔥 QR SIZE FIX */
+.print-area #qrcode canvas{
+    width:250px !important;
+    height:250px !important;
+}
+
+/* ===== QR SECTION LEFT BOTTOM ===== */
+.qr-section{
+    margin-top:40px;
+    text-align:left;
+}
+
+.qr-section #qrcode{
+    width:220px;
+}
+
+.qr-section #qrText{
+    font-size:11pt;
+    margin-top:5px;
+}
+
+/* Print Mode */
+@media print{
+
+    body{
+        background:white;
+    }
 
 /* Print Mode */
 @media print{
@@ -140,6 +188,8 @@ th, td{
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -233,16 +283,17 @@ th, td{
 <h2 style="margin-top:5px;">CIVIL / CRIMINAL ORIGINAL JURISDICTION</h2>
 </div>
 
-<div style="position:absolute; top:20mm; right:25mm; text-align:right;">
-    <div id="qrcode"></div>
-    <div id="qrText" style="font-size:10pt; margin-top:4px;"></div>
-</div>
-
 <div id="printContent"></div>
 <div id="firPrint"></div>
 
+<div class="qr-section">
+    <div id="qrcode"></div>
+    <div id="qrText">Scan to View Official PDF</div>
+</div>
+
 <div class="signature">
-<img src="signature.png">
+    <img src="signature.png" alt="Signature">
+    <p>Signature</p>
 </div>
 
 </div>
@@ -427,30 +478,61 @@ document.getElementById("firPrint").innerHTML = newTable;
 document.getElementById("firPrint").innerHTML = "";
 }
 
-// ===== QR CODE GENERATION =====
+// ===== CREATE PDF FROM PRINT AREA =====
 
-let year = new Date().getFullYear();
-let caseID = courtType.replace(/\s/g,'').toUpperCase() + "-" + caseNumber + "-" + year;
+const { jsPDF } = window.jspdf;
 
-// Clear old QR
+let printElement = document.querySelector(".print-area");
+
+// Temporarily show print area (important!)
+printElement.style.display = "block";
+
+html2canvas(printElement, {
+    scale: 3   // 🔥 increases resolution
+}).then(canvas => {
+
+    let imgData = canvas.toDataURL("image/png");
+
+    let pdf = new jsPDF("p", "mm", "a4");
+
+    let imgWidth = 210;
+    let imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+// ===== GENERATE QR WITH CASE DETAILS ONLY =====
+
+// Prepare clean QR data
+let qrData = `
+CASE NAME: ${caseName}
+CASE NUMBER: ${caseNumber}
+PETITIONER: ${petitioners}
+ADVOCATE (PETITIONER): ${petAdv}
+RESPONDENT: ${respondents}
+ADVOCATE (RESPONDENT): ${resAdv}
+DATE OF JUDGMENT: ${date}
+JUDGMENT BY: ${judgmentBy}
+BENCH: ${bench}
+CITATION: ${citation}
+`;
+
+// Clear previous QR
 document.getElementById("qrcode").innerHTML = "";
 
 // Generate QR
 new QRCode(document.getElementById("qrcode"), {
-    text: `
-    Court: ${courtType}
-    Case: ${caseName}
-    Case No: ${caseNumber}
-    Petitioner: ${petitioners}
-    Respondent: ${respondents}
-    `, 
-    width: 100,
-    height: 100
+    text: qrData,
+    width: 220,
+    height: 220
 });
 
-document.getElementById("qrText").innerText = caseID;
+document.getElementById("qrText").innerText = "Scan to View Case Details";
 
-window.print();
+    document.getElementById("qrText").innerText = "Scan to View Official PDF";
+
+    // Optional auto print
+    window.print();
+});
 }
 
 </script>
