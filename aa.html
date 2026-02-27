@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Court Registry Professional Format</title>
+<title>Court Registry</title>
 
 <style>
 
@@ -59,8 +59,7 @@ button:hover{
     padding:25mm;
     margin:auto;
     font-family:"Times New Roman", serif;
-    font-size:14
-  pt;
+    font-size:14pt;
     line-height:1.6;
     text-align:justify;
     position:relative;
@@ -92,7 +91,8 @@ button:hover{
 
 .highlight{
     font-weight:bold;
-    text-decoration:none;
+    text-decoration:none !important;
+    border-bottom:none !important;
 }
 
 table{
@@ -138,6 +138,8 @@ th, td{
 }
 
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -228,13 +230,19 @@ th, td{
 <div class="header">
 <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg">
 <h2 id="printCourtHeader"></h2>
+<h2 style="margin-top:5px;">CIVIL / CRIMINAL ORIGINAL JURISDICTION</h2>
+</div>
+
+<div style="position:absolute; top:20mm; right:25mm; text-align:right;">
+    <div id="qrcode"></div>
+    <div id="qrText" style="font-size:10pt; margin-top:4px;"></div>
 </div>
 
 <div id="printContent"></div>
 <div id="firPrint"></div>
 
 <div class="signature">
-<img src="signature.png.png">
+<img src="signature.png">
 </div>
 
 </div>
@@ -289,10 +297,10 @@ if(courtType==="Supreme Court of India"){
 headerText="IN THE SUPREME COURT OF INDIA<br>NEW DELHI";
 }
 else if(courtType==="High Court"){
-headerText="IN THE HIGH COURT"+customCourt.toUpperCase();
+headerText="IN THE HIGH COURT OF " + customCourt.toUpperCase();
 }
 else if(courtType==="District Court"){
-headerText="IN THE DISTRICT COURT"+customCourt.toUpperCase();
+headerText="IN THE DISTRICT COURT OF " + customCourt.toUpperCase();
 }
 
 document.getElementById("printCourtHeader").innerHTML=headerText;
@@ -315,17 +323,19 @@ let content=`
 सत्यमेव जयते
 </div><br>
 
-<div style="text-align:left; font-weight:bold; font-size:20pt;">
-<span class="highlight">${petitioners}</span><br>
-</div><br>
+<div style="display:flex; justify-content:space-between; font-weight:bold; font-size:20pt;">
+<span class="highlight">${petitioners}</span>
+<span>...Petitioner</span>
+</div>
 
 <div style="text-align:center; font-weight:bold; font-size:20pt;">
 versus
 </div><br>
 
-<div style="text-align:right; font-weight:bold; font-size:20pt;">
-<span class="highlight">${respondents}</span><br>
-</div><br>
+<div style="display:flex; justify-content:space-between; font-weight:bold; font-size:20pt;">
+<span>...Respondent</span>
+<span class="highlight">${respondents}</span>
+</div>
 
 <div class="case-details">
     <p><span>Case Number :</span> <span>${caseNumber}</span></p>
@@ -416,6 +426,29 @@ document.getElementById("firPrint").innerHTML = newTable;
 } else {
 document.getElementById("firPrint").innerHTML = "";
 }
+
+// ===== QR CODE GENERATION =====
+
+let year = new Date().getFullYear();
+let caseID = courtType.replace(/\s/g,'').toUpperCase() + "-" + caseNumber + "-" + year;
+
+// Clear old QR
+document.getElementById("qrcode").innerHTML = "";
+
+// Generate QR
+new QRCode(document.getElementById("qrcode"), {
+    text: `
+    Court: ${courtType}
+    Case: ${caseName}
+    Case No: ${caseNumber}
+    Petitioner: ${petitioners}
+    Respondent: ${respondents}
+    `, 
+    width: 100,
+    height: 100
+});
+
+document.getElementById("qrText").innerText = caseID;
 
 window.print();
 }
