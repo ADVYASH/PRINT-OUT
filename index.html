@@ -1,108 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Important</title>
-  <style>
-    /* Basic Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyber Supreme Court - GOD MODE</title>
 
-    /* Body Styling */
-    body {
-      background-color: #000;
-      font-family: 'Arial', sans-serif;
-      color: #fff;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
 
-    /* Title Styling with flicker effect */
-    h1 {
-      font-size: 3em;
-      margin-bottom: 20px;
-      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
-      animation: flicker 1.5s infinite alternate;
-    }
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  background:#000;
+  perspective:1000px;
+  color:#fff;
+}
 
-    @keyframes flicker {
-      0% { opacity: 1; }
-      100% { opacity: 0.8; }
-    }
+/* ================= WALL INTRO ================= */
 
-    /* Neon Buttons with glow animation */
-    .neon-button {
-      position: relative;
-      display: inline-block;
-      background-color: transparent;
-      border: 2px solid #0ff;
-      padding: 15px 30px;
-      margin: 10px;
-      font-size: 18px;
-      color: #0ff;
-      cursor: pointer;
-      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
-      box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff, 0 0 80px #0ff;
-      transition: all 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-      overflow: hidden;
-    }
+#intro{
+  position:fixed;
+  inset:0;
+  background:black;
+  z-index:10;
+  overflow:hidden;
+  transition:opacity 1.2s ease;
+}
 
-    /* Hover effect with ripple animation and glow intensify */
-    .neon-button:hover {
-      background-color: #0ff;
-      color: #000;
-      box-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff, 0 0 100px #0ff;
-    }
+#wall{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-evenly;
+  align-content:space-evenly;
+  padding:20px;
+}
 
-    /* Ripple effect on hover */
-    .neon-button::after {
-      content: "";
-      position: absolute;
-      border-radius: 50%;
-      width: 100%;
-      height: 100%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      background: rgba(0, 255, 255, 0.3);
-      opacity: 0;
-      transition: transform 0.6s ease, opacity 0.6s ease;
-      pointer-events: none;
-    }
+.wall-text{
+  font-size:22px;
+  color:#ff00ff;
+  opacity:0;
+  text-shadow:0 0 10px #ff00ff,
+              0 0 20px #cc00ff;
+  animation:fadeIn 1s forwards;
+}
 
-    .neon-button:hover::after {
-      transform: translate(-50%, -50%) scale(2.5);
-      opacity: 1;
-    }
+@keyframes fadeIn{
+  to{opacity:0.7;}
+}
 
-    /* Optional: Add pulsate animation to buttons */
-    @keyframes pulse {
-      0% { box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff, 0 0 80px #0ff; }
-      50% { box-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff, 0 0 120px #0ff; }
-      100% { box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff, 0 0 80px #0ff; }
-    }
+#bigText{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0.6);
+  font-size:150px;
+  color:white;
+  opacity:0;
+  text-shadow:0 0 40px #ff00ff,
+              0 0 80px #ff00ff,
+              0 0 150px #cc00ff;
+  transition:1s ease;
+}
 
-    /* Apply pulsate animation on load */
-    .neon-button {
-      animation: pulse 2s infinite alternate;
-    }
-  </style>
+/* ================= OLD DESIGN ================= */
+
+#mainContent{
+  opacity:0;
+  transition:opacity 1.5s ease;
+}
+
+/* Galaxy Canvas */
+#galaxy{
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:0;
+}
+
+/* Lightning Canvas */
+#lightning{
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:3;
+  pointer-events:none;
+}
+
+/* Glass Card */
+.card{
+  position:relative;
+  z-index:2;
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,0,255,0.3);
+  border-radius:20px;
+  padding:40px;
+  width:90%;
+  max-width:500px;
+  text-align:center;
+  box-shadow:0 0 40px rgba(255,0,255,0.3);
+  transition:transform 0.2s ease;
+  transform-style:preserve-3d;
+}
+
+/* Logo */
+.logo{
+  width:110px;
+  margin-bottom:10px;
+  filter:drop-shadow(0 0 15px #ff00ff)
+         drop-shadow(0 0 50px #cc00ff);
+}
+
+/* Hindi */
+.hindi{
+  font-size:20px;
+  margin-bottom:20px;
+  color:#ff66ff;
+  text-shadow:0 0 10px #ff00ff,
+              0 0 20px #ff00ff,
+              0 0 40px #cc00ff;
+}
+
+/* Buttons */
+.neon-button{
+  display:block;
+  margin:15px auto;
+  padding:14px 30px;
+  text-decoration:none;
+  color:#ff66ff;
+  border:2px solid #ff00ff;
+  border-radius:10px;
+  transition:0.3s;
+  font-size:16px;
+  background:transparent;
+  box-shadow:0 0 15px #ff00ff;
+}
+
+.neon-button:hover{
+  background:#ff00ff;
+  color:#000;
+  box-shadow:0 0 30px #ff00ff,0 0 60px #cc00ff;
+  transform:scale(1.05);
+}
+</style>
 </head>
+
 <body>
-  <h1>👣🫆👉Court Work👈🫆👣
-</h1>
-  <a href="aa.html" class="neon-button">Affidavit</a>
-  <a href="bb.html" class="neon-button">Button 2</a>
-  <a href="cc.html" class="neon-button">Button 3</a>
-  <a href="dd.html" class="neon-button">Button 4</a>
-  <a href="ee.html" class="neon-button">Button 5</a>
+
+<!-- INTRO -->
+<div id="intro">
+  <div id="wall"></div>
+  <div id="bigText">सत्यमेव जयते</div>
+</div>
+
+<!-- OLD CONTENT -->
+<div id="mainContent">
+  <canvas id="galaxy"></canvas>
+  <canvas id="lightning"></canvas>
+
+  <div class="card" id="card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" class="logo">
+    <div class="hindi">सत्यमेव जयते</div>
+    <h1>Supreme Court Of India </h1>
+
+    <a href="aa.html" class="neon-button">Affidavit</a>
+    <a href="bb.html" class="neon-button">Petition</a>
+    <a href="cc.html" class="neon-button">Notice</a>
+    <a href="dd.html" class="neon-button">Application</a>
+    <a href="ee.html" class="neon-button">More</a>
+  </div>
+</div>
+
+<script>
+
+/* ===== WALL INTRO LOGIC ===== */
+
+const intro = document.getElementById("intro");
+const wall = document.getElementById("wall");
+const bigText = document.getElementById("bigText");
+const main = document.getElementById("mainContent");
+
+const text = "सत्यमेव जयते";
+
+let count = 0;
+let maxTexts = 80;   // how much screen fills
+let speed = 70;      // appearance speed
+
+function addText(){
+  if(count < maxTexts){
+    let span = document.createElement("span");
+    span.className = "wall-text";
+    span.innerText = text;
+    wall.appendChild(span);
+    count++;
+    setTimeout(addText, speed);
+  } else {
+    setTimeout(showBigText, 800);
+  }
+}
+
+function showBigText(){
+  wall.style.opacity = "0.15";
+
+  bigText.style.opacity = "1";
+  bigText.style.transform = "translate(-50%,-50%) scale(1.15)";
+
+  setTimeout(()=>{
+    intro.style.opacity="0";
+    main.style.opacity="1";
+    setTimeout(()=>intro.style.display="none",1200);
+  },1800);
+}
+
+addText();
+
+
+/* ===== ORIGINAL GOD MODE ===== */
+
+/* 3D Tilt */
+const card = document.getElementById("card");
+document.addEventListener("mousemove",(e)=>{
+  let xAxis=(window.innerWidth/2 - e.pageX)/25;
+  let yAxis=(window.innerHeight/2 - e.pageY)/25;
+  card.style.transform=`rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+});
+
+/* Galaxy */
+const galaxy=document.getElementById("galaxy");
+const gctx=galaxy.getContext("2d");
+galaxy.width=window.innerWidth;
+galaxy.height=window.innerHeight;
+
+let stars=[];
+for(let i=0;i<400;i++){
+  stars.push({
+    radius:Math.random()*2,
+    angle:Math.random()*Math.PI*2,
+    distance:Math.random()*400
+  });
+}
+
+let angle=0;
+function drawGalaxy(){
+  gctx.fillStyle="rgba(0,0,0,0.2)";
+  gctx.fillRect(0,0,galaxy.width,galaxy.height);
+
+  stars.forEach(star=>{
+    let x=galaxy.width/2 + Math.cos(star.angle+angle)*star.distance;
+    let y=galaxy.height/2 + Math.sin(star.angle+angle)*star.distance;
+    gctx.fillStyle="#ff00ff";
+    gctx.beginPath();
+    gctx.arc(x,y,star.radius,0,Math.PI*2);
+    gctx.fill();
+  });
+
+  angle+=0.002;
+  requestAnimationFrame(drawGalaxy);
+}
+drawGalaxy();
+
+/* Lightning */
+const lightning=document.getElementById("lightning");
+const lctx=lightning.getContext("2d");
+lightning.width=window.innerWidth;
+lightning.height=window.innerHeight;
+
+function createLightning(x){
+  lctx.clearRect(0,0,lightning.width,lightning.height);
+  lctx.strokeStyle="#ffffff";
+  lctx.lineWidth=2;
+  lctx.shadowBlur=20;
+  lctx.shadowColor="#ff00ff";
+
+  lctx.beginPath();
+  lctx.moveTo(x,0);
+  for(let i=0;i<20;i++){
+    let newX=x+(Math.random()-0.5)*100;
+    let newY=i*(lightning.height/20);
+    lctx.lineTo(newX,newY);
+  }
+  lctx.stroke();
+
+  setTimeout(()=>lctx.clearRect(0,0,lightning.width,lightning.height),150);
+}
+
+document.addEventListener("click",(e)=>{
+  createLightning(e.clientX);
+});
+
+window.addEventListener("resize",()=>{
+  galaxy.width=window.innerWidth;
+  galaxy.height=window.innerHeight;
+  lightning.width=window.innerWidth;
+  lightning.height=window.innerHeight;
+});
+
+</script>
 </body>
 </html>
