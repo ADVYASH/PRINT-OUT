@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Court Registry Professional Format</title>
+
+<style>
+
+/* ================= SCREEN FORM ================= */
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f2f2f2;
+    margin:0;
+    padding:30px;
+}
+
+.form-box{
+    max-width:1000px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:8px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.2);
+}
+
+label{
+    font-weight:bold;
+    display:block;
+    margin-top:10px;
+}
+
+input, select{
+    width:100%;
+    padding:6px;
+    margin-top:5px;
+}
+
+button{
+    padding:6px 14px;
+    margin:6px 6px 6px 0;
+    background:#0f2027;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#b8860b;
+    color:black;
+}
+
+/* ================= PRINT LAYOUT ================= */
+
+.print-area{
+    display:none;
+    width:210mm;
+    min-height:297mm;
+    padding:25mm;
+    margin:auto;
+    font-family:"Times New Roman", serif;
+    font-size:12pt;
+    line-height:1.6;
+    text-align:justify;
+    position:relative;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.header img{
+    width:90px;
+}
+
+.header h2{
+    margin:2px 0;
+    font-size:14pt;
+}
+
+.watermark{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:90px;
+    opacity:0.05;
+    pointer-events:none;
+}
+
+.highlight{
+    font-weight:bold;
+    text-decoration:underline;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+    font-size:12pt;
+}
+
+table, th, td{
+    border:1px solid black;
+}
+
+th, td{
+    padding:5px;
+    text-align:center;
+}
+
+.signature{
+    margin-top:60px;
+    text-align:right;
+}
+
+.signature img{
+    width:200px;
+}
+
+/* Print Mode */
+@media print{
+
+    body{
+        background:white;
+    }
+
+    .form-box{
+        display:none;
+    }
+
+    .print-area{
+        display:block;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- ================= FORM SECTION ================= -->
+
+<div class="form-box">
+
+<h2>⚖ Court Filing Form</h2>
+
+<label>Select Court</label>
+<select id="courtType" onchange="toggleCourtInput()">
+<option value="">Select Court</option>
+<option value="Supreme Court of India">Supreme Court of India</option>
+<option value="High Court">High Court</option>
+<option value="District Court">District Court</option>
+</select>
+
+<div id="customCourtDiv" style="display:none;">
+<label>Enter Court Location / State</label>
+<input type="text" id="customCourt">
+</div>
+
+<label>Case Name (Petitioner vs Respondent)</label>
+<input type="text" id="caseName">
+
+<label>Case Number</label>
+<input type="text" id="caseNumber">
+
+<label>Jurisdiction</label>
+<input type="text" id="jurisdiction">
+
+<label>Type of Case</label>
+<input type="text" id="caseType">
+
+<label>Petitioner(s)</label>
+<div id="petitioners"><input type="text"></div>
+<button onclick="addField('petitioners')">+ Add Petitioner</button>
+
+<label>Advocate for Petitioner</label>
+<div id="petAdv"><input type="text"></div>
+<button onclick="addField('petAdv')">+ Add Advocate</button>
+
+<label>Respondent(s)</label>
+<div id="respondents"><input type="text"></div>
+<button onclick="addField('respondents')">+ Add Respondent</button>
+
+<label>Advocate for Respondent</label>
+<div id="resAdv"><input type="text"></div>
+<button onclick="addField('resAdv')">+ Add Advocate</button>
+
+<label>Date of Judgment</label>
+<input type="date" id="date">
+
+<label>Bench (Judges)</label>
+<div id="benchInput"><input type="text"></div>
+<button onclick="addField('benchInput')">+ Add Judge</button>
+
+<label>Judgment By</label>
+<input type="text" id="judgmentBy">
+
+<label>Citation(s)</label>
+<div id="citationInput"><input type="text"></div>
+<button onclick="addField('citationInput')">+ Add Citation</button>
+
+<h3>Optional FIR Table</h3>
+<table id="firTable">
+<tr>
+<th>SR NO</th>
+<th>FIR NUMBER</th>
+<th>SECTIONS</th>
+<th>DATE</th>
+<th>PARTICULARS</th>
+</tr>
+</table>
+<button onclick="addRow()">+ Add FIR Row</button>
+
+<br><br>
+<button onclick="generatePrint()">Generate & Print</button>
+
+</div>
+
+<!-- ================= PRINT SECTION ================= -->
+
+<div class="print-area">
+
+<div class="watermark">सत्यमेव जयते</div>
+
+<div class="header">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg">
+<h2 id="printCourtHeader"></h2>
+</div>
+
+<div id="printContent"></div>
+<div id="firPrint"></div>
+
+<div class="signature">
+<img src="My Signature.png">
+</div>
+
+</div>
+
+<script>
+
+function toggleCourtInput(){
+let court=document.getElementById("courtType").value;
+if(court==="High Court" || court==="District Court"){
+document.getElementById("customCourtDiv").style.display="block";
+}else{
+document.getElementById("customCourtDiv").style.display="none";
+}
+}
+
+function addField(id){
+let div=document.getElementById(id);
+let input=document.createElement("input");
+input.type="text";
+div.appendChild(input);
+}
+
+function getValues(id){
+let inputs=document.getElementById(id).getElementsByTagName("input");
+let arr=[];
+for(let i=0;i<inputs.length;i++){
+if(inputs[i].value.trim()!==""){
+arr.push("<span class='highlight'>"+inputs[i].value+"</span>");
+}
+}
+return arr.join(", ");
+}
+
+function addRow(){
+let table=document.getElementById("firTable");
+let row=table.insertRow();
+let count=table.rows.length-1;
+row.insertCell(0).innerHTML=count;
+row.insertCell(1).innerHTML='<input type="text">';
+row.insertCell(2).innerHTML='<input type="text">';
+row.insertCell(3).innerHTML='<input type="date">';
+row.insertCell(4).innerHTML='<input type="text">';
+}
+
+function generatePrint(){
+
+let courtType=document.getElementById("courtType").value;
+let customCourt=document.getElementById("customCourt").value;
+let headerText="";
+
+if(courtType==="Supreme Court of India"){
+headerText="IN THE SUPREME COURT OF INDIA<br>NEW DELHI";
+}
+else if(courtType==="High Court"){
+headerText="IN THE HIGH COURT OF "+customCourt.toUpperCase();
+}
+else if(courtType==="District Court"){
+headerText="IN THE DISTRICT COURT OF "+customCourt.toUpperCase();
+}
+
+document.getElementById("printCourtHeader").innerHTML=headerText;
+
+let caseName=document.getElementById("caseName").value;
+let caseNumber=document.getElementById("caseNumber").value;
+let jurisdiction=document.getElementById("jurisdiction").value;
+let caseType=document.getElementById("caseType").value;
+let petitioners=getValues("petitioners")
+let respondents=getValues("respondents");
+let resAdv=getValues("resAdv");
+let date=document.getElementById("date").value;
+let bench=getValues("benchInput");
+let judgmentBy=document.getElementById("judgmentBy").value;
+let citation=getValues("citationInput");
+
+let content=`
+<div style="text-align:center; font-weight:bold;">
+<span class="highlight">${caseName}</span><br>
+सत्यमेव जयते
+</div><br>
+
+<p><b>Case Number :</b> <span class="highlight">${caseNumber}</span></p>
+<p><b>Petitioner :</b> ${petitioners}</p>
+<p><b>Advocate for Petitioner :</b> ${petAdv}</p>
+<p><b>Respondent :</b> ${respondents}</p>
+<p><b>Advocate for Respondent :</b> ${resAdv}</p>
+
+<p>That the present matter is instituted before the <span class="highlight">${courtType}</span> under the title <span class="highlight">${caseName}</span>”, bearing Case Number / Diary Number <span class="highlight">${caseNumber}</span>, falling within the jurisdiction of <span class="highlight">${jurisdiction}</span>. The nature and type of the present proceedings is <span class="highlight">${caseType}</span>, and the same is being adjudicated in accordance with the applicable provisions of law.</p>
+
+<p>That the Petitioner(s) in the present case is/are <span class="highlight">${petitioners}</span>. The Petitioner(s) is/are duly represented and assisted by their Advocate(s), namely <span class="highlight">${petAdv}</span> and any other counsel as may be authorized and appointed to appear and plead on their behalf before this Hon’ble Court.</p>
+
+<p>That the Respondent(s) in the present matter is/are <span class="highlight">${respondents}</span>, and such additional parties as reflected in the memo of parties. The Respondent(s) is/are represented through their Advocate(s), namely <span class="highlight">${resAdv}</span>, and any other counsel duly appointed and authorized to represent them in the present proceedings.</p>
+
+<p>That the judgment in the present case was pronounced on <span class="highlight">${date}</span> by the Hon’ble Bench comprising Hon’ble Justice <span class="highlight">${benchInput}</span>, and such other Hon’ble Judges as constituted the Coram of the Court for hearing and deciding the present matter. The judgment was authored and delivered by Hon’ble Justice <span class="highlight">${judgmentBy}</span>.</p>
+
+<p>That the present judgment is reported and cited as<span class="highlight">${citationInput}</span>, and other recognized law reports where the judgment has been published and is available for reference.</p>
+`;
+
+document.getElementById("printContent").innerHTML=content;
+
+// ===== FIXED FIR TABLE PRINT =====
+
+let table = document.getElementById("firTable");
+let rows = table.rows;
+
+let newTable = `
+<table>
+<tr>
+<th>SR NO</th>
+<th>FIR NUMBER</th>
+<th>SECTIONS</th>
+<th>DATE</th>
+<th>PARTICULARS OF IMPUGNED JUDGEMENT / ORDER</th>
+</tr>
+`;
+
+let rowCount = 0;
+
+for(let i = 1; i < rows.length; i++){
+
+let inputs = rows[i].getElementsByTagName("input");
+
+let fir = inputs[0].value.trim();
+let sec = inputs[1].value.trim();
+let date = inputs[2].value.trim();
+let part = inputs[3].value.trim();
+
+if(fir || sec || date || part){
+
+rowCount++;
+
+newTable += `
+<tr>
+<td>${rowCount}</td>
+<td><span class="highlight">${fir}</span></td>
+<td><span class="highlight">${sec}</span></td>
+<td><span class="highlight">${date}</span></td>
+<td><span class="highlight">${part}</span></td>
+</tr>
+`;
+
+}
+
+}
+
+newTable += "</table>";
+
+if(rowCount > 0){
+document.getElementById("firPrint").innerHTML = newTable;
+} else {
+document.getElementById("firPrint").innerHTML = "";
+}
+
+window.print();
+}
+
+</script>
+
+</body>
+</html>
