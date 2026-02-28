@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>e-Stamp Paper Generator</title>
+
+<style>
+body{
+    font-family:Arial, sans-serif;
+    background:#f2f2f2;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:20px;
+}
+
+h2{
+    text-align:center;
+}
+
+input, select, textarea{
+    width:100%;
+    padding:8px;
+    margin:5px 0 15px;
+}
+
+button{
+    padding:10px 20px;
+    cursor:pointer;
+}
+
+@media print{
+    body{ background:white; }
+    .no-print{ display:none; }
+    .print-area{
+        width:210mm;
+        min-height:297mm;
+    }
+}
+
+.print-area{
+    margin-top:30px;
+}
+
+.stamp-image{
+    text-align:center;
+}
+
+.stamp-image img{
+    width:500px;
+}
+
+.center-text{
+    text-align:center;
+    font-weight:bold;
+    font-size:22px;
+}
+
+.details{
+    margin-top:20px;
+    font-size:16px;
+    line-height:1.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container no-print">
+
+<h2>e-Stamp Paper Form</h2>
+
+<label>Select State / UT</label>
+<select id="stateSelect">
+<option value="">-- Select State --</option>
+
+<option value="AP">Andhra Pradesh</option>
+<option value="AR">Arunachal Pradesh</option>
+<option value="AS">Assam</option>
+<option value="BR">Bihar</option>
+<option value="CG">Chhattisgarh</option>
+<option value="GA">Goa</option>
+<option value="GJ">Gujarat</option>
+<option value="HR">Haryana</option>
+<option value="HP">Himachal Pradesh</option>
+<option value="JH">Jharkhand</option>
+<option value="KA">Karnataka</option>
+<option value="KL">Kerala</option>
+<option value="MP">Madhya Pradesh</option>
+<option value="MH">Maharashtra</option>
+<option value="MN">Manipur</option>
+<option value="ML">Meghalaya</option>
+<option value="MZ">Mizoram</option>
+<option value="NL">Nagaland</option>
+<option value="OD">Odisha</option>
+<option value="PB">Punjab</option>
+<option value="RJ">Rajasthan</option>
+<option value="SK">Sikkim</option>
+<option value="TN">Tamil Nadu</option>
+<option value="TS">Telangana</option>
+<option value="TR">Tripura</option>
+<option value="UP">Uttar Pradesh</option>
+<option value="UK">Uttarakhand</option>
+<option value="WB">West Bengal</option>
+
+<option value="AN">Andaman & Nicobar Islands</option>
+<option value="CH">Chandigarh</option>
+<option value="DN">Dadra & Nagar Haveli and Daman & Diu</option>
+<option value="DL">Delhi (NCT)</option>
+<option value="JK">Jammu & Kashmir</option>
+<option value="LA">Ladakh</option>
+<option value="LD">Lakshadweep</option>
+<option value="PY">Puducherry</option>
+
+</select>
+
+<label>Purchased By</label>
+<input type="text" id="purchasedBy">
+
+<label>Description of Document</label>
+<select id="docType" multiple>
+<option>Affidavit</option>
+<option>Agreement</option>
+<option>Power of Attorney</option>
+<option>Sale Deed</option>
+<option>Rent Agreement</option>
+<option>Declaration</option>
+</select>
+
+<label>Description</label>
+<textarea id="description"></textarea>
+
+<label>Consideration Price (Rs.)</label>
+<input type="number" id="amount">
+
+<label>First Party</label>
+<input type="text" id="firstParty">
+
+<label>Second Party</label>
+<input type="text" id="secondParty">
+
+<button onclick="generate()">Generate Stamp</button>
+<button onclick="window.print()">Print</button>
+
+</div>
+
+
+<div class="container print-area">
+
+<div class="stamp-image">
+<img src="estamp.jpg">
+</div>
+
+<div class="center-text">INDIA NON JUDICIAL</div>
+<div class="center-text">STAMP PAPER</div>
+
+<div class="details" id="output"></div>
+
+</div>
+
+
+<script>
+
+let docCounter = 10705610947280;
+
+function random14Digit(){
+    return Math.floor(10000000000000 + Math.random() * 90000000000000);
+}
+
+function generate(){
+
+    let stateCode = document.getElementById("stateSelect").value;
+    let purchasedBy = document.getElementById("purchasedBy").value.trim();
+    let firstParty = document.getElementById("firstParty").value;
+    let secondParty = document.getElementById("secondParty").value;
+    let amount = document.getElementById("amount").value;
+    let description = document.getElementById("description").value;
+
+    if(!stateCode || !purchasedBy){
+        alert("Please fill required fields");
+        return;
+    }
+
+    let docTypeSelect = document.getElementById("docType");
+    let selected = Array.from(docTypeSelect.selectedOptions).map(o => o.value).join(", ");
+
+    let now = new Date();
+    let dateTime = now.toLocaleString();
+
+    let randomNumber = random14Digit();
+    let lastChar = purchasedBy.charAt(0).toUpperCase();
+
+    let certificateNumber = "IN" + stateCode + randomNumber + lastChar;
+
+    let uniqueDoc = "SUBIN-UPUP-SELF" + docCounter + lastChar;
+    docCounter++;
+
+    document.getElementById("output").innerHTML = `
+    <b>Certificate Number :</b> ${certificateNumber}<br>
+    <b>Certificate Issued Date :</b> ${dateTime}<br>
+    <b>Account Reference :</b> SELFPRINT (PU)/ dl-self/galgotia-gn-up<br>
+    <b>Unique Doc. Reference :</b> ${uniqueDoc}<br><br>
+
+    <b>Purchased By :</b> ${purchasedBy}<br>
+    <b>Description of Document :</b> ${selected}<br>
+    <b>Description :</b> ${description}<br>
+    <b>Consideration Price (Rs.) :</b> ${amount}<br>
+    <b>First Party :</b> ${firstParty}<br>
+    <b>Second Party :</b> ${secondParty}<br>
+    <b>Stamp Duty Paid By :</b> ${firstParty}<br>
+    <b>Stamp Duty Amount :</b> 100 Rs
+    `;
+}
+
+</script>
+
+</body>
+</html>
