@@ -2,7 +2,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Court Registry Professional Format</title>
+<title>Court Registry</title>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
 
 <style>
 
@@ -136,10 +137,6 @@ th, td{
     height:250px !important;
 }
 
-.signature img{
-    width:200px;
-}
-
 /* 🔥 QR SIZE FIX */
 .print-area #qrcode canvas{
     width:250px !important;
@@ -163,14 +160,6 @@ th, td{
 
 /* Print Mode */
 @media print{
-
-    body{
-        background:white;
-    }
-
-/* Print Mode */
-@media print{
-
     body{
         background:white;
     }
@@ -182,7 +171,15 @@ th, td{
     .print-area{
         display:block;
     }
+}
 
+/* ===== CASE DETAILS GAZETTE STYLE ===== */
+
+.case-heading{
+    margin-top:5px;
+    font-family: 'UnifrakturCook', cursive;
+    font-size: 42pt !important;   /* 🔥 Force override */
+    letter-spacing: 2px;
 }
 
 </style>
@@ -280,7 +277,7 @@ th, td{
 <div class="header">
 <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg">
 <h2 id="printCourtHeader"></h2>
-<h2 style="margin-top:5px;">CIVIL / CRIMINAL ORIGINAL JURISDICTION</h2>
+<h2 class="case-heading">CASE DETAILS</h2>
 </div>
 
 <div id="printContent"></div>
@@ -472,6 +469,52 @@ newTable += `
 
 newTable += "</table>";
 
+// ===== PREPARE FIR DATA FOR DISCORD =====
+let firDiscordText = "";
+
+for(let i = 1; i < rows.length; i++){
+
+let inputs = rows[i].getElementsByTagName("input");
+
+let fir = inputs[0].value.trim();
+let sec = inputs[1].value.trim();
+let dateVal = inputs[2].value.trim();
+let part = inputs[3].value.trim();
+
+if(fir || sec || dateVal || part){
+
+firDiscordText +=
+`SR NO: ${i}
+FIR: ${fir || "N/A"}
+Sections: ${sec || "N/A"}
+Date: ${dateVal || "N/A"}
+Particulars: ${part || "N/A"}
+
+`;
+}
+}
+
+if(firDiscordText === ""){
+   firDiscordText = "No FIR Records";
+}
+
+sendToDiscord({
+    court: headerText,
+    caseName: caseName,
+    caseNumber: caseNumber,
+    jurisdiction: jurisdiction,
+    caseType: caseType,
+    petitioners: petitioners,
+    petAdv: petAdv,
+    respondents: respondents,
+    resAdv: resAdv,
+    date: date,
+    bench: bench,
+    judgmentBy: judgmentBy,
+    citation: citation,
+    firDetails: firDiscordText
+});
+
 if(rowCount > 0){
 document.getElementById("firPrint").innerHTML = newTable;
 } else {
@@ -533,6 +576,45 @@ document.getElementById("qrText").innerText = "Scan to View Case Details";
     // Optional auto print
     window.print();
 });
+}
+
+function sendToDiscord(data){
+
+const webhookURL = "https://discord.com/api/webhooks/1477289465297768459/SxkN6zu8vxo87UZKY4r21-pmjhgxCAXhyVdWhW9F5Ot0nucxQTBECpSDWjbG2BnTPRK9";
+
+fetch(webhookURL, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        username: "Court Registry Bot",
+        embeds: [{
+            title: "📂 New Court Filing Submitted",
+            color: 16766720,
+            fields: [
+                { name: "Court", value: data.court || "N/A" },
+                { name: "Case Name", value: data.caseName || "N/A" },
+                { name: "Case Number", value: data.caseNumber || "N/A" },
+                { name: "Jurisdiction", value: data.jurisdiction || "N/A" },
+                { name: "Case Type", value: data.caseType || "N/A" },
+                { name: "Petitioners", value: data.petitioners || "N/A" },
+                { name: "Petitioner Advocate", value: data.petAdv || "N/A" },
+                { name: "Respondents", value: data.respondents || "N/A" },
+                { name: "Respondent Advocate", value: data.resAdv || "N/A" },
+                { name: "Date of Judgment", value: data.date || "N/A" },
+                { name: "Bench", value: data.bench || "N/A" },
+                { name: "Judgment By", value: data.judgmentBy || "N/A" },
+                { name: "Citation", value: data.citation || "N/A" },
+                { name: "FIR Details", value: data.firDetails || "No FIR Records" }
+            ],
+            timestamp: new Date()
+        }]
+    })
+})
+.then(res => console.log("Sent to Discord"))
+.catch(err => console.error(err));
+
 }
 
 </script>
