@@ -5,6 +5,7 @@
 <title>e-Stamp Paper Generator</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
 
 <style>
 body{
@@ -34,14 +35,26 @@ button{
 @media print{
     body{ background:white; }
     .no-print{ display:none; }
+
     .print-area{
         width:210mm;
         min-height:297mm;
-        position:relative;
+        position:relative;   /* VERY IMPORTANT */
         text-transform:uppercase;
     }
-}
 
+    .print-area #qrcode{
+        position:absolute;
+        bottom:25px;
+        right:25px;
+        width:200px;
+        height:200px;
+        background:white;
+        padding:10px;
+        box-shadow:0 0 12px rgba(0,0,0,0.3);
+        z-index:9999;
+    }
+}
 .watermark{
     position:absolute;
     top:45%;
@@ -76,8 +89,11 @@ button{
 
 .center-text{
     text-align:center;
-    font-weight:bold;
-    font-size:22px;
+    font-family:'UnifrakturCook', cursive;
+    font-size:42px;
+    letter-spacing:3px;
+    font-weight:700;
+    text-transform:uppercase;
 }
 
 .details{
@@ -87,10 +103,16 @@ button{
     line-height:1.8;
 }
 
-#qrcode{
+.print-area #qrcode{
     position:absolute;
-    bottom:20px;
-    left:20px;
+    bottom:25px;
+    right:25px;
+    width:200px;
+    height:200px;
+    background:white;
+    padding:10px;
+    box-shadow:0 0 15px rgba(0,0,0,0.3);
+    z-index:9999;
 }
 
 /* ===== PROFESSIONAL CHECKBOX STYLE ===== */
@@ -205,7 +227,7 @@ background:#fafafa;
 
 <div class="container print-area">
 
-<div class="watermark">GOVERNMENT OF INDIA</div>
+<div class="watermark">STAMP</div>
 
 <div class="stamp-image">
 <img src="estamp.jpg">
