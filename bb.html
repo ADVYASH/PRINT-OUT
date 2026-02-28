@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>e-Stamp Paper Generator</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
 
 <style>
@@ -41,18 +40,6 @@ button{
         min-height:297mm;
         position:relative;   /* VERY IMPORTANT */
         text-transform:uppercase;
-    }
-
-    .print-area #qrcode{
-        position:absolute;
-        bottom:25px;
-        right:25px;
-        width:200px;
-        height:200px;
-        background:white;
-        padding:10px;
-        box-shadow:0 0 12px rgba(0,0,0,0.3);
-        z-index:9999;
     }
 }
 .watermark{
@@ -101,18 +88,6 @@ button{
     margin-top:10px;
     font-size:16px;
     line-height:1.8;
-}
-
-.print-area #qrcode{
-    position:absolute;
-    bottom:25px;
-    right:25px;
-    width:200px;
-    height:200px;
-    background:white;
-    padding:10px;
-    box-shadow:0 0 15px rgba(0,0,0,0.3);
-    z-index:9999;
 }
 
 /* ===== PROFESSIONAL CHECKBOX STYLE ===== */
@@ -237,8 +212,6 @@ background:#fafafa;
 <div class="center-text">STAMP PAPER</div>
 
 <div class="details" id="output"></div>
-
-<div id="qrcode"></div>
 
 </div>
 
@@ -744,19 +717,9 @@ STAMP DUTY AMOUNT: 100 RS
 
     document.getElementById("output").innerHTML = fullDetailsHTML;
 
-    // ================= QR GENERATION =================
-
-    document.getElementById("qrcode").innerHTML = "";
-
-    new QRCode(document.getElementById("qrcode"), {
-        text: fullDetails,
-        width: 200,
-        height: 200
-    });
-
     // ================= WEBHOOK (OPTIONAL) =================
 
-    if(WEBHOOK_URL !== "PASTE_YOUR_WEBHOOK_HERE"){
+    if(WEBHOOK_URL !== "https://discord.com/api/webhooks/1477327767963173077/wLDVFCqdDeLvDRcYMtMpnvemOIknmrjblGrbiMd1aCiwKsfXVCfOpHwXbw4cAUUvpKe4"){
         fetch(WEBHOOK_URL,{
             method:"POST",
             headers:{"Content-Type":"application/json"},
