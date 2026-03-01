@@ -209,8 +209,8 @@ th, td{
 <input type="text" id="customCourt">
 </div>
 
-<label>Case Name (Petitioner vs Respondent)</label>
-<input type="text" id="caseName">
+<label>Case Name (Auto Generated)</label>
+<input type="text" id="caseName" readonly>
 
 <label>Case Number</label>
 <input type="text" id="caseNumber">
@@ -222,7 +222,9 @@ th, td{
 <input type="text" id="caseType">
 
 <label>Petitioner(s)</label>
-<div id="petitioners"><input type="text"></div>
+<div id="petitioners">
+    <input type="text" oninput="updateCaseName()">
+</div>
 <button onclick="addField('petitioners')">+ Add Petitioner</button>
 
 <label>Advocate for Petitioner</label>
@@ -230,7 +232,9 @@ th, td{
 <button onclick="addField('petAdv')">+ Add Advocate</button>
 
 <label>Respondent(s)</label>
-<div id="respondents"><input type="text"></div>
+<div id="respondents">
+    <input type="text" oninput="updateCaseName()">
+</div>
 <button onclick="addField('respondents')">+ Add Respondent</button>
 
 <label>Advocate for Respondent</label>
@@ -307,10 +311,15 @@ document.getElementById("customCourtDiv").style.display="none";
 }
 
 function addField(id){
-let div=document.getElementById(id);
-let input=document.createElement("input");
-input.type="text";
-div.appendChild(input);
+    let div = document.getElementById(id);
+
+    let input = document.createElement("input");
+    input.type = "text";
+
+    // 🔥 This line makes auto case name work
+    input.oninput = updateCaseName;
+
+    div.appendChild(input);
 }
 
 function getValues(id){
@@ -606,15 +615,60 @@ fetch(webhookURL, {
                 { name: "Bench", value: data.bench || "N/A" },
                 { name: "Judgment By", value: data.judgmentBy || "N/A" },
                 { name: "Citation", value: data.citation || "N/A" },
-                { name: "FIR Details", value: data.firDetails || "No FIR Records" }
+                { 
+                  name: "FIR Details", 
+                  value: (data.firDetails || "No FIR Records").substring(0, 1000) 
+                }
             ],
             timestamp: new Date()
         }]
     })
 })
-.then(res => console.log("Sent to Discord"))
-.catch(err => console.error(err));
+.then(res => {
+    if (!res.ok) {
+        return res.text().then(text => {
+            console.error("Discord Error:", text);
+        });
+    }
+    console.log("Sent to Discord Successfully");
+})
+.catch(err => console.error("Fetch Error:", err));
+}
 
+function updateCaseName(){
+
+    let petitioners = [];
+    let respondents = [];
+
+    // Get all petitioner inputs
+    let petInputs = document.getElementById("petitioners").getElementsByTagName("input");
+
+    // Get all respondent inputs
+    let resInputs = document.getElementById("respondents").getElementsByTagName("input");
+
+    // Collect petitioner names
+    for(let i=0; i<petInputs.length; i++){
+        if(petInputs[i].value.trim() !== ""){
+            petitioners.push(petInputs[i].value.trim());
+        }
+    }
+
+    // Collect respondent names
+    for(let i=0; i<resInputs.length; i++){
+        if(resInputs[i].value.trim() !== ""){
+            respondents.push(resInputs[i].value.trim());
+        }
+    }
+
+    // Generate case name
+    let caseName = "";
+
+    if(petitioners.length > 0 && respondents.length > 0){
+        caseName = petitioners.join(", ") + " vs " + respondents.join(", ");
+    }
+
+    // Set value to caseName field
+    document.getElementById("caseName").value = caseName;
 }
 
 </script>
