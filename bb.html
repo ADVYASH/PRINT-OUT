@@ -216,7 +216,7 @@ background:#fafafa;
 
 <script>
 
-const WEBHOOK_URL = "https://discord.com/api/webhooks/1477289465297768459/SxkN6zu8vxo87UZKY4r21-pmjhgxCAXhyVdWhW9F5Ot0nucxQTBECpSDWjbG2BnTPRK9";
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1477329830046597151/oUCMtYR8JPkqm0w85_qZZ8P5HfLpBkz6XnRnYta8lfoIK2HNFEU5o9eK5Kr2bLKLDebR";
 
 /* ================= SECTIONS ================= */
 
@@ -657,11 +657,25 @@ function generate(){
     let amount = document.getElementById("amount").value;
     let description = document.getElementById("description").value;
 
-    let selectedSections = [];
-    document.querySelectorAll("#docType input:checked")
-        .forEach(cb => selectedSections.push(cb.value));
+let selectedSections = [];
+let selectedShort = [];
 
-    let selected = selectedSections.join("\n");
+document.querySelectorAll("#docType input:checked")
+    .forEach(cb => {
+        selectedSections.push(cb.value); // full text (for webhook if needed)
+
+        // Extract only "SEC X"
+        let match = cb.value.match(/SEC\s\d+/);
+        if(match){
+            selectedShort.push(match[0]);
+        }
+    });
+
+// For webhook (full text)
+let selectedFullText = selectedSections.join("\n");
+
+// For print (only SEC numbers)
+let selectedForPrint = selectedShort.join(", ");
 
     let now = new Date();
     let dateTime = now.toLocaleString();
@@ -684,7 +698,7 @@ ACCOUNT REFERENCE: SELFPRINT (PU)/ DL-SELF/GALGOTIA-GN-UP
 UNIQUE DOC REFERENCE: ${uniqueDoc}
 
 APPLICABLE SECTIONS:
-${selected}
+${selectedFullText}
 
 DESCRIPTION: ${description}
 PURCHASED BY: ${purchasedBy}
@@ -703,7 +717,7 @@ STAMP DUTY AMOUNT: 100 RS
 <p><b>ACCOUNT REFERENCE:</b> SELFPRINT (PU)/ DL-SELF/GALGOTIA-GN-UP</p>
 <p><b>UNIQUE DOC REFERENCE:</b> ${uniqueDoc}</p>
 
-<p><b>APPLICABLE SECTIONS:</b><br>${selected.replace(/\n/g,"<br>")}</p>
+<p><b>APPLICABLE SECTIONS:</b> ${selectedForPrint}</p>
 
 <p><b>DESCRIPTION:</b> ${description}</p>
 <p><b>PURCHASED BY:</b> ${purchasedBy}</p>
@@ -716,18 +730,24 @@ STAMP DUTY AMOUNT: 100 RS
 
     document.getElementById("output").innerHTML = fullDetailsHTML;
 
-    // ================= WEBHOOK (OPTIONAL) =================
+// ================= WEBHOOK =================
 
-const WEBHOOK_URL = "https://discord.com/api/webhooks/1477327767963173077/wLDVFCqdDeLvDRcYMtMpnvemOIknmrjblGrbiMd1aCiwKsfXVCfOpHwXbw4cAUUvpKe4";
-        fetch(WEBHOOK_URL,{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({
-                username:"E-STAMP LOGGER",
-                content: fullDetails
-            })
-        });
+fetch(WEBHOOK_URL,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+        username:"E-STAMP LOGGER",
+        content: fullDetails
+    })
+})
+.then(res => {
+    if(res.ok){
+        console.log("Webhook sent successfully");
+    } else {
+        console.error("Discord error:", res.status);
     }
+})
+.catch(err => console.error("Webhook failed:", err));
 }
 
 </script>
