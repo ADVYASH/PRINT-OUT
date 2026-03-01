@@ -46,6 +46,27 @@ body{
     margin-bottom:10px;
 }
 
+/* Slot wrapper */
+.slot{
+    position:relative;
+    padding-right:30px;
+}
+
+/* Delete button */
+.deleteBtn{
+    position:absolute;
+    right:5px;
+    top:5px;
+    cursor:pointer;
+    font-size:14px;
+    color:red;
+    font-weight:bold;
+}
+
+.deleteBtn:hover{
+    color:darkred;
+}
+
 /* Buttons */
 .controls{
     margin-bottom:20px;
@@ -60,6 +81,9 @@ button{
 /* Print */
 @media print{
     .controls{
+        display:none;
+    }
+    .deleteBtn{
         display:none;
     }
     body{
@@ -85,41 +109,46 @@ button{
 </div>
 
 <div class="container" id="contentArea">
-    <!-- Content will appear here -->
 </div>
 
 <script>
-function addHeading(){
+
+function createSlot(className, defaultText){
     let element = document.createElement("div");
-    element.className="heading";
-    element.contentEditable="true";
-    element.innerHTML="Heading";
+    element.className = className + " slot";
+    element.contentEditable = "true";
+    element.innerHTML = defaultText;
+
+    // Create delete button
+    let deleteBtn = document.createElement("span");
+    deleteBtn.innerHTML = "✖";
+    deleteBtn.className = "deleteBtn";
+    deleteBtn.contentEditable = "false";
+
+    deleteBtn.onclick = function(){
+        element.remove();
+    };
+
+    element.appendChild(deleteBtn);
     document.getElementById("contentArea").appendChild(element);
+}
+
+function addHeading(){
+    createSlot("heading","Heading");
 }
 
 function addSubtitle(){
-    let element = document.createElement("div");
-    element.className="subtitle";
-    element.contentEditable="true";
-    element.innerHTML="Subtitle";
-    document.getElementById("contentArea").appendChild(element);
+    createSlot("subtitle","Subtitle");
 }
 
 function addSubheading(){
-    let element = document.createElement("div");
-    element.className="subheading";
-    element.contentEditable="true";
-    element.innerHTML="Subheading";
-    document.getElementById("contentArea").appendChild(element);
+    createSlot("subheading","Subheading");
 }
 
 function addBody(){
-    let element = document.createElement("div");
-    element.className="body";
-    element.contentEditable="true";
-    element.innerHTML="Write body content here...";
-    document.getElementById("contentArea").appendChild(element);
+    createSlot("body","Write body content here...");
 }
+
 </script>
 
 </body>
