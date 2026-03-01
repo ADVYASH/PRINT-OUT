@@ -137,12 +137,6 @@ th, td{
     height:250px !important;
 }
 
-/* 🔥 QR SIZE FIX */
-.print-area #qrcode canvas{
-    width:250px !important;
-    height:250px !important;
-}
-
 /* ===== QR SECTION LEFT BOTTOM ===== */
 .qr-section{
     margin-top:40px;
@@ -269,6 +263,9 @@ th, td{
 
 <br><br>
 <button onclick="generatePrint()">Generate & Print</button>
+<br><br>
+<button onclick="addCaseToBulk()">➕ Add Case To Bulk</button>
+<button onclick="printBulkCases()">🖨 Print All Bulk Cases</button>
 
 </div>
 
@@ -300,6 +297,8 @@ th, td{
 </div>
 
 <script>
+
+let bulkCases = [];
 
 function toggleCourtInput(){
 let court=document.getElementById("courtType").value;
@@ -530,29 +529,7 @@ document.getElementById("firPrint").innerHTML = newTable;
 document.getElementById("firPrint").innerHTML = "";
 }
 
-// ===== CREATE PDF FROM PRINT AREA =====
-
-const { jsPDF } = window.jspdf;
-
-let printElement = document.querySelector(".print-area");
-
-// Temporarily show print area (important!)
-printElement.style.display = "block";
-
-html2canvas(printElement, {
-    scale: 3   // 🔥 increases resolution
-}).then(canvas => {
-
-    let imgData = canvas.toDataURL("image/png");
-
-    let pdf = new jsPDF("p", "mm", "a4");
-
-    let imgWidth = 210;
-    let imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-
-// ===== GENERATE QR WITH CASE DETAILS ONLY =====
+// ===== GENERATE QR FIRST =====
 
 // Prepare clean QR data
 let qrData = `
@@ -578,11 +555,29 @@ new QRCode(document.getElementById("qrcode"), {
     height: 220
 });
 
-document.getElementById("qrText").innerText = "Scan to View Case Details";
+document.getElementById("qrText").innerText = "Scan to View Official PDF";
 
-    document.getElementById("qrText").innerText = "Scan to View Official PDF";
 
-    // Optional auto print
+// ===== NOW CREATE PDF =====
+
+const { jsPDF } = window.jspdf;
+let printElement = document.querySelector(".print-area");
+
+// Show print area before capture
+printElement.style.display = "block";
+
+html2canvas(printElement, {
+    scale: 3
+}).then(canvas => {
+
+    let imgData = canvas.toDataURL("image/png");
+    let pdf = new jsPDF("p", "mm", "a4");
+
+    let imgWidth = 210;
+    let imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
     window.print();
 });
 }
@@ -669,6 +664,196 @@ function updateCaseName(){
 
     // Set value to caseName field
     document.getElementById("caseName").value = caseName;
+}
+
+function addCaseToBulk(){
+
+    let courtType = document.getElementById("courtType").value;
+    let customCourt = document.getElementById("customCourt").value;
+    let headerText = "";
+
+    if(courtType === "Supreme Court of India"){
+        headerText = "IN THE SUPREME COURT OF INDIA - NEW DELHI";
+    }
+    else if(courtType === "High Court"){
+        headerText = "IN THE HIGH COURT OF " + customCourt.toUpperCase();
+    }
+    else if(courtType === "District Court"){
+        headerText = "IN THE DISTRICT COURT OF " + customCourt.toUpperCase();
+    }
+
+    let caseData = {
+        court: headerText,
+        caseName: document.getElementById("caseName").value,
+        caseNumber: document.getElementById("caseNumber").value,
+        jurisdiction: document.getElementById("jurisdiction").value,
+        caseType: document.getElementById("caseType").value,
+        petitioners: getValues("petitioners"),
+        petAdv: getValues("petAdv"),
+        respondents: getValues("respondents"),
+        resAdv: getValues("resAdv"),
+        date: document.getElementById("date").value,
+        bench: getValues("benchInput"),
+        judgmentBy: document.getElementById("judgmentBy").value,
+        citation: getValues("citationInput")
+    };
+
+    bulkCases.push(caseData);
+
+    alert("Case Added To Bulk Successfully ✅");
+
+    clearForm();
+}
+
+function printBulkCases(){
+
+    if(bulkCases.length === 0){
+        alert("No bulk cases added!");
+        return;
+    }
+
+    let fullHTML = "";
+
+    bulkCases.forEach((data, index) => {
+
+        let qrId = "qr_" + index;
+
+        let caseHTML = `
+        <div style="page-break-after:always;">
+
+            <div class="watermark">सत्यमेव जयते</div>
+
+            <div class="header">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg">
+                <h2>${data.court}</h2>
+                <h2 class="case-heading">CASE DETAILS</h2>
+            </div>
+
+            <div style="text-align:center; font-weight:bold; font-size:22pt;">
+                सत्यमेव जयते
+            </div><br>
+
+            <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:20pt;">
+                <span class="highlight">${data.petitioners}</span>
+                <span>...Petitioner</span>
+            </div>
+
+            <div style="text-align:center; font-weight:bold; font-size:20pt;">
+                versus
+            </div><br>
+
+            <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:20pt;">
+                <span>...Respondent</span>
+                <span class="highlight">${data.respondents}</span>
+            </div>
+
+            <div class="case-details">
+                <p><span>Case Number :</span> <span>${data.caseNumber}</span></p>
+                <p><span>Petitioner :</span> <span>${data.petitioners}</span></p>
+                <p><span>Advocate for Petitioner :</span> <span>${data.petAdv}</span></p>
+                <p><span>Respondent :</span> <span>${data.respondents}</span></p>
+                <p><span>Advocate for Respondent :</span> <span>${data.resAdv}</span></p>
+            </div>
+
+            <p>That the present matter is instituted before the <span class="highlight">${data.court}</span> under the title <span class="highlight">${data.caseName}</span>, bearing Case Number <span class="highlight">${data.caseNumber}</span>, falling within the jurisdiction of <span class="highlight">${data.jurisdiction}</span>. The nature and type of the present proceedings is <span class="highlight">${data.caseType}</span>.</p>
+
+            <p>That the judgment was pronounced on <span class="highlight">${data.date}</span> by Hon’ble Justice <span class="highlight">${data.bench}</span>. The judgment was delivered by Hon’ble Justice <span class="highlight">${data.judgmentBy}</span>.</p>
+
+            <p>Reported as <span class="highlight">${data.citation}</span>.</p>
+
+            <div class="qr-section">
+                <div id="${qrId}"></div>
+                <div style="font-size:11pt;">Scan to View Case Details</div>
+            </div>
+
+            <div class="signature">
+                <img src="signature.png">
+                <p>Signature</p>
+            </div>
+
+        </div>
+        `;
+
+        fullHTML += caseHTML;
+    });
+
+    document.getElementById("printContent").innerHTML = fullHTML;
+    document.querySelector(".print-area").style.display = "block";
+
+    // Generate QR codes after DOM insertion
+    setTimeout(() => {
+
+        bulkCases.forEach((data, index) => {
+
+            let qrId = "qr_" + index;
+
+            let qrData = `
+CASE NAME: ${data.caseName}
+CASE NUMBER: ${data.caseNumber}
+PETITIONER: ${data.petitioners}
+RESPONDENT: ${data.respondents}
+DATE: ${data.date}
+JUDGMENT BY: ${data.judgmentBy}
+`;
+
+            new QRCode(document.getElementById(qrId), {
+                text: qrData,
+                width: 220,
+                height: 220
+            });
+
+        });
+
+        window.print();
+
+    }, 300);
+}
+
+function clearForm(){
+
+    // Clear simple inputs
+    document.getElementById("caseName").value = "";
+    document.getElementById("caseNumber").value = "";
+    document.getElementById("jurisdiction").value = "";
+    document.getElementById("caseType").value = "";
+    document.getElementById("date").value = "";
+    document.getElementById("judgmentBy").value = "";
+    document.getElementById("courtType").value = "";
+    document.getElementById("customCourt").value = "";
+
+    // Reset dynamic sections to single empty input
+    document.getElementById("petitioners").innerHTML = 
+        '<input type="text" oninput="updateCaseName()">';
+
+    document.getElementById("petAdv").innerHTML = 
+        '<input type="text">';
+
+    document.getElementById("respondents").innerHTML = 
+        '<input type="text" oninput="updateCaseName()">';
+
+    document.getElementById("resAdv").innerHTML = 
+        '<input type="text">';
+
+    document.getElementById("benchInput").innerHTML = 
+        '<input type="text">';
+
+    document.getElementById("citationInput").innerHTML = 
+        '<input type="text">';
+
+    // Clear FIR table (keep header only)
+    let table = document.getElementById("firTable");
+    table.innerHTML = `
+        <tr>
+        <th>SR NO</th>
+        <th>FIR NUMBER</th>
+        <th>SECTIONS</th>
+        <th>DATE</th>
+        <th>PARTICULARS</th>
+        </tr>
+    `;
+
+    // 🔥 SMALL FIX HERE
+    document.getElementById("customCourtDiv").style.display = "none";
 }
 
 </script>
