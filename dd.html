@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>by Yash Kumar</title>
+
+<style>
+body{
+    font-family:"Times New Roman", serif;
+    background:#f2f2f2;
+    padding:20px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Slots */
+.heading{
+    font-size:28px;
+    font-weight:bold;
+    text-align:center;
+    margin:15px 0;
+}
+
+.subtitle{
+    font-size:12px;
+    font-style:italic;
+    text-align:center;
+    margin:10px 0;
+}
+
+.subheading{
+    font-size:16px;
+    font-weight:bold;
+    margin:15px 0 5px 0;
+}
+
+.body{
+    font-size:12px;
+    text-align:justify;
+    margin-bottom:10px;
+}
+
+/* Buttons */
+.controls{
+    margin-bottom:20px;
+}
+
+button{
+    padding:8px 15px;
+    margin:5px;
+    cursor:pointer;
+}
+
+/* Print */
+@media print{
+    .controls{
+        display:none;
+    }
+    body{
+        background:white;
+        padding:0;
+    }
+    .container{
+        box-shadow:none;
+        max-width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="controls">
+    <button onclick="addHeading()">Add Heading</button>
+    <button onclick="addSubtitle()">Add Subtitle</button>
+    <button onclick="addSubheading()">Add Subheading</button>
+    <button onclick="addBody()">Add Body</button>
+    <button onclick="window.print()">Print</button>
+</div>
+
+<div class="container" id="contentArea">
+    <!-- Content will appear here -->
+</div>
+
+<script>
+function addHeading(){
+    let element = document.createElement("div");
+    element.className="heading";
+    element.contentEditable="true";
+    element.innerHTML="Heading";
+    document.getElementById("contentArea").appendChild(element);
+}
+
+function addSubtitle(){
+    let element = document.createElement("div");
+    element.className="subtitle";
+    element.contentEditable="true";
+    element.innerHTML="Subtitle";
+    document.getElementById("contentArea").appendChild(element);
+}
+
+function addSubheading(){
+    let element = document.createElement("div");
+    element.className="subheading";
+    element.contentEditable="true";
+    element.innerHTML="Subheading";
+    document.getElementById("contentArea").appendChild(element);
+}
+
+function addBody(){
+    let element = document.createElement("div");
+    element.className="body";
+    element.contentEditable="true";
+    element.innerHTML="Write body content here...";
+    document.getElementById("contentArea").appendChild(element);
+}
+</script>
+
+</body>
+</html>
