@@ -2,57 +2,167 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>by Yash Kumar</title>
+<title>Neon Assignment - By Yash Kumar</title>
 
 <style>
+
+/* ================== BODY + PREMIUM BACKGROUND ================== */
+
 body{
     font-family:"Times New Roman", serif;
-    background:#f2f2f2;
-    padding:20px;
+    margin:0;
+    padding:20px 20px 20px 190px;
+    overflow-x:hidden;
+    background: linear-gradient(120deg,#0f2027,#203a43,#2c5364,#000000);
+    background-size:300% 300%;
+    animation:smoothGradient 18s ease infinite;
+    color:white;
 }
 
-.container{
+@keyframes smoothGradient{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* Floating Glow Orbs */
+body::before,
+body::after{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    filter:blur(120px);
+    opacity:0.4;
+    z-index:-1;
+    animation:floatOrbs 20s infinite alternate ease-in-out;
+}
+
+body::before{
+    background:#ff00ff;
+    top:-150px;
+    left:-150px;
+}
+
+body::after{
+    background:#00ffff;
+    bottom:-150px;
+    right:-150px;
+}
+
+@keyframes floatOrbs{
+    0%{ transform:translate(0,0) scale(1); }
+    100%{ transform:translate(100px,60px) scale(1.2); }
+}
+
+/* ================== SIDE CONTROLS ================== */
+
+.sideControls{
+    position:fixed;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    z-index:1000;
+}
+
+.sideControls button{
+    padding:10px;
+    background:rgba(0,0,0,0.6);
+    border:1px solid #00ffff;
+    color:#00ffff;
+    font-weight:bold;
+    cursor:pointer;
+    border-radius:8px;
+    transition:0.3s ease;
+    backdrop-filter:blur(5px);
+}
+
+.sideControls button:hover{
+    background:#00ffff;
+    color:black;
+    box-shadow:0 0 15px #00ffff;
+    transform:translateX(5px);
+}
+
+/* ================== ASSIGNMENT CARD ================== */
+
+.assignment{
     max-width:800px;
-    margin:auto;
-    background:white;
+    margin:30px auto;
     padding:30px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
+    border-radius:18px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,0.15);
+    box-shadow:0 0 40px rgba(0,255,255,0.2);
+    animation:fadeUp 0.6s ease;
+    page-break-after:always;
 }
 
-/* Slots */
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(30px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+/* ================== TEXT STYLES ================== */
+
 .heading{
-    font-size:28px;
+    font-size:32px;
     font-weight:bold;
     text-align:center;
     margin:15px 0;
+    color:#00ffff;
 }
 
 .subtitle{
-    font-size:12px;
+    font-size:20px;
     font-style:italic;
     text-align:center;
     margin:10px 0;
+    color:#ff00ff;
 }
 
 .subheading{
-    font-size:16px;
+    font-size:18px;
     font-weight:bold;
     margin:15px 0 5px 0;
+    color:#ffff00;
 }
 
 .body{
-    font-size:12px;
+    font-size:16px;
     text-align:justify;
     margin-bottom:10px;
+    color:#ffffff;
 }
 
-/* Slot wrapper */
+/* ================== SLOT ================== */
+
 .slot{
     position:relative;
     padding-right:30px;
+    margin-bottom:10px;
+    transition:0.3s;
 }
 
-/* Delete button */
+/* Soft Neon Breathing */
+.slot:focus{
+    outline:none;
+    animation:neonBreath 2s infinite ease-in-out;
+    transform:scale(1.02);
+}
+
+@keyframes neonBreath{
+    0%{ box-shadow:0 0 10px #00ffff; }
+    50%{ box-shadow:0 0 25px #ff00ff; }
+    100%{ box-shadow:0 0 10px #00ffff; }
+}
+
+/* Delete Button */
 .deleteBtn{
     position:absolute;
     right:5px;
@@ -63,91 +173,170 @@ body{
     font-weight:bold;
 }
 
-.deleteBtn:hover{
-    color:darkred;
+/* ================== TYPING PARTICLES ================== */
+
+.particle{
+    position:fixed;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    pointer-events:none;
+    animation:floatUp 1s linear forwards;
 }
 
-/* Buttons */
-.controls{
-    margin-bottom:20px;
-}
-
-button{
-    padding:8px 15px;
-    margin:5px;
-    cursor:pointer;
-}
-
-/* Print */
-@media print{
-    .controls{
-        display:none;
+@keyframes floatUp{
+    from{
+        opacity:1;
+        transform:translateY(0) scale(1);
     }
+    to{
+        opacity:0;
+        transform:translateY(-40px) scale(0.5);
+    }
+}
+
+/* Cursor Glow Trail */
+.cursorTrail{
+    position:fixed;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    pointer-events:none;
+    animation:fadeTrail 0.6s linear forwards;
+}
+
+@keyframes fadeTrail{
+    from{opacity:1;}
+    to{opacity:0;}
+}
+
+/* ================== PRINT MODE ================== */
+
+@media print{
+    body{
+        background:white !important;
+        color:black !important;
+        padding:0;
+    }
+
+    .sideControls,
     .deleteBtn{
         display:none;
     }
-    body{
-        background:white;
-        padding:0;
+
+    .assignment{
+        box-shadow:none !important;
+        background:white !important;
+        color:black !important;
     }
-    .container{
-        box-shadow:none;
-        max-width:100%;
+
+    .heading,
+    .subtitle,
+    .subheading,
+    .body{
+        color:black !important;
+        text-shadow:none !important;
     }
 }
+
 </style>
 </head>
 
 <body>
 
-<div class="controls">
-    <button onclick="addHeading()">Add Heading</button>
-    <button onclick="addSubtitle()">Add Subtitle</button>
-    <button onclick="addSubheading()">Add Subheading</button>
-    <button onclick="addBody()">Add Body</button>
+<div class="sideControls">
+    <button onclick="addAssignment()">+ Assignment</button>
+    <button onclick="addHeading()">+ Heading</button>
+    <button onclick="addSubtitle()">+ Subtitle</button>
+    <button onclick="addSubheading()">+ Subheading</button>
+    <button onclick="addBody()">+ Body</button>
+    <button onclick="resetAll()">Reset</button>
     <button onclick="window.print()">Print</button>
 </div>
 
-<div class="container" id="contentArea">
-</div>
+<div id="mainArea"></div>
 
 <script>
 
+let currentAssignment = null;
+
+function addAssignment(){
+    let div = document.createElement("div");
+    div.className = "assignment";
+    document.getElementById("mainArea").appendChild(div);
+    currentAssignment = div;
+}
+
 function createSlot(className, defaultText){
+    if(!currentAssignment){
+        alert("First add an Assignment!");
+        return;
+    }
+
     let element = document.createElement("div");
     element.className = className + " slot";
     element.contentEditable = "true";
     element.innerHTML = defaultText;
 
-    // Create delete button
     let deleteBtn = document.createElement("span");
     deleteBtn.innerHTML = "✖";
     deleteBtn.className = "deleteBtn";
     deleteBtn.contentEditable = "false";
-
     deleteBtn.onclick = function(){
         element.remove();
     };
 
     element.appendChild(deleteBtn);
-    document.getElementById("contentArea").appendChild(element);
+    currentAssignment.appendChild(element);
 }
 
-function addHeading(){
-    createSlot("heading","Heading");
+function addHeading(){ createSlot("heading","Heading"); }
+function addSubtitle(){ createSlot("subtitle","Subtitle"); }
+function addSubheading(){ createSlot("subheading","Subheading"); }
+function addBody(){ createSlot("body","Write body content here..."); }
+
+function resetAll(){
+    if(confirm("Delete ALL assignments?")){
+        document.getElementById("mainArea").innerHTML="";
+        currentAssignment=null;
+    }
 }
 
-function addSubtitle(){
-    createSlot("subtitle","Subtitle");
-}
+/* Typing glow particles near cursor */
+document.addEventListener("input", function(e){
+    if(e.target.classList.contains("slot")){
+        let rect = e.target.getBoundingClientRect();
 
-function addSubheading(){
-    createSlot("subheading","Subheading");
-}
+        let particle=document.createElement("div");
+        particle.className="particle";
 
-function addBody(){
-    createSlot("body","Write body content here...");
-}
+        let colors=["#00ffff","#ff00ff","#ffff00","#00ff00"];
+        particle.style.background=colors[Math.floor(Math.random()*colors.length)];
+
+        particle.style.left=(rect.left + Math.random()*rect.width)+"px";
+        particle.style.top=(rect.top + Math.random()*rect.height)+"px";
+
+        document.body.appendChild(particle);
+
+        setTimeout(()=>{ particle.remove(); },1000);
+    }
+});
+
+/* Premium Cursor Glow */
+document.addEventListener("mousemove",function(e){
+    let trail=document.createElement("div");
+    trail.className="cursorTrail";
+
+    let colors=["#00ffff","#ff00ff","#ffff00"];
+    trail.style.background=colors[Math.floor(Math.random()*colors.length)];
+
+    trail.style.left=e.pageX+"px";
+    trail.style.top=e.pageY+"px";
+
+    document.body.appendChild(trail);
+
+    setTimeout(()=>{ trail.remove(); },600);
+});
 
 </script>
 
