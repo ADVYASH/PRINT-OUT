@@ -210,6 +210,18 @@ body::after{
     to{opacity:0;}
 }
 
+/* ===== Custom Spacing Rules ===== */
+
+/* 2 line space between Subtitle and Subheading */
+.subtitle + .subheading{
+    margin-top: 40px; /* approx 2 lines */
+}
+
+/* 1.5 line space between Body and Subheading */
+.body + .subheading{
+    margin-top: 30px; /* approx 1.5 lines */
+}
+
 /* ================== PRINT MODE ================== */
 
 @media print{
@@ -278,15 +290,35 @@ function createSlot(className, defaultText){
     element.contentEditable = "true";
     element.innerHTML = defaultText;
 
+    /* DELETE BUTTON */
     let deleteBtn = document.createElement("span");
     deleteBtn.innerHTML = "✖";
     deleteBtn.className = "deleteBtn";
     deleteBtn.contentEditable = "false";
+    deleteBtn.style.right = "5px";
     deleteBtn.onclick = function(){
         element.remove();
     };
 
+    /* PASTE BUTTON */
+    let pasteBtn = document.createElement("span");
+    pasteBtn.innerHTML = "📋";
+    pasteBtn.className = "deleteBtn";
+    pasteBtn.contentEditable = "false";
+    pasteBtn.style.right = "30px";
+    pasteBtn.style.color = "#00ff00";
+
+    pasteBtn.onclick = async function(){
+        try{
+            const text = await navigator.clipboard.readText();
+            element.innerText = text; // removes formatting
+        }catch(err){
+            alert("Clipboard access denied!");
+        }
+    };
+
     element.appendChild(deleteBtn);
+    element.appendChild(pasteBtn);
     currentAssignment.appendChild(element);
 }
 
