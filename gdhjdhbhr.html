@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aafat Gaming | Rules</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Lobster&display=swap" rel="stylesheet">
+
+<style>
+
+/* ===== SMOOTH SCROLL ===== */
+html{ scroll-behavior:smooth; }
+
+/* ===== BASE ===== */
+body{
+margin:0;
+font-family:'Orbitron',sans-serif;
+background:radial-gradient(circle at center,#050510,#000);
+color:white;
+overflow-x:hidden;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* ===== NAV BUTTONS ===== */
+.back-btn, .toggle{
+position:fixed;
+top:20px;
+padding:8px 16px;
+border-radius:8px;
+text-decoration:none;
+border:2px solid #00f7ff;
+color:#00f7ff;
+box-shadow:0 0 15px #00f7ff;
+transition:0.3s;
+cursor:pointer;
+z-index:10;
+}
+
+.back-btn{ left:20px; }
+.toggle{ right:20px; }
+
+.back-btn:hover,
+.toggle:hover{
+background:#00f7ff;
+color:black;
+}
+
+/* ===== CONTAINER ===== */
+.container{
+max-width:1100px;
+margin:120px auto 80px auto;
+padding:20px;
+text-align:center;
+}
+
+/* ===== INSANE TITLE ===== */
+.main-title{
+position:relative;
+display:inline-block;
+font-size:64px;
+font-weight:900;
+letter-spacing:8px;
+margin-bottom:60px;
+
+font-family: 'Lobster', cursive;
+font-weight: normal;   /* Important: Lobster doesn’t use 900 */
+letter-spacing: 2px;   /* Script fonts look better with small spacing */
+
+background:linear-gradient(45deg,#00f7ff,#0088ff,#8a2be2,#00f7ff);
+background-size:400%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+animation:
+rgbText 6s linear infinite,
+glowPulse 2s ease-in-out infinite alternate,
+flicker 4s infinite;
+}
+
+.main-title::before{
+content:attr(data-text);
+position:absolute;
+left:3px;
+top:3px;
+z-index:-1;
+color:#0088ff;
+opacity:0.5;
+}
+
+.main-title::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-10px;
+width:100%;
+height:4px;
+background:linear-gradient(90deg,transparent,#00f7ff,transparent);
+animation:laser 3s linear infinite;
+}
+
+@keyframes rgbText{
+0%{background-position:0%}
+100%{background-position:400%}
+}
+
+@keyframes glowPulse{
+from{
+text-shadow:0 0 20px #00f7ff;
+transform:scale(1);
+}
+to{
+text-shadow:
+0 0 40px #00f7ff,
+0 0 80px #0088ff,
+0 0 120px #8a2be2;
+transform:scale(1.04);
+}
+}
+
+@keyframes laser{
+0%{transform:translateX(-100%);}
+100%{transform:translateX(100%);}
+}
+
+@keyframes flicker{
+0%,18%,22%,25%,53%,57%,100%{opacity:1;}
+20%,24%,55%{opacity:0.6;}
+}
+
+/* ===== CATEGORY NAV ===== */
+.nav-scroll{
+margin-bottom:50px;
+}
+
+.nav-scroll a{
+margin:10px;
+padding:10px 20px;
+border-radius:10px;
+border:2px solid #00f7ff;
+color:#00f7ff;
+text-decoration:none;
+transition:0.3s;
+}
+
+.nav-scroll a:hover{
+background:#00f7ff;
+color:black;
+}
+
+/* ===== CATEGORY BOX ===== */
+.category{
+text-align:left;
+margin-bottom:80px;
+padding:40px;
+border-radius:20px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+box-shadow:0 0 40px rgba(0,255,255,0.3);
+}
+
+.category h2{
+font-size:30px;
+margin-bottom:20px;
+color:#00f7ff;
+text-shadow:0 0 20px #00f7ff;
+}
+
+/* ===== SUBHEADINGS ===== */
+.subheading{
+margin-top:40px;
+margin-bottom:20px;
+font-size:22px;
+color:#00ffcc;
+text-shadow:0 0 15px #00ffcc;
+}
+
+/* ===== GLOW SEPARATOR ===== */
+.separator{
+height:3px;
+margin:30px 0;
+background:linear-gradient(90deg,transparent,cyan,transparent);
+box-shadow:0 0 20px cyan;
+animation:glowLine 3s infinite alternate;
+}
+
+@keyframes glowLine{
+from{box-shadow:0 0 10px cyan;}
+to{box-shadow:0 0 30px cyan;}
+}
+
+/* ===== RULE DROPDOWN ===== */
+.rule{
+margin-bottom:15px;
+padding:15px 20px;
+border-radius:12px;
+background:rgba(0,0,0,0.6);
+border:1px solid rgba(0,255,255,0.3);
+transition:0.3s;
+}
+
+.rule:hover{
+background:rgba(0,255,255,0.1);
+transform:translateX(8px);
+box-shadow:0 0 20px #00f7ff;
+}
+
+.rule-header{
+font-size:17px;
+color:#ff4fd8;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+.main-title{
+font-size:34px;
+letter-spacing:4px;
+}
+.container{
+margin:100px 15px 60px 15px;
+}
+.category{
+padding:25px;
+}
+.rule-header{
+font-size:15px;
+}
+}
+
+
+</style>
+</head>
+<body>
+
+<canvas id="space"></canvas>
+
+<a href="index.html" class="back-btn">⬅ Back</a>
+<div class="toggle" onclick="toggleSpeed()">Warp Mode</div>
+
+<div class="container">
+
+<div class="main-title" data-text="⚖ AAFAT GAMING RULES ⚖">
+⚖ Aafat Gaming Rules ⚖
+</div>
+
+<div class="nav-scroll">
+<a href="#youtube">YouTube</a>
+<a href="#discord">Discord</a>
+<a href="#asrp">ASRP</a>
+</div>
+
+<!-- YOUTUBE -->
+<div class="category" id="youtube">
+<h2><img src="https://cdn.discordapp.com/emojis/1433851093229768735.gif"style="height:40px; vertical-align:middle;"> YouTube Rules <img src="https://cdn.discordapp.com/emojis/1433851093229768735.gif"style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> GENERAL RULES <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+   <div class="rule-header">• Respect in Comments</div>
+</div>
+
+<div class="rule">
+<div class="rule-header">No Spam or Self Promotion ⬇</div>
+</div>
+</div>
+
+<!-- DISCORD -->
+<div class="category" id="discord">
+<h2><img src="https://cdn.discordapp.com/emojis/1433851103581175950.gif"style="height:40px; vertical-align:middle;"> Discord Rules <img src="https://cdn.discordapp.com/emojis/1433851103581175950.gif"style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> GENERAL RULES <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header">No Toxicity ⬇</div>
+</div>
+
+<div class="rule">
+<div class="rule-header">No NSFW Content ⬇</div>
+</div>
+</div>
+
+<!-- ASRP -->
+<div class="category" id="asrp">
+<h2><img src="https://cdn.discordapp.com/emojis/1432045771791929536.gif"style="height:40px; vertical-align:middle;"> ASRP (Minecraft SMP) Rules <img src="https://cdn.discordapp.com/emojis/1432045771791929536.gif"style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> GENERAL RULES <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header">No Griefing ⬇</div>
+</div>
+
+<div class="rule">
+<div class="rule-header">No Hacks or Exploits ⬇</div>
+</div>
+</div>
+
+</div>
+
+<script>
+
+/* STAR BACKGROUND */
+const canvas=document.getElementById("space");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+window.addEventListener("resize",()=>{
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+});
+
+let stars=[];
+let speedMultiplier=1;
+
+class Star{
+constructor(){this.reset();}
+reset(){
+this.x=Math.random()*canvas.width;
+this.y=Math.random()*canvas.height;
+this.size=Math.random()*2;
+this.speed=Math.random()*1+0.5;
+}
+update(){
+this.y+=this.speed*speedMultiplier;
+if(this.y>canvas.height){
+this.y=0;
+this.x=Math.random()*canvas.width;
+}
+}
+draw(){
+ctx.beginPath();
+ctx.fillStyle="white";
+if(speedMultiplier>1){
+ctx.fillRect(this.x,this.y,this.size,this.size*4);
+}else{
+ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+ctx.fill();
+}
+}
+}
+
+for(let i=0;i<500;i++){stars.push(new Star());}
+
+function animate(){
+ctx.fillStyle="rgba(0,0,0,0.5)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+stars.forEach(s=>{s.update();s.draw();});
+requestAnimationFrame(animate);
+}
+animate();
+
+function toggleSpeed(){
+speedMultiplier=speedMultiplier===1?6:1;
+}
+
+</script>
+
+</body>
+</html>
