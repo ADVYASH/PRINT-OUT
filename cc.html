@@ -1,255 +1,265 @@
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Neon Court Master List</title>
+<title>Legal Document Generator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
 
 <style>
+
 body{
-    background:#0b0b17;
-    font-family:Segoe UI;
-    color:#00f7ff;
-    padding:20px;
+font-family:Arial;
+background:#f2f2f2;
+padding:20px;
 }
 
-h1{
-    text-align:center;
-    text-shadow:0 0 20px #00f7ff;
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:20px;
+box-shadow:0 0 20px rgba(0,0,0,0.2);
 }
 
-.form-section{
-    background:#111122;
-    padding:20px;
-    border-radius:10px;
-    margin-bottom:20px;
-    box-shadow:0 0 20px #00f7ff33;
-}
-
-input{
-    padding:8px;
-    margin:5px;
-    border:none;
-    border-radius:5px;
-    width:220px;
+input,textarea{
+width:100%;
+padding:8px;
+margin:5px 0 15px;
 }
 
 button{
-    padding:6px 10px;
-    margin:5px;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
-    font-weight:bold;
-    background:#00f7ff;
+padding:10px 20px;
+background:#0f2027;
+color:white;
+border:none;
+cursor:pointer;
 }
 
 button:hover{
-    background:#00c2cc;
+background:#b8860b;
+color:black;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:12px;
+/* PRINT AREA */
+
+.print-area{
+display:none;
+width:210mm;
+min-height:297mm;
+background:white;
 }
 
-th, td{
-    border:1px solid #00f7ff55;
-    padding:6px;
+.page{
+width:210mm;
+min-height:297mm;
+padding:5mm 15mm;
+page-break-after:always;
+position:relative;
 }
 
-th{
-    background:#00f7ff22;
+/* WATERMARK */
+
+.watermark{
+position:absolute;
+top:45%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:80px;
+opacity:0.05;
 }
+
+/* COURT HEADER */
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.case-heading{
+font-family:'UnifrakturCook';
+font-size:40px;
+}
+
+/* STAMP IMAGE */
+
+.stamp-image{
+width:100%;
+text-align:center;
+margin-bottom:20px;
+}
+
+.stamp-image img{
+width:100%;
+max-width:100%;
+height:auto;
+}
+
+/* PRINT SETTINGS */
 
 @media print{
-    body{
-        background:white;
-        color:black;
-    }
-    button, .form-section{
-        display:none;
-    }
-    table{
-        font-size:10px;
-    }
+
+body{
+background:white;
 }
+
+.container{
+display:none;
+}
+
+.print-area{
+display:block;
+}
+
+}
+
 </style>
+
 </head>
 
 <body>
 
-<h1>⚖ NEON COURT MASTER LIST</h1>
+<div class="container">
 
-<div class="form-section">
+<h2>Legal Document Generator</h2>
 
-<input type="text" id="caseNo" placeholder="Case Number">
-<input type="date" id="judgementDate">
+<label>Case Number</label> <input id="caseNumber">
 
-<br><br>
+<label>Petitioner</label> <input id="petitioner">
 
-<!-- Dynamic Sections -->
+<label>Respondent</label> <input id="respondent">
 
-<div id="petitionerDiv"><b>Petitioner</b><br>
-<input type="text" class="petitioner">
-</div>
-<button onclick="addField('petitionerDiv','petitioner')">+ Add</button>
+<label>Advocate (Petitioner)</label> <input id="petAdv">
 
-<div id="respondentDiv"><b>Respondent</b><br>
-<input type="text" class="respondent">
-</div>
-<button onclick="addField('respondentDiv','respondent')">+ Add</button>
+<label>Advocate (Respondent)</label> <input id="resAdv">
 
-<div id="advPetDiv"><b>Advocate for Petitioner</b><br>
-<input type="text" class="advPet">
-</div>
-<button onclick="addField('advPetDiv','advPet')">+ Add</button>
+<label>Date of Judgment</label> <input type="date" id="date">
 
-<div id="advResDiv"><b>Advocate for Respondent</b><br>
-<input type="text" class="advRes">
-</div>
-<button onclick="addField('advResDiv','advRes')">+ Add</button>
+<label>Bench</label> <input id="bench">
 
-<div id="jurisdictionDiv"><b>Jurisdiction</b><br>
-<input type="text" class="jurisdiction">
-</div>
-<button onclick="addField('jurisdictionDiv','jurisdiction')">+ Add</button>
+<label>Judgment By</label> <input id="judgmentBy">
 
-<div id="typeDiv"><b>Type of Case</b><br>
-<input type="text" class="typeCase">
-</div>
-<button onclick="addField('typeDiv','typeCase')">+ Add</button>
+<label>Description (Stamp)</label>
 
-<div id="citationDiv"><b>Citation</b><br>
-<input type="text" class="citation">
-</div>
-<button onclick="addField('citationDiv','citation')">+ Add</button>
+<textarea id="description"></textarea>
 
-<div id="benchDiv"><b>On Bench</b><br>
-<input type="text" class="bench">
-</div>
-<button onclick="addField('benchDiv','bench')">+ Add</button>
+<label>First Party</label> <input id="firstParty">
 
-<div id="judgementByDiv"><b>Judgement By</b><br>
-<input type="text" class="judgementBy">
-</div>
-<button onclick="addField('judgementByDiv','judgementBy')">+ Add</button>
+<label>Second Party</label> <input id="secondParty">
 
-<div id="firDiv"><b>FIR Number</b><br>
-<input type="text" class="fir">
-</div>
-<button onclick="addField('firDiv','fir')">+ Add</button>
+<label>Amount</label> <input id="amount">
 
-<div id="sectionsDiv"><b>Sections</b><br>
-<input type="text" class="sections">
-</div>
-<button onclick="addField('sectionsDiv','sections')">+ Add</button>
-
-<div id="dateSecDiv"><b>Date of Section</b><br>
-<input type="text" class="dateSec">
-</div>
-<button onclick="addField('dateSecDiv','dateSec')">+ Add</button>
-
-<div id="particularsDiv"><b>Particulars</b><br>
-<input type="text" class="particulars">
-</div>
-<button onclick="addField('particularsDiv','particulars')">+ Add</button>
-
-<br><br>
-
-<button onclick="addCase()">Add Case</button>
-<button onclick="window.print()">Print List</button>
+<button onclick="generate()">Generate & Print</button>
 
 </div>
 
-<table id="caseTable">
-<thead>
-<tr>
-<th>S.No</th>
-<th>Case No</th>
-<th>Case Name</th>
-<th>Petitioner</th>
-<th>Respondent</th>
-<th>Adv Pet</th>
-<th>Adv Res</th>
-<th>Jurisdiction</th>
-<th>Type</th>
-<th>Citation</th>
-<th>Bench</th>
-<th>Judgement By</th>
-<th>Judgement Date</th>
-<th>FIR</th>
-<th>Sections</th>
-<th>Date Sec</th>
-<th>Particulars</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
+<!-- PRINT AREA -->
+
+<div class="print-area">
+
+<!-- PAGE 1 : E-STAMP WITH PHOTO -->
+
+<div class="page">
+
+<div class="watermark">STAMP</div>
+
+<div class="stamp-image">
+<img src="estamp.jpg">
+</div>
+
+<div style="text-align:center">
+<h1 style="font-family:'UnifrakturCook';font-size:42px;">INDIA NON JUDICIAL</h1>
+</div>
+
+<div id="stampContent"></div>
+
+</div>
+
+<!-- PAGE 2 : COURT DOCUMENT (NO PHOTO) -->
+
+<div class="page">
+
+<div class="watermark">सत्यमेव जयते</div>
+
+<div class="header">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" width="80">
+
+<h2>IN THE SUPREME COURT OF INDIA</h2>
+
+<h2 class="case-heading">CASE DETAILS</h2>
+
+</div>
+
+<div id="courtContent"></div>
+
+</div>
+
+</div>
 
 <script>
 
-let serial = 1;
+function generate(){
 
-function addField(divId, className){
-    let div = document.getElementById(divId);
-    let input = document.createElement("input");
-    input.type = "text";
-    input.className = className;
-    div.appendChild(input);
-}
+let caseNumber=document.getElementById("caseNumber").value;
+let petitioner=document.getElementById("petitioner").value;
+let respondent=document.getElementById("respondent").value;
+let petAdv=document.getElementById("petAdv").value;
+let resAdv=document.getElementById("resAdv").value;
+let date=document.getElementById("date").value;
+let bench=document.getElementById("bench").value;
+let judgmentBy=document.getElementById("judgmentBy").value;
 
-function getValues(className){
-    let items = document.getElementsByClassName(className);
-    let arr = [];
-    for(let i=0;i<items.length;i++){
-        if(items[i].value.trim() !== ""){
-            arr.push(items[i].value);
-        }
-    }
-    return arr.join(", ");
-}
+let description=document.getElementById("description").value;
+let first=document.getElementById("firstParty").value;
+let second=document.getElementById("secondParty").value;
+let amount=document.getElementById("amount").value;
 
-function addCase(){
+let now=new Date().toLocaleString();
 
-    let caseNo = document.getElementById("caseNo").value;
-    let judgementDate = document.getElementById("judgementDate").value;
+/* STAMP PAGE */
 
-    if(caseNo === "") return alert("Enter Case Number");
+document.getElementById("stampContent").innerHTML=`
 
-    let petitioner = getValues("petitioner");
-    let respondent = getValues("respondent");
+<p><b>Certificate Issued Date:</b> ${now}</p>
 
-    let caseName = "";
+<p><b>Description:</b> ${description}</p>
 
-if(petitioner !== "" && respondent !== ""){
-    caseName = petitioner + " vs " + respondent;
-}else{
-    caseName = petitioner + respondent;
-}
+<p><b>First Party:</b> ${first}</p>
 
-    let table = document.getElementById("caseTable").getElementsByTagName('tbody')[0];
-    let row = table.insertRow();
+<p><b>Second Party:</b> ${second}</p>
 
-    row.insertCell(0).innerHTML = serial++;
-    row.insertCell(1).innerHTML = caseNo;
-    row.insertCell(2).innerHTML = caseName;
-    row.insertCell(3).innerHTML = petitioner;
-    row.insertCell(4).innerHTML = respondent;
-    row.insertCell(5).innerHTML = getValues("advPet");
-    row.insertCell(6).innerHTML = getValues("advRes");
-    row.insertCell(7).innerHTML = getValues("jurisdiction");
-    row.insertCell(8).innerHTML = getValues("typeCase");
-    row.insertCell(9).innerHTML = getValues("citation");
-    row.insertCell(10).innerHTML = getValues("bench");
-    row.insertCell(11).innerHTML = getValues("judgementBy");
-    row.insertCell(12).innerHTML = judgementDate;
-    row.insertCell(13).innerHTML = getValues("fir");
-    row.insertCell(14).innerHTML = getValues("sections");
-    row.insertCell(15).innerHTML = getValues("dateSec");
-    row.insertCell(16).innerHTML = getValues("particulars");
+<p><b>Consideration Amount:</b> ${amount}</p>
 
-    document.querySelectorAll("input").forEach(e=>e.value="");
+<p><b>Stamp Duty:</b> 100 Rs</p>
+
+`;
+
+/* COURT PAGE */
+
+document.getElementById("courtContent").innerHTML=`
+
+<p><b>Case Number:</b> ${caseNumber}</p>
+
+<p><b>Petitioner:</b> ${petitioner}</p>
+
+<p><b>Respondent:</b> ${respondent}</p>
+
+<p><b>Advocate for Petitioner:</b> ${petAdv}</p>
+
+<p><b>Advocate for Respondent:</b> ${resAdv}</p>
+
+<p><b>Date of Judgment:</b> ${date}</p>
+
+<p><b>Bench:</b> ${bench}</p>
+
+<p><b>Judgment By:</b> ${judgmentBy}</p>
+
+`;
+
+window.print();
+
 }
 
 </script>
