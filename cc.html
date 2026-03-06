@@ -118,7 +118,45 @@ display:block;
 size:A4;
 margin:0;
 }
-  
+
+.stamp-page{
+position:relative;
+width:210mm;
+height:297mm;
+}
+
+.stamp-background{
+position:absolute;
+top:0;
+left:0;
+width:210mm;
+height:297mm;
+background:url("stamp-paper.png") no-repeat center;
+background-size:cover;
+z-index:1;
+}
+
+.stamp-overlay{
+position:absolute;
+top:120mm;
+left:30mm;
+width:150mm;
+font-size:14px;
+line-height:1.8;
+z-index:2;
+color:black;
+}
+
+.stamp-header{
+position:absolute;
+top:-90mm;
+left:0;
+width:100%;
+text-align:center;
+font-family:'UnifrakturCook';
+font-size:28px;
+}
+
 </style>
 
 </head>
@@ -163,23 +201,40 @@ margin:0;
 
 <div class="print-area">
 
-<!-- PAGE 1 : E-STAMP WITH PHOTO -->
+<!-- PAGE 1 : REALISTIC E-STAMP -->
 
-<div class="page">
+<div class="page stamp-page">
 
-<div class="watermark">STAMP</div>
+<div class="stamp-background"></div>
 
-<div class="stamp-image">
-<img src="estamp.jpg">
+<div class="stamp-overlay">
+
+<div class="stamp-header">
+<h1>INDIA NON JUDICIAL</h1>
 </div>
 
-<div style="text-align:center">
-<h1 style="font-family:'UnifrakturCook';font-size:42px;">INDIA NON JUDICIAL</h1>
+<div class="stamp-details">
+
+<p><b>Certificate Number:</b> <span id="certNo"></span></p>
+
+<p><b>Issued Date:</b> <span id="issueDate"></span></p>
+
+<p><b>Description:</b> <span id="desc"></span></p>
+
+<p><b>First Party:</b> <span id="party1"></span></p>
+
+<p><b>Second Party:</b> <span id="party2"></span></p>
+
+<p><b>Consideration Amount:</b> ₹ <span id="amt"></span></p>
+
+<p><b>Stamp Duty:</b> ₹100</p>
+
 </div>
 
-<div id="stampContent"></div>
+</div>
 
 </div>
+
 
 <!-- PAGE 2 : COURT DOCUMENT (NO PHOTO) -->
 
@@ -222,6 +277,17 @@ let second=document.getElementById("secondParty").value;
 let amount=document.getElementById("amount").value;
 
 let now=new Date().toLocaleString();
+
+let now = new Date().toLocaleString();
+
+let certificate = "IN-DL-" + Math.floor(Math.random()*1000000000);
+
+document.getElementById("certNo").innerText = certificate;
+document.getElementById("issueDate").innerText = now;
+document.getElementById("desc").innerText = description;
+document.getElementById("party1").innerText = first;
+document.getElementById("party2").innerText = second;
+document.getElementById("amt").innerText = amount;
 
 /* STAMP PAGE */
 
