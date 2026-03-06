@@ -276,11 +276,10 @@ let first=document.getElementById("firstParty").value;
 let second=document.getElementById("secondParty").value;
 let amount=document.getElementById("amount").value;
 
-let now=new Date().toLocaleString();
-
 let now = new Date().toLocaleString();
-
 let certificate = "IN-DL-" + Math.floor(Math.random()*1000000000);
+
+/* STAMP DATA */
 
 document.getElementById("certNo").innerText = certificate;
 document.getElementById("issueDate").innerText = now;
@@ -288,24 +287,6 @@ document.getElementById("desc").innerText = description;
 document.getElementById("party1").innerText = first;
 document.getElementById("party2").innerText = second;
 document.getElementById("amt").innerText = amount;
-
-/* STAMP PAGE */
-
-document.getElementById("stampContent").innerHTML=`
-
-<p><b>Certificate Issued Date:</b> ${now}</p>
-
-<p><b>Description:</b> ${description}</p>
-
-<p><b>First Party:</b> ${first}</p>
-
-<p><b>Second Party:</b> ${second}</p>
-
-<p><b>Consideration Amount:</b> ${amount}</p>
-
-<p><b>Stamp Duty:</b> 100 Rs</p>
-
-`;
 
 /* COURT PAGE */
 
@@ -329,11 +310,14 @@ document.getElementById("courtContent").innerHTML=`
 
 `;
 
+/* PRINT */
+
+setTimeout(()=>{
 window.print();
+},300);
 
 }
 
 </script>
-
 </body>
 </html>
