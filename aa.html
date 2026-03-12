@@ -95,6 +95,24 @@ margin:8px 0;
 line-height:1.6;
 }
 
+.case_table{
+width:100%;
+border-collapse:collapse;
+}
+
+.case_table td{
+padding:5px 0;
+}
+
+.case_table td:first-child{
+text-align:left;
+font-weight:bold;
+width:40%;
+}
+
+.right{
+text-align:right;
+}
 </style>
 
 <script>
@@ -367,22 +385,67 @@ Sections
 
 <h2>Page 1</h2>
 
-Court: <span class="court_name"></span><br>
-Location: <span class="court_location"></span><br>
-Case Name: <span class="case_name"></span><br>
-Case Number: <span class="case_number"></span><br>
-Jurisdiction: <span class="jurisdiction"></span><br>
-Type of Case: <span class="type_case"></span><br>
+<table class="case_table">
 
-Petitioner: <span class="petitioner"></span><br>
-Respondant: <span class="respondant"></span><br>
+<tr>
+<td>Court:</td>
+<td class="right"><span class="court_name"></span></td>
+</tr>
 
-Advocate (Petitioner): <span class="adv_pet"></span><br>
-Advocate (Respondant): <span class="adv_res"></span><br>
+<tr>
+<td>Location:</td>
+<td class="right"><span class="court_location"></span></td>
+</tr>
 
-Date of Judgement: <span class="date_judgement"></span>
+<tr>
+<td>Case Name:</td>
+<td class="right"><span class="case_name"></span></td>
+</tr>
 
-</div>
+<tr>
+<td>Case Number:</td>
+<td class="right"><span class="case_number"></span></td>
+</tr>
+
+<tr>
+<td>Jurisdiction:</td>
+<td class="right"><span class="jurisdiction"></span></td>
+</tr>
+
+<tr>
+<td>Type of Case:</td>
+<td class="right"><span class="type_case"></span></td>
+</tr>
+
+<tr>
+<td>Petitioner:</td>
+<td class="right"><span class="petitioner"></span></td>
+</tr>
+
+<tr>
+<td>Respondant:</td>
+<td class="right"><span class="respondant"></span></td>
+</tr>
+
+</table>
+
+<p style="text-align:justify; line-height:1.6;">
+That the present matter is instituted before the <span class="court_name"></span>, located at <span class="court_location"></span> under the titled <span class="case_name"></span> bearing Case Number <span class="case_number"></span> falling within the jurisdiction of <span class="jurisdiction"></span>. The nature and type of the present proceedings is <span class="type_case"></span>, and the same is being adjudicated in accordance with the applicable provisions of law. </p>
+
+<p style="text-align:justify; line-height:1.6;">
+That the Petitioner(s) in the present case is/are <span class="petitioner"></span>. The Petitioner(s) is/are duly represented and assisted by their Advocate(s), namely <span class="adv_pet"></span> and any other counsels as may be authorized and appointed to appear and plead on their behalf before this Hon'ble Court.</p>
+
+<p style="text-align:justify; line-height:1.6;">
+That the Respondant(s) in the present matter is/are <span class="respondant"></span>, and such additional parties as reflected in the memo of parties. The Respondant(s) is/are represented through their Advocate(s), namely <span class="adv_res"></span>, and any other counsel duly appointed and authorized to represent them in the present proceedings.</p>
+
+<p style="text-align:justify; line-height:1.6;">
+That the judgement in the present case was pronounced on <span class="date_judgement"> by the Hon'ble Bench comprising Hon'ble Justice </span><span class="bench"></span>, and such other Hon'ble Judges as constituted the Coram of the Court for hearing and deciding the present matter. The Judgement was authored and delivered by Hon'ble <span class="Judge">.</p>
+
+<p style="text-align:justify; line-height:1.6;">
+That the present judgement is reported and citied as <span class="citation"></span>, and other recognized law reports where and the judgement has been publisehd and is available for reference.</p>
+
+<p style="text-align:justify; line-height:1.6;">
+This case arises out of FIR No. <span class="fir"></span> registered under Sections <span class="sections"></span>.
 
 <!-- PAGE 2 -->
 
