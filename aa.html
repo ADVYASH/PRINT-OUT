@@ -1,862 +1,396 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Court Registry</title>
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<title>Court Case Form</title>
 
 <style>
 
-/* ================= SCREEN FORM ================= */
-
 body{
-    font-family:Arial, sans-serif;
-    background:#f2f2f2;
-    margin:0;
-    padding:30px;
+font-family:Arial;
+margin:40px;
 }
 
-.form-box{
-    max-width:1000px;
-    margin:auto;
-    background:white;
-    padding:30px;
-    border-radius:8px;
-    box-shadow:0 10px 40px rgba(0,0,0,0.2);
-}
-
-label{
-    font-weight:bold;
-    display:block;
-    margin-top:10px;
-}
-
-input, select{
-    width:100%;
-    padding:6px;
-    margin-top:5px;
+input,textarea{
+width:100%;
+padding:6px;
+margin:4px 0 10px 0;
 }
 
 button{
-    padding:6px 14px;
-    margin:6px 6px 6px 0;
-    background:#0f2027;
-    color:white;
-    border:none;
-    cursor:pointer;
+padding:6px 12px;
+margin-bottom:10px;
+cursor:pointer;
 }
 
-button:hover{
-    background:#b8860b;
-    color:black;
+.section{
+margin-bottom:20px;
 }
 
-/* ================= PRINT LAYOUT ================= */
-
-.print-area{
-    display:none;
-    width:210mm;
-    min-height:297mm;
-    padding:25mm;
-    margin:auto;
-    font-family:"Times New Roman", serif;
-    font-size:14pt;
-    line-height:1.6;
-    text-align:justify;
+.page{
+display:none;
+page-break-after:always;
+margin-top:40px;
 }
 
-.header{
-    text-align:center;
-    margin-bottom:10px;
-}
-
-.header img{
-    width:90px;
-}
-
-.header h2{
-    margin:2px 0;
-    font-size:14pt;
-}
-
-.watermark{
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    font-size:90px;
-    opacity:0.05;
-    pointer-events:none;
-}
-
-.highlight{
-    font-weight:bold;
-    text-decoration:none !important;
-    border-bottom:none !important;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:15px;
-    font-size:12pt;
-}
-
-table, th, td{
-    border:1px solid black;
-}
-
-th, td{
-    padding:5px;
-    text-align:center;
-}
-
-.signature{
-    margin-top:60px;
-    text-align:right;
-}
-
-.signature{
-    margin-top:80px;
-    text-align:right;
-}
-
-.signature img{
-    width:300px;   /* Increased size */
-}
-
-.signature p{
-    margin-top:8px;
-    font-weight:bold;
-    font-size:14pt;
-}
-
-/* 🔥 QR SIZE FIX */
-.print-area #qrcode canvas{
-    width:250px !important;
-    height:250px !important;
-}
-
-/* ===== QR SECTION LEFT BOTTOM ===== */
-.qr-section{
-    margin-top:40px;
-    text-align:left;
-}
-
-.qr-section #qrcode{
-    width:220px;
-}
-
-.qr-section #qrText{
-    font-size:11pt;
-    margin-top:5px;
-}
-
-/* Print Mode */
 @media print{
-    body{
-        background:white;
-    }
 
-    .form-box{
-        display:none;
-    }
-
-    .print-area{
-        display:block;
-    }
+form,
+.print-btn,
+.section{
+display:none;
 }
 
-/* ===== CASE DETAILS GAZETTE STYLE ===== */
+.page{
+display:block;
+}
 
-.case-heading{
-    margin-top:5px;
-    font-family: 'UnifrakturCook', cursive;
-    font-size: 42pt !important;   /* 🔥 Force override */
-    letter-spacing: 2px;
+body{
+margin:0;
+}
+
+}
+
+.top-image{
+width:100%;
+height:200px;
+object-fit:contain;
+margin-bottom:20px;
+}
+
+/* Page 3 Document Formatting */
+
+.doc-heading{
+font-family:"Times New Roman";
+text-align:center;
+font-weight:bold;
+font-size:20px;
+margin:10px 0;
+}
+
+.doc-subtitle{
+font-family:"Times New Roman";
+text-align:center;
+font-style:italic;
+font-size:16px;
+margin:8px 0;
+}
+
+.doc-subheading{
+font-family:"Times New Roman";
+text-align:left;
+font-weight:bold;
+font-size:18px;
+margin:8px 0;
+}
+
+.doc-body{
+font-family:"Times New Roman";
+text-align:justify;
+font-size:14px;
+margin:8px 0;
+line-height:1.6;
 }
 
 </style>
-
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-</head>
-<body>
-
-<!-- ================= FORM SECTION ================= -->
-
-<div class="form-box">
-
-<h2>⚖ Court Filing Form</h2>
-
-<label>Select Court</label>
-<select id="courtType" onchange="toggleCourtInput()">
-<option value="">Select Court</option>
-<option value="Supreme Court of India">Supreme Court of India</option>
-<option value="High Court">High Court</option>
-<option value="District Court">District Court</option>
-</select>
-
-<div id="customCourtDiv" style="display:none;">
-<label>Enter Court Location / State</label>
-<input type="text" id="customCourt">
-</div>
-
-<label>Case Name (Auto Generated)</label>
-<input type="text" id="caseName" readonly>
-
-<label>Case Number</label>
-<input type="text" id="caseNumber">
-
-<label>Jurisdiction</label>
-<input type="text" id="jurisdiction">
-
-<label>Type of Case</label>
-<input type="text" id="caseType">
-
-<label>Petitioner(s)</label>
-<div id="petitioners">
-    <input type="text" oninput="updateCaseName()">
-</div>
-<button onclick="addField('petitioners')">+ Add Petitioner</button>
-
-<label>Advocate for Petitioner</label>
-<div id="petAdv"><input type="text"></div>
-<button onclick="addField('petAdv')">+ Add Advocate</button>
-
-<label>Respondent(s)</label>
-<div id="respondents">
-    <input type="text" oninput="updateCaseName()">
-</div>
-<button onclick="addField('respondents')">+ Add Respondent</button>
-
-<label>Advocate for Respondent</label>
-<div id="resAdv"><input type="text"></div>
-<button onclick="addField('resAdv')">+ Add Advocate</button>
-
-<label>Date of Judgment</label>
-<input type="date" id="date">
-
-<label>Bench (Judges)</label>
-<div id="benchInput"><input type="text"></div>
-<button onclick="addField('benchInput')">+ Add Judge</button>
-
-<label>Judgment By</label>
-<input type="text" id="judgmentBy">
-
-<label>Citation(s)</label>
-<div id="citationInput"><input type="text"></div>
-<button onclick="addField('citationInput')">+ Add Citation</button>
-
-<h3>Optional FIR Table</h3>
-<table id="firTable">
-<tr>
-<th>SR NO</th>
-<th>FIR NUMBER</th>
-<th>SECTIONS</th>
-<th>DATE</th>
-<th>PARTICULARS</th>
-</tr>
-</table>
-<button onclick="addRow()">+ Add FIR Row</button>
-
-<br><br>
-<button onclick="generatePrint()">Generate & Print</button>
-<br><br>
-<button onclick="addCaseToBulk()">➕ Add Case To Bulk</button>
-<button onclick="printBulkCases()">🖨 Print All Bulk Cases</button>
-
-</div>
-
-<!-- ================= PRINT SECTION ================= -->
-
-<div class="print-area">
-
-<div class="watermark">सत्यमेव जयते</div>
-
-<div class="header">
-<img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg">
-<h2 id="printCourtHeader"></h2>
-<h2 class="case-heading">CASE DETAILS</h2>
-</div>
-
-<div id="printContent"></div>
-<div id="firPrint"></div>
-
-<div class="qr-section">
-    <div id="qrcode"></div>
-    <div id="qrText">Scan to View Official PDF</div>
-</div>
-
-<div class="signature">
-    <img src="signature.png" alt="Signature">
-    <p>Signature</p>
-</div>
-
-</div>
 
 <script>
 
-let bulkCases = [];
+function addField(container){
 
-function toggleCourtInput(){
-let court=document.getElementById("courtType").value;
-if(court==="High Court" || court==="District Court"){
-document.getElementById("customCourtDiv").style.display="block";
-}else{
-document.getElementById("customCourtDiv").style.display="none";
-}
-}
+let div=document.createElement("div")
+div.innerHTML='<input type="text">'
 
-function addField(id){
-    let div = document.getElementById(id);
-
-    let input = document.createElement("input");
-    input.type = "text";
-
-    // 🔥 This line makes auto case name work
-    input.oninput = updateCaseName;
-
-    div.appendChild(input);
-}
-
-function getValues(id){
-let inputs=document.getElementById(id).getElementsByTagName("input");
-let arr=[];
-for(let i=0;i<inputs.length;i++){
-if(inputs[i].value.trim()!==""){
-arr.push("<span class='highlight'>"+inputs[i].value+"</span>");
-}
-}
-return arr.join(", ");
-}
-
-function addRow(){
-let table=document.getElementById("firTable");
-let row=table.insertRow();
-let count=table.rows.length-1;
-row.insertCell(0).innerHTML=count;
-row.insertCell(1).innerHTML='<input type="text">';
-row.insertCell(2).innerHTML='<input type="text">';
-row.insertCell(3).innerHTML='<input type="date">';
-row.insertCell(4).innerHTML='<input type="text">';
-}
-
-function generatePrint(){
-
-let courtType=document.getElementById("courtType").value;
-let customCourt=document.getElementById("customCourt").value;
-let headerText="";
-
-if(courtType==="Supreme Court of India"){
-headerText="IN THE SUPREME COURT OF INDIA<br>NEW DELHI";
-}
-else if(courtType==="High Court"){
-headerText="IN THE HIGH COURT OF " + customCourt.toUpperCase();
-}
-else if(courtType==="District Court"){
-headerText="IN THE DISTRICT COURT OF " + customCourt.toUpperCase();
-}
-
-document.getElementById("printCourtHeader").innerHTML=headerText;
-
-let caseName=document.getElementById("caseName").value;
-let caseNumber=document.getElementById("caseNumber").value;
-let jurisdiction=document.getElementById("jurisdiction").value;
-let caseType=document.getElementById("caseType").value;
-let petitioners=getValues("petitioners");
-let petAdv=getValues("petAdv");
-let respondents=getValues("respondents");
-let resAdv=getValues("resAdv");
-let date=document.getElementById("date").value;
-let bench=getValues("benchInput");
-let judgmentBy=document.getElementById("judgmentBy").value;
-let citation=getValues("citationInput");
-
-let content=`
-<div style="text-align:center; font-weight:bold; font-size:22pt;">
-सत्यमेव जयते
-</div><br>
-
-<div style="display:flex; justify-content:space-between; font-weight:bold; font-size:20pt;">
-<span class="highlight">${petitioners}</span>
-<span>...Petitioner</span>
-</div>
-
-<div style="text-align:center; font-weight:bold; font-size:20pt;">
-versus
-</div><br>
-
-<div style="display:flex; justify-content:space-between; font-weight:bold; font-size:20pt;">
-<span>...Respondent</span>
-<span class="highlight">${respondents}</span>
-</div>
-
-<div class="case-details">
-    <p><span>Case Number :</span> <span>${caseNumber}</span></p>
-    <p><span>Petitioner :</span> <span>${petitioners}</span></p>
-    <p><span>Advocate for Petitioner :</span> <span>${petAdv}</span></p>
-    <p><span>Respondent :</span> <span>${respondents}</span></p>
-    <p><span>Advocate for Respondent :</span> <span>${resAdv}</span></p>
-</div>
-
-<style>
-.case-details{
-    font-size:16pt;   /* 🔥 Size changed here */
-}
-
-.case-details p {
-    display: flex;
-    justify-content: space-between;
-    margin: 4px 0;
-}
-
-.case-details span:first-child {
-    font-weight: bold;
-}
-</style>
-
-<p>That the present matter is instituted before the <span class="highlight">${courtType}</span> under the title <span class="highlight">${caseName}</span>”, bearing Case Number / Diary Number <span class="highlight">${caseNumber}</span>, falling within the jurisdiction of <span class="highlight">${jurisdiction}</span>. The nature and type of the present proceedings is <span class="highlight">${caseType}</span>, and the same is being adjudicated in accordance with the applicable provisions of law.</p>
-
-<p>That the Petitioner(s) in the present case is/are <span class="highlight">${petitioners}</span>. The Petitioner(s) is/are duly represented and assisted by their Advocate(s), namely <span class="highlight">${petAdv}</span> and any other counsel as may be authorized and appointed to appear and plead on their behalf before this Hon’ble Court.</p>
-
-<p>That the Respondent(s) in the present matter is/are <span class="highlight">${respondents}</span>, and such additional parties as reflected in the memo of parties. The Respondent(s) is/are represented through their Advocate(s), namely <span class="highlight">${resAdv}</span>, and any other counsel duly appointed and authorized to represent them in the present proceedings.</p>
-
-<p>That the judgment in the present case was pronounced on <span class="highlight">${date}</span> by the Hon’ble Bench comprising Hon’ble Justice <span class="highlight">${bench}</span>, and such other Hon’ble Judges as constituted the Coram of the Court for hearing and deciding the present matter. The judgment was authored and delivered by Hon’ble Justice <span class="highlight">${judgmentBy}</span>.</p>
-
-<p>That the present judgment is reported and cited as<span class="highlight">${citation}</span>, and other recognized law reports where the judgment has been published and is available for reference.</p>
-`;
-
-document.getElementById("printContent").innerHTML=content;
-
-// ===== FIXED FIR TABLE PRINT =====
-
-let table = document.getElementById("firTable");
-let rows = table.rows;
-
-let newTable = `
-<table>
-<tr>
-<th>SR NO</th>
-<th>FIR NUMBER</th>
-<th>SECTIONS</th>
-<th>DATE</th>
-<th>PARTICULARS OF IMPUGNED JUDGEMENT / ORDER</th>
-</tr>
-`;
-
-let rowCount = 0;
-
-for(let i = 1; i < rows.length; i++){
-
-let inputs = rows[i].getElementsByTagName("input");
-
-let fir = inputs[0].value.trim();
-let sec = inputs[1].value.trim();
-let date = inputs[2].value.trim();
-let part = inputs[3].value.trim();
-
-if(fir || sec || date || part){
-
-rowCount++;
-
-newTable += `
-<tr>
-<td>${rowCount}</td>
-<td><span class="highlight">${fir}</span></td>
-<td><span class="highlight">${sec}</span></td>
-<td><span class="highlight">${date}</span></td>
-<td><span class="highlight">${part}</span></td>
-</tr>
-`;
+document.getElementById(container).appendChild(div)
 
 }
 
+function autoFill(){
+
+let petitioner=document.querySelector("#petitioner input").value
+let respondent=document.querySelector("#respondant input").value
+
+document.getElementById("purchased_by").innerText=petitioner
+document.getElementById("first_party").innerText=petitioner
+document.getElementById("second_party").innerText=respondent
+
 }
 
-newTable += "</table>";
+function collect(container){
 
-// ===== PREPARE FIR DATA FOR DISCORD =====
-let firDiscordText = "";
+let inputs=document.querySelectorAll("#"+container+" input")
 
-for(let i = 1; i < rows.length; i++){
+let data=[]
 
-let inputs = rows[i].getElementsByTagName("input");
-
-let fir = inputs[0].value.trim();
-let sec = inputs[1].value.trim();
-let dateVal = inputs[2].value.trim();
-let part = inputs[3].value.trim();
-
-if(fir || sec || dateVal || part){
-
-firDiscordText +=
-`SR NO: ${i}
-FIR: ${fir || "N/A"}
-Sections: ${sec || "N/A"}
-Date: ${dateVal || "N/A"}
-Particulars: ${part || "N/A"}
-
-`;
-}
-}
-
-if(firDiscordText === ""){
-   firDiscordText = "No FIR Records";
-}
-
-sendToDiscord({
-    court: headerText,
-    caseName: caseName,
-    caseNumber: caseNumber,
-    jurisdiction: jurisdiction,
-    caseType: caseType,
-    petitioners: petitioners,
-    petAdv: petAdv,
-    respondents: respondents,
-    resAdv: resAdv,
-    date: date,
-    bench: bench,
-    judgmentBy: judgmentBy,
-    citation: citation,
-    firDetails: firDiscordText
-});
-
-if(rowCount > 0){
-document.getElementById("firPrint").innerHTML = newTable;
-} else {
-document.getElementById("firPrint").innerHTML = "";
-}
-
-// ===== GENERATE QR FIRST =====
-
-// Prepare clean QR data
-let qrData = `
-CASE NAME: ${caseName}
-CASE NUMBER: ${caseNumber}
-PETITIONER: ${petitioners}
-ADVOCATE (PETITIONER): ${petAdv}
-RESPONDENT: ${respondents}
-ADVOCATE (RESPONDENT): ${resAdv}
-DATE OF JUDGMENT: ${date}
-JUDGMENT BY: ${judgmentBy}
-BENCH: ${bench}
-CITATION: ${citation}
-`;
-
-// Clear previous QR
-document.getElementById("qrcode").innerHTML = "";
-
-// Generate QR
-new QRCode(document.getElementById("qrcode"), {
-    text: qrData,
-    width: 220,
-    height: 220
-});
-
-document.getElementById("qrText").innerText = "Scan to View Official PDF";
-
-
-// ===== NOW CREATE PDF =====
-
-const { jsPDF } = window.jspdf;
-let printElement = document.querySelector(".print-area");
-
-// Show print area before capture
-printElement.style.display = "block";
-
-html2canvas(printElement, {
-    scale: 3
-}).then(canvas => {
-
-    let imgData = canvas.toDataURL("image/png");
-    let pdf = new jsPDF("p", "mm", "a4");
-
-    let imgWidth = 210;
-    let imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-
-    window.print();
-});
-}
-
-function sendToDiscord(data){
-
-const webhookURL = "https://discord.com/api/webhooks/1477327509631664302/z9Xa9LpYLz7E_yrTLx_hekLpK0-bQ0cMALEd7yKZYjCtS0cD6-JriPF4Ds8JXnY4kcAs";
-
-fetch(webhookURL, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        username: "Court Registry Bot",
-        embeds: [{
-            title: "📂 New Court Filing Submitted",
-            color: 16766720,
-            fields: [
-                { name: "Court", value: data.court || "N/A" },
-                { name: "Case Name", value: data.caseName || "N/A" },
-                { name: "Case Number", value: data.caseNumber || "N/A" },
-                { name: "Jurisdiction", value: data.jurisdiction || "N/A" },
-                { name: "Case Type", value: data.caseType || "N/A" },
-                { name: "Petitioners", value: data.petitioners || "N/A" },
-                { name: "Petitioner Advocate", value: data.petAdv || "N/A" },
-                { name: "Respondents", value: data.respondents || "N/A" },
-                { name: "Respondent Advocate", value: data.resAdv || "N/A" },
-                { name: "Date of Judgment", value: data.date || "N/A" },
-                { name: "Bench", value: data.bench || "N/A" },
-                { name: "Judgment By", value: data.judgmentBy || "N/A" },
-                { name: "Citation", value: data.citation || "N/A" },
-                { 
-                  name: "FIR Details", 
-                  value: (data.firDetails || "No FIR Records").substring(0, 1000) 
-                }
-            ],
-            timestamp: new Date()
-        }]
-    })
+inputs.forEach(i=>{
+if(i.value!="") data.push(i.value)
 })
-.then(res => {
-    if (!res.ok) {
-        return res.text().then(text => {
-            console.error("Discord Error:", text);
-        });
-    }
-    console.log("Sent to Discord Successfully");
+
+return data.join(", ")
+
+}
+
+function generate(){
+
+autoFill()
+
+let fields=[
+"case_number",
+"jurisdiction",
+"petitioner",
+"respondant",
+"adv_pet",
+"adv_res",
+"bench",
+"judge",
+"citation",
+"fir",
+"sections"
+]
+
+fields.forEach(id=>{
+
+let text=collect(id)
+
+document.querySelectorAll("."+id).forEach(el=>{
+el.textContent=text
 })
-.catch(err => console.error("Fetch Error:", err));
+
+})
+
+let simple=[
+"court_name",
+"court_location",
+"case_name",
+"type_case",
+"date_judgement"
+]
+
+simple.forEach(id=>{
+
+let el=document.getElementById(id)
+if(!el) return
+
+let val=el.value
+
+document.querySelectorAll("."+id).forEach(span=>{
+span.textContent=val
+})
+
+})
+
+generateDoc()
+
+setTimeout(function(){
+window.print()
+},100)
+
 }
 
-function updateCaseName(){
+/* Page 3 Builder */
 
-    let petitioners = [];
-    let respondents = [];
+function addDoc(type){
 
-    // Get all petitioner inputs
-    let petInputs = document.getElementById("petitioners").getElementsByTagName("input");
+let container=document.getElementById("doc_builder")
 
-    // Get all respondent inputs
-    let resInputs = document.getElementById("respondents").getElementsByTagName("input");
+let div=document.createElement("div")
 
-    // Collect petitioner names
-    for(let i=0; i<petInputs.length; i++){
-        if(petInputs[i].value.trim() !== ""){
-            petitioners.push(petInputs[i].value.trim());
-        }
-    }
+div.innerHTML='<textarea data-type="'+type+'" placeholder="'+type+' text"></textarea>'
 
-    // Collect respondent names
-    for(let i=0; i<resInputs.length; i++){
-        if(resInputs[i].value.trim() !== ""){
-            respondents.push(resInputs[i].value.trim());
-        }
-    }
+container.appendChild(div)
 
-    // Generate case name
-    let caseName = "";
-
-    if(petitioners.length > 0 && respondents.length > 0){
-        caseName = petitioners.join(", ") + " vs " + respondents.join(", ");
-    }
-
-    // Set value to caseName field
-    document.getElementById("caseName").value = caseName;
 }
 
-function addCaseToBulk(){
+function generateDoc(){
 
-    let courtType = document.getElementById("courtType").value;
-    let customCourt = document.getElementById("customCourt").value;
-    let headerText = "";
+let blocks=document.querySelectorAll("#doc_builder textarea")
 
-    if(courtType === "Supreme Court of India"){
-        headerText = "IN THE SUPREME COURT OF INDIA - NEW DELHI";
-    }
-    else if(courtType === "High Court"){
-        headerText = "IN THE HIGH COURT OF " + customCourt.toUpperCase();
-    }
-    else if(courtType === "District Court"){
-        headerText = "IN THE DISTRICT COURT OF " + customCourt.toUpperCase();
-    }
+let output=""
 
-    let caseData = {
-        court: headerText,
-        caseName: document.getElementById("caseName").value,
-        caseNumber: document.getElementById("caseNumber").value,
-        jurisdiction: document.getElementById("jurisdiction").value,
-        caseType: document.getElementById("caseType").value,
-        petitioners: getValues("petitioners"),
-        petAdv: getValues("petAdv"),
-        respondents: getValues("respondents"),
-        resAdv: getValues("resAdv"),
-        date: document.getElementById("date").value,
-        bench: getValues("benchInput"),
-        judgmentBy: document.getElementById("judgmentBy").value,
-        citation: getValues("citationInput")
-    };
+blocks.forEach(b=>{
 
-    bulkCases.push(caseData);
+let type=b.dataset.type
+let text=b.value
 
-    alert("Case Added To Bulk Successfully ✅");
-
-    clearForm();
+if(type=="heading"){
+output+='<div class="doc-heading">'+text+'</div>'
 }
 
-function printBulkCases(){
-
-    if(bulkCases.length === 0){
-        alert("No bulk cases added!");
-        return;
-    }
-
-    let fullHTML = "";
-
-    bulkCases.forEach((data, index) => {
-
-        let qrId = "qr_" + index;
-
-        let caseHTML = `
-        <div style="page-break-after:always;">
-
-            <div class="watermark">सत्यमेव जयते</div>
-
-            <div class="header">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg">
-                <h2>${data.court}</h2>
-                <h2 class="case-heading">CASE DETAILS</h2>
-            </div>
-
-            <div style="text-align:center; font-weight:bold; font-size:22pt;">
-                सत्यमेव जयते
-            </div><br>
-
-            <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:20pt;">
-                <span class="highlight">${data.petitioners}</span>
-                <span>...Petitioner</span>
-            </div>
-
-            <div style="text-align:center; font-weight:bold; font-size:20pt;">
-                versus
-            </div><br>
-
-            <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:20pt;">
-                <span>...Respondent</span>
-                <span class="highlight">${data.respondents}</span>
-            </div>
-
-            <div class="case-details">
-                <p><span>Case Number :</span> <span>${data.caseNumber}</span></p>
-                <p><span>Petitioner :</span> <span>${data.petitioners}</span></p>
-                <p><span>Advocate for Petitioner :</span> <span>${data.petAdv}</span></p>
-                <p><span>Respondent :</span> <span>${data.respondents}</span></p>
-                <p><span>Advocate for Respondent :</span> <span>${data.resAdv}</span></p>
-            </div>
-
-            <p>That the present matter is instituted before the <span class="highlight">${data.court}</span> under the title <span class="highlight">${data.caseName}</span>, bearing Case Number <span class="highlight">${data.caseNumber}</span>, falling within the jurisdiction of <span class="highlight">${data.jurisdiction}</span>. The nature and type of the present proceedings is <span class="highlight">${data.caseType}</span>.</p>
-
-            <p>That the judgment was pronounced on <span class="highlight">${data.date}</span> by Hon’ble Justice <span class="highlight">${data.bench}</span>. The judgment was delivered by Hon’ble Justice <span class="highlight">${data.judgmentBy}</span>.</p>
-
-            <p>Reported as <span class="highlight">${data.citation}</span>.</p>
-
-            <div class="qr-section">
-                <div id="${qrId}"></div>
-                <div style="font-size:11pt;">Scan to View Case Details</div>
-            </div>
-
-            <div class="signature">
-                <img src="signature.png">
-                <p>Signature</p>
-            </div>
-
-        </div>
-        `;
-
-        fullHTML += caseHTML;
-    });
-
-    document.getElementById("printContent").innerHTML = fullHTML;
-    document.querySelector(".print-area").style.display = "block";
-
-    // Generate QR codes after DOM insertion
-    setTimeout(() => {
-
-        bulkCases.forEach((data, index) => {
-
-            let qrId = "qr_" + index;
-
-            let qrData = `
-CASE NAME: ${data.caseName}
-CASE NUMBER: ${data.caseNumber}
-PETITIONER: ${data.petitioners}
-RESPONDENT: ${data.respondents}
-DATE: ${data.date}
-JUDGMENT BY: ${data.judgmentBy}
-`;
-
-            new QRCode(document.getElementById(qrId), {
-                text: qrData,
-                width: 220,
-                height: 220
-            });
-
-        });
-
-        window.print();
-
-    }, 300);
+if(type=="subtitle"){
+output+='<div class="doc-subtitle">'+text+'</div>'
 }
 
-function clearForm(){
+if(type=="subheading"){
+output+='<div class="doc-subheading">'+text+'</div>'
+}
 
-    // Clear simple inputs
-    document.getElementById("caseName").value = "";
-    document.getElementById("caseNumber").value = "";
-    document.getElementById("jurisdiction").value = "";
-    document.getElementById("caseType").value = "";
-    document.getElementById("date").value = "";
-    document.getElementById("judgmentBy").value = "";
-    document.getElementById("courtType").value = "";
-    document.getElementById("customCourt").value = "";
+if(type=="body"){
+output+='<div class="doc-body">'+text+'</div>'
+}
 
-    // Reset dynamic sections to single empty input
-    document.getElementById("petitioners").innerHTML = 
-        '<input type="text" oninput="updateCaseName()">';
+})
 
-    document.getElementById("petAdv").innerHTML = 
-        '<input type="text">';
+document.getElementById("page3content").innerHTML=output
 
-    document.getElementById("respondents").innerHTML = 
-        '<input type="text" oninput="updateCaseName()">';
-
-    document.getElementById("resAdv").innerHTML = 
-        '<input type="text">';
-
-    document.getElementById("benchInput").innerHTML = 
-        '<input type="text">';
-
-    document.getElementById("citationInput").innerHTML = 
-        '<input type="text">';
-
-    // Clear FIR table (keep header only)
-    let table = document.getElementById("firTable");
-    table.innerHTML = `
-        <tr>
-        <th>SR NO</th>
-        <th>FIR NUMBER</th>
-        <th>SECTIONS</th>
-        <th>DATE</th>
-        <th>PARTICULARS</th>
-        </tr>
-    `;
-
-    // 🔥 SMALL FIX HERE
-    document.getElementById("customCourtDiv").style.display = "none";
 }
 
 </script>
+
+</head>
+
+<body>
+
+<h2>Court Case Form</h2>
+
+<form>
+
+<div class="section">
+
+Court Name
+<input type="text" id="court_name">
+
+Court Location
+<input type="text" id="court_location">
+
+Case Name
+<input type="text" id="case_name">
+
+Type of Case
+<input type="text" id="type_case">
+
+Date of Judgement
+<input type="date" id="date_judgement">
+
+</div>
+
+<div class="section">
+Case Number
+<div id="case_number"><input></div>
+<button type="button" onclick="addField('case_number')">Add Slot</button>
+</div>
+
+<div class="section">
+Jurisdiction
+<div id="jurisdiction"><input></div>
+<button type="button" onclick="addField('jurisdiction')">Add Slot</button>
+</div>
+
+<div class="section">
+Petitioner
+<div id="petitioner"><input></div>
+<button type="button" onclick="addField('petitioner')">Add Slot</button>
+</div>
+
+<div class="section">
+Respondant
+<div id="respondant"><input></div>
+<button type="button" onclick="addField('respondant')">Add Slot</button>
+</div>
+
+<div class="section">
+Advocate of Petitioner
+<div id="adv_pet"><input></div>
+<button onclick="addField('adv_pet')" type="button">Add Slot</button>
+</div>
+
+<div class="section">
+Advocate of Respondant
+<div id="adv_res"><input></div>
+<button onclick="addField('adv_res')" type="button">Add Slot</button>
+</div>
+
+<div class="section">
+On Bench
+<div id="bench"><input></div>
+<button onclick="addField('bench')" type="button">Add Slot</button>
+</div>
+
+<div class="section">
+Judgement By
+<div id="judge"><input></div>
+<button onclick="addField('judge')" type="button">Add Slot</button>
+</div>
+
+<div class="section">
+Citation
+<div id="citation"><input></div>
+<button onclick="addField('citation')" type="button">Add Slot</button>
+</div>
+
+<div class="section">
+FIR Number
+<div id="fir"><input></div>
+<button onclick="addField('fir')" type="button">Add Slot</button>
+</div>
+
+<div class="section">
+Sections
+<div id="sections"><input></div>
+<button onclick="addField('sections')" type="button">Add Slot</button>
+</div>
+
+<button class="print-btn" type="button" onclick="generate()">Print Form</button>
+
+</form>
+
+<div class="section">
+
+<h3>Page 3 Document Builder</h3>
+
+<div id="doc_builder"></div>
+
+<button type="button" onclick="addDoc('heading')">Add Heading</button>
+<button type="button" onclick="addDoc('subtitle')">Add Subtitle</button>
+<button type="button" onclick="addDoc('subheading')">Add Subheading</button>
+<button type="button" onclick="addDoc('body')">Add Body</button>
+
+</div>
+
+<!-- PAGE 1 -->
+
+<div class="page">
+
+<h2>Page 1</h2>
+
+Court: <span class="court_name"></span><br>
+Location: <span class="court_location"></span><br>
+Case Name: <span class="case_name"></span><br>
+Case Number: <span class="case_number"></span><br>
+Jurisdiction: <span class="jurisdiction"></span><br>
+Type of Case: <span class="type_case"></span><br>
+
+Petitioner: <span class="petitioner"></span><br>
+Respondant: <span class="respondant"></span><br>
+
+Advocate (Petitioner): <span class="adv_pet"></span><br>
+Advocate (Respondant): <span class="adv_res"></span><br>
+
+Date of Judgement: <span class="date_judgement"></span>
+
+</div>
+
+<!-- PAGE 2 -->
+
+<div class="page">
+
+<img src="stamp.png" class="top-image">
+
+<h2 style="text-align:center;">COURT CASE DOCUMENT</h2>
+
+Bench: <span class="bench"></span><br><br>
+Judgement By: <span class="judge"></span><br><br>
+Citation: <span class="citation"></span><br><br>
+FIR Number: <span class="fir"></span><br><br>
+Sections: <span class="sections"></span>
+
+</div>
+
+<!-- PAGE 3 -->
+
+<div class="page">
+
+<div id="page3content"></div>
+
+</div>
 
 </body>
 </html>
