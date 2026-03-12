@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Court Case Form</title>
+<h1 style="text-align:center;">Court Details</h1>
 
 <style>
 
@@ -28,8 +28,8 @@ margin-bottom:20px;
 
 .page{
 display:none;
-page-break-after:always;
-margin-top:40px;
+page-break-before:always;
+margin-top:20px;
 }
 
 .print-mode .page{
@@ -56,9 +56,9 @@ margin:0;
 
 .top-image{
 width:100%;
-height:200px;
-object-fit:contain;
-margin-bottom:20px;
+height:auto;
+display:block;
+margin:0 auto 20px auto;
 }
 
 /* Page 3 Document Formatting */
@@ -272,9 +272,6 @@ document.body.classList.remove("print-mode")
 </head>
 
 <body>
-
-<h2>Court Case Form</h2>
-
 <form>
 
 <div class="section">
@@ -383,7 +380,7 @@ Sections
 
 <div class="page">
 
-<h2>Page 1</h2>
+
 
 <table class="case_table">
 
@@ -453,13 +450,61 @@ This case arises out of FIR No. <span class="fir"></span> registered under Secti
 
 <img src="stamp.png" class="top-image">
 
-<h2 style="text-align:center;">COURT CASE DOCUMENT</h2>
+<h2 style="text-align:center;">STAMP PAPER</h2>
 
-Bench: <span class="bench"></span><br><br>
-Judgement By: <span class="judge"></span><br><br>
-Citation: <span class="citation"></span><br><br>
-FIR Number: <span class="fir"></span><br><br>
-Sections: <span class="sections"></span>
+<table class="case_table">
+
+<tr>
+<td>ACCOUNT REFERENCE NUMBER:</td>
+<td class="right"><span>SELFPRINT (PU) DL-SELF/GALGOTIA-GN-UP</span></td>
+</tr>
+
+<tr>
+<td>UNIQUE DOC REFERENCE:</td>
+<td class="right"><span>SUBIN-UPUP-SELF10705610947296YK</span></td>
+</tr>
+
+<tr>
+<td>APPLICABLE SECTIONS:</td>
+<td class="right"><span class="sections"></span></td>
+</tr>
+
+<tr>
+<td>CITATION:</td>
+<td class="right"><span class="citation"></span></td>
+</tr>
+
+<tr>
+<td>PURCHASED BY:</td>
+<td class="right"><span class="petitioner"></span></td>
+</tr>
+
+<tr>
+<td>FIRST PARTY:</td>
+<td class="right"><span class="petitioner"></span></td>
+</tr>
+
+<tr>
+<td>SECOND PARTY:</td>
+<td class="right"><span class="respondant"></span></td>
+</tr>
+
+<tr>
+<td>CONSIDERATION PRICE:</td>
+<td class="right"><span>1 Lakh/-</span></td>
+</tr>
+
+<tr>
+<td>STAMP DUTY PAID BY:</td>
+<td class="right"><span class="petitioner"></span></td>
+</tr>
+
+<tr>
+<td>STAMP DUTY AMOUNT:</td>
+<td class="right"><span>100</span></td>
+</tr>
+
+</table>
 
 </div>
 
