@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<h1 style="text-align:center;">Court Details</h1>
+<title>Court Details</title>
 
 <style>
 
@@ -28,8 +28,15 @@ margin-bottom:20px;
 
 .page{
 display:none;
-page-break-before:always;
 margin-top:20px;
+}
+
+.page{
+break-after:page;
+}
+
+.page:last-child{
+break-after:auto;
 }
 
 .print-mode .page{
@@ -40,7 +47,8 @@ display:block;
 
 form,
 .print-btn,
-.section{
+.section,
+body > h1{
 display:none;
 }
 
@@ -84,14 +92,14 @@ font-family:"Times New Roman";
 text-align:left;
 font-weight:bold;
 font-size:18px;
-margin:8px 0;
+margin:8px 0 0 0; /* remove bottom space */
 }
 
 .doc-body{
 font-family:"Times New Roman";
 text-align:justify;
 font-size:14px;
-margin:8px 0;
+margin:0; /* no space above */
 line-height:1.6;
 }
 
@@ -272,6 +280,9 @@ document.body.classList.remove("print-mode")
 </head>
 
 <body>
+
+<h1 style="text-align:center;">Court Details</h1>
+
 <form>
 
 <div class="section">
@@ -380,7 +391,7 @@ Sections
 
 <div class="page">
 
-
+<h1 style="text-align:center;">Case Details</h1>
 
 <table class="case_table">
 
@@ -436,13 +447,15 @@ That the Petitioner(s) in the present case is/are <span class="petitioner"></spa
 That the Respondant(s) in the present matter is/are <span class="respondant"></span>, and such additional parties as reflected in the memo of parties. The Respondant(s) is/are represented through their Advocate(s), namely <span class="adv_res"></span>, and any other counsel duly appointed and authorized to represent them in the present proceedings.</p>
 
 <p style="text-align:justify; line-height:1.6;">
-That the judgement in the present case was pronounced on <span class="date_judgement"> by the Hon'ble Bench comprising Hon'ble Justice </span><span class="bench"></span>, and such other Hon'ble Judges as constituted the Coram of the Court for hearing and deciding the present matter. The Judgement was authored and delivered by Hon'ble <span class="Judge">.</p>
+That the judgement in the present case was pronounced on <span class="date_judgement"></span>  by the Hon'ble Bench comprising Hon'ble Justice <span class="bench"></span>, and such other Hon'ble Judges as constituted the Coram of the Court for hearing and deciding the present matter. The Judgement was authored and delivered by Hon'ble <span class="judge"></span>.</p>
 
 <p style="text-align:justify; line-height:1.6;">
 That the present judgement is reported and citied as <span class="citation"></span>, and other recognized law reports where and the judgement has been publisehd and is available for reference.</p>
 
 <p style="text-align:justify; line-height:1.6;">
-This case arises out of FIR No. <span class="fir"></span> registered under Sections <span class="sections"></span>.
+This case arises out of FIR No. <span class="fir"></span> registered under Sections <span class="sections"></span>.</p>
+
+</div>
 
 <!-- PAGE 2 -->
 
