@@ -32,6 +32,10 @@ page-break-after:always;
 margin-top:40px;
 }
 
+.print-mode .page{
+display:block;
+}
+
 @media print{
 
 form,
@@ -106,12 +110,16 @@ document.getElementById(container).appendChild(div)
 
 function autoFill(){
 
-let petitioner=document.querySelector("#petitioner input").value
-let respondent=document.querySelector("#respondant input").value
+let petitioner=document.querySelector("#petitioner input")?.value || ""
+let respondent=document.querySelector("#respondant input")?.value || ""
 
-document.getElementById("purchased_by").innerText=petitioner
-document.getElementById("first_party").innerText=petitioner
-document.getElementById("second_party").innerText=respondent
+let p=document.getElementById("purchased_by")
+let f=document.getElementById("first_party")
+let s=document.getElementById("second_party")
+
+if(p) p.textContent=petitioner
+if(f) f.textContent=petitioner
+if(s) s.textContent=respondent
 
 }
 
@@ -180,7 +188,10 @@ span.textContent=val
 
 generateDoc()
 
-setTimeout(function(){
+/* ENABLE PRINT MODE */
+document.body.classList.add("print-mode")
+
+setTimeout(()=>{
 window.print()
 },100)
 
@@ -203,7 +214,6 @@ container.appendChild(div)
 function generateDoc(){
 
 let blocks=document.querySelectorAll("#doc_builder textarea")
-
 let output=""
 
 blocks.forEach(b=>{
@@ -229,10 +239,16 @@ output+='<div class="doc-body">'+text+'</div>'
 
 })
 
-document.getElementById("page3content").innerHTML=output
+let target=document.getElementById("page3content")
+if(target){
+target.innerHTML=output
+}
 
 }
 
+window.onafterprint=function(){
+document.body.classList.remove("print-mode")
+}
 </script>
 
 </head>
