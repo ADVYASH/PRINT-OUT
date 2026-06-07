@@ -2,347 +2,318 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Supreme Court Case Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SATYAMEV JAYATE - Digital Legal Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
 body{
-background:#050510;
-color:white;
-overflow-x:hidden;
-text-align:center;
+    min-height:100vh;
+    background:linear-gradient(-45deg,#000000,#1a001f,#300033,#000000,#ff00ff22);
+    background-size:400% 400%;
+    animation:bgMove 12s ease infinite;
+    overflow-x:hidden;
+    color:white;
 }
 
-/* PARTICLE CANVAS */
-
-canvas{
-position:fixed;
-top:0;
-left:0;
-z-index:-1;
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
 }
 
-/* HEADER */
+/* Animated Particles */
+body::before{
+    content:'';
+    position:fixed;
+    width:200%;
+    height:200%;
+    top:-50%;
+    left:-50%;
+    background:
+    radial-gradient(circle,#ff00ff33 2px,transparent 2px);
+    background-size:50px 50px;
+    animation:particles 25s linear infinite;
+    z-index:-1;
+}
+
+@keyframes particles{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
 
 .header{
-padding:30px;
+    text-align:center;
+    padding:30px 15px;
 }
 
-.logo{
-width:90px;
-margin-bottom:10px;
+.emblem{
+    font-size:70px;
+    animation:glow 3s infinite alternate;
 }
 
-.title{
-font-size:36px;
-color:#00f2ff;
-
-text-shadow:
-0 0 10px #00f2ff,
-0 0 20px #00f2ff;
+@keyframes glow{
+    from{
+        text-shadow:0 0 10px #ff00ff;
+    }
+    to{
+        text-shadow:0 0 40px #ff00ff,
+        0 0 80px #ff00ff;
+    }
 }
 
-/* DASHBOARD GRID */
+.heading{
+    font-size:48px;
+    font-weight:700;
+    letter-spacing:4px;
+    margin-top:10px;
+    color:#ffffff;
+    text-shadow:0 0 20px #ff00ff;
+}
+
+.subheading{
+    margin-top:10px;
+    color:#d9d9d9;
+    font-size:18px;
+}
 
 .container{
-
-width:90%;
-margin:auto;
-margin-top:40px;
-
-display:grid;
-
-grid-template-columns:
-repeat(auto-fit,minmax(250px,1fr));
-
-gap:40px;
-
+    width:95%;
+    max-width:1300px;
+    margin:auto;
+    padding:30px 0;
 }
 
-/* CARD */
-
-.card{
-
-height:160px;
-
-border-radius:15px;
-
-border:2px solid #00f2ff;
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:center;
-
-text-decoration:none;
-
-color:white;
-
-font-size:22px;
-
-font-weight:bold;
-
-transition:0.3s;
-
-box-shadow:
-0 0 10px #00f2ff,
-inset 0 0 10px #00f2ff;
-
+.portal-box{
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,0,255,0.3);
+    border-radius:25px;
+    padding:35px;
+    box-shadow:0 0 30px rgba(255,0,255,0.2);
 }
 
-/* ICON */
-
-.icon{
-font-size:42px;
-margin-bottom:10px;
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
 }
 
-/* HOVER */
-
-.card:hover{
-
-transform:scale(1.08);
-
-background:#00f2ff;
-
-color:black;
-
-box-shadow:
-0 0 25px #00f2ff,
-0 0 50px #00f2ff;
-
+.portal-btn{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(135deg,#111,#ff00ff);
+    color:white;
+    text-decoration:none;
+    padding:22px;
+    text-align:center;
+    border-radius:18px;
+    font-size:18px;
+    font-weight:600;
+    transition:0.4s;
+    border:1px solid #ff00ff;
+    box-shadow:0 0 15px rgba(255,0,255,0.3);
 }
 
+.portal-btn:hover{
+    transform:translateY(-8px) scale(1.04);
+    box-shadow:0 0 30px #ff00ff;
+}
+
+.portal-btn::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:rgba(255,255,255,0.2);
+    transform:skewX(-25deg);
+    transition:.8s;
+}
+
+.portal-btn:hover::before{
+    left:120%;
+}
+
+.footer{
+    text-align:center;
+    margin-top:40px;
+    padding:20px;
+    color:#cccccc;
+    font-size:14px;
+}
+
+.marquee{
+    background:#ff00ff22;
+    border-top:1px solid #ff00ff;
+    border-bottom:1px solid #ff00ff;
+    padding:12px;
+    margin:20px 0;
+    color:white;
+    font-weight:bold;
+}
+
+.status{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+}
+
+.status-card{
+    background:rgba(255,0,255,0.08);
+    border:1px solid rgba(255,0,255,0.4);
+    padding:15px 25px;
+    border-radius:15px;
+    text-align:center;
+    min-width:220px;
+}
+
+.status-card h3{
+    color:#ff66ff;
+}
+
+@media(max-width:768px){
+    .heading{
+        font-size:32px;
+    }
+
+    .portal-btn{
+        font-size:16px;
+    }
+}
 </style>
 </head>
-
-
 <body>
-
-<canvas id="bg"></canvas>
 
 <div class="header">
 
-<img class="logo"
-src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Emblem_of_India.svg">
+    <div class="emblem">🦁</div>
 
-<div class="title">
-SUPREME COURT CASE DASHBOARD
+    <div class="heading">
+        SATYAMEV JAYATE
+    </div>
+
+    <div class="subheading">
+        Digital Legal & Record Management Portal
+    </div>
+
 </div>
 
+<div class="marquee">
+<marquee>
+Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records
+</marquee>
 </div>
-
 
 <div class="container">
 
-<a class="card" href="courtwork.html">
-<div class="icon">📂</div>
-Court Work
+<div class="status">
+
+<div class="status-card">
+<h3>Government Portal</h3>
+<p>Secure Access System</p>
+</div>
+
+<div class="status-card">
+<h3>Digital Records</h3>
+<p>Central Repository</p>
+</div>
+
+<div class="status-card">
+<h3>Legal Documents</h3>
+<p>Online Management</p>
+</div>
+
+</div>
+
+<div class="portal-box">
+
+<div class="grid">
+
+<a href="caserecord.html" class="portal-btn">
+⚖️ CASE RECORD MANAGEMENT
 </a>
 
-<a class="card" href="case.html">
-<div class="icon">📑</div>
-Case Notes
+<a href="2.html" class="portal-btn">
+🎓 STUDENT PORTFOLIO
 </a>
 
-<a class="card" href="judgment.html">
-<div class="icon">⚖</div>
-Judgments
+<a href="3.html" class="portal-btn">
+🆔 CREDENTIAL
 </a>
 
-<a class="card" href="bareacts.html">
-<div class="icon">📚</div>
-Bare Acts
+<a href="4.html" class="portal-btn">
+📂 EVIDENCES
 </a>
 
-<a class="card" href="research.html">
-<div class="icon">🔎</div>
-Legal Research
+<a href="5.html" class="portal-btn">
+📜 AFFIDAVIT
 </a>
 
-<a class="card" href="petition.html">
-<div class="icon">📄</div>
-Petitions
+<a href="6.html" class="portal-btn">
+📝 FORM 1A
 </a>
 
-<a class="card" href="orders.html">
-<div class="icon">📜</div>
-Court Orders
+<a href="7.html" class="portal-btn">
+📄 FORM 2A
 </a>
 
-<a class="card" href="casestatus.html">
-<div class="icon">📊</div>
-Case Status
+<a href="8.html" class="portal-btn">
+📄 FORM 2B
 </a>
 
-<a class="card" href="causelist.html">
-<div class="icon">📋</div>
-Cause List
+<a href="9.html" class="portal-btn">
+📑 FORM 3A
 </a>
 
-<a class="card" href="affidavit.html">
-<div class="icon">🧾</div>
-Affidavits
+<a href="10.html" class="portal-btn">
+⚔️ CHARGE SHEET SUMMARY
 </a>
 
-<a class="card" href="drafting.html">
-<div class="icon">📝</div>
-Drafting
+<a href="11.html" class="portal-btn">
+🚔 FIR - COPY
 </a>
 
-<a class="card" href="constitution.html">
-<div class="icon">📖</div>
-Constitution
+<a href="12.html" class="portal-btn">
+📚 LEGAL DATABASE
 </a>
 
-<a class="card" href="lawbooks.html">
-<div class="icon">📘</div>
-Law Books
+<a href="13.html" class="portal-btn">
+🏛 COURT ORDERS
 </a>
 
-<a class="card" href="archive.html">
-<div class="icon">📁</div>
-Case Archive
+<a href="14.html" class="portal-btn">
+🔍 CASE SEARCH
 </a>
 
-<a class="card" href="judges.html">
-<div class="icon">👨‍⚖</div>
-Judges
+<a href="15.html" class="portal-btn">
+📥 DOWNLOAD RECORDS
 </a>
 
-<a class="card" href="courtrules.html">
-<div class="icon">🏛</div>
-Court Rules
-</a>
-
-<a class="card" href="notices.html">
-<div class="icon">📬</div>
-Notices
-</a>
-
-<a class="card" href="search.html">
-<div class="icon">🔍</div>
-Case Search
-</a>
-
-<a class="card" href="calendar.html">
-<div class="icon">📅</div>
-Court Calendar
-</a>
-
-<a class="card" href="settings.html">
-<div class="icon">⚙</div>
-Settings
-</a>
-
-<a class="card" href="appeals.html">
-<div class="icon">⚖</div>
-Appeals
-</a>
-
-<a class="card" href="filing.html">
-<div class="icon">📂</div>
-Case Filing
-</a>
-
-<a class="card" href="hearing.html">
-<div class="icon">🔔</div>
-Hearing Schedule
-</a>
-
-<a class="card" href="advocates.html">
-<div class="icon">👨‍⚖</div>
-Advocates
-</a>
-
-<a class="card" href="documents.html">
-<div class="icon">📄</div>
-Documents
-</a>
-
-<a class="card" href="citations.html">
-<div class="icon">📚</div>
-Case Citations
-</a>
-
-<a class="card" href="updates.html">
-<div class="icon">📰</div>
-Court Updates
-</a>
-
-<a class="card" href="downloads.html">
-<div class="icon">⬇</div>
-Downloads
+<a href="16.html" class="portal-btn">
+📊 REPORTS & ANALYTICS
 </a>
 
 </div>
 
+</div>
 
-<script>
+<div class="footer">
+© 2026 SATYAMEV JAYATE | Digital Legal Information & Record Management System
+</div>
 
-/* PARTICLE BACKGROUND */
-
-const canvas=document.getElementById("bg");
-const ctx=canvas.getContext("2d");
-
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-let particles=[];
-
-for(let i=0;i<120;i++){
-
-particles.push({
-
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-r:Math.random()*2+1,
-dx:(Math.random()-0.5),
-dy:(Math.random()-0.5)
-
-});
-
-}
-
-function animate(){
-
-ctx.clearRect(0,0,canvas.width,canvas.height);
-
-ctx.fillStyle="#00f2ff";
-
-particles.forEach(p=>{
-
-ctx.beginPath();
-
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-
-ctx.fill();
-
-p.x+=p.dx;
-p.y+=p.dy;
-
-if(p.x<0||p.x>canvas.width)p.dx*=-1;
-if(p.y<0||p.y>canvas.height)p.dy*=-1;
-
-});
-
-requestAnimationFrame(animate);
-
-}
-
-animate();
-
-</script>
+</div>
 
 </body>
 </html>
