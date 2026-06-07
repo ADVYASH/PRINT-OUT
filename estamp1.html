@@ -90,67 +90,81 @@ font-weight:bold;
 margin-top:20px;
 }
 
-@media print{
-.preview-section::before{
--webkit-print-color-adjust:exact;
-print-color-adjust:exact;
-opacity:10;
-}
-
-.form-section,
-#printBtn{
-display:none;
-}
-
 .preview-section{
-width:100%;
-padding:20px;
+    width:65%;
+    background:white;
+    padding:30px;
+    position:relative;
+    overflow:hidden;
 }
 
-body{
-background:white;
-}
-
-}
-
-.preview-section{
-width:65%;
-background:white;
-padding:30px;
-position:relative;
-overflow:hidden;
-}
-
+/* FULL PAGE WATERMARK */
 .preview-section::before{
-content:"";
-position:absolute;
-top:0;
-left:0;
-right:0;
-bottom:0;
-background-image:url('emblem.jpg');
-background-repeat:repeat;
-background-size:100px 100px;
-opacity:10;
-pointer-events:none;
-z-index:0;
-
--webkit-print-color-adjust:exact;
-print-color-adjust:exact;
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        url('emblem.jpg') center center / 450px 450px no-repeat,
+        url('emblem.jpg') 0 0 / 120px 120px repeat;
+    opacity:0.06;
+    z-index:0;
+    pointer-events:none;
 }
 
 .preview-section > *{
-position:relative;
-z-index:1;
+    position:relative;
+    z-index:1;
 }
 
-.qr-box{
-margin-top:30px;
-display:block;
-width:fit-content;
-background:white;
-padding:8px;
-border:2px solid #000;
+@media print{
+
+    @page{
+        size:A4;
+        margin:10mm;
+    }
+
+    html,
+    body{
+        width:100%;
+        height:100%;
+        margin:0;
+        padding:0;
+        background:white;
+    }
+
+    .form-section,
+    #printBtn{
+        display:none !important;
+    }
+
+    .container{
+        display:block;
+    }
+
+    .preview-section{
+        width:100% !important;
+        min-height:100vh;
+        padding:15mm;
+        box-sizing:border-box;
+    }
+
+    /* WATERMARK FULL PAPER */
+    .preview-section::before{
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+
+        background-image:url('emblem.jpg');
+        background-repeat:repeat;
+        background-size:120px 120px;
+
+        opacity:0.08;
+
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
+    }
 }
 </style>
 </head>
