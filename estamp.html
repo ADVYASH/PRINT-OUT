@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>India Non Judicial Stamp Certificate</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+
+body{
+font-family:Arial, sans-serif;
+background:#f2f2f2;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+display:flex;
+gap:20px;
+}
+
+.form-section{
+width:35%;
+background:white;
+padding:20px;
+border-radius:10px;
+}
+
+.preview-section{
+width:65%;
+background:white;
+padding:30px;
+position:relative;
+}
+
+input,select,textarea{
+width:100%;
+padding:8px;
+margin-top:5px;
+margin-bottom:10px;
+}
+
+button{
+padding:10px 20px;
+font-size:16px;
+cursor:pointer;
+}
+
+.header{
+display:flex;
+align-items:center;
+margin-bottom:20px;
+}
+
+.header img{
+width:90px;
+height:90px;
+object-fit:contain;
+margin-right:20px;
+}
+
+.heading{
+text-align:center;
+width:100%;
+}
+
+.heading h1{
+margin:0;
+font-size:32px;
+}
+
+.heading h2{
+margin:5px 0;
+font-size:22px;
+}
+
+.detail{
+margin:10px 0;
+font-size:16px;
+}
+
+.label{
+font-weight:bold;
+}
+
+#qrcode{
+margin-top:20px;
+}
+
+@media print{
+.preview-section::before{
+-webkit-print-color-adjust:exact;
+print-color-adjust:exact;
+opacity:0.05;
+}
+
+.form-section,
+#printBtn{
+display:none;
+}
+
+.preview-section{
+width:100%;
+padding:20px;
+}
+
+body{
+background:white;
+}
+
+}
+
+.preview-section{
+width:65%;
+background:white;
+padding:30px;
+position:relative;
+overflow:hidden;
+}
+
+.preview-section::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background-image:url('emblem.jpg');
+background-repeat:repeat;
+background-size:70px 70px;
+opacity:0.05;
+pointer-events:none;
+z-index:0;
+}
+
+.preview-section > *{
+position:relative;
+z-index:1;
+}
+
+.qr-box{
+margin-top:30px;
+display:block;
+width:fit-content;
+background:white;
+padding:8px;
+border:2px solid #000;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="form-section">
+
+<h2>Fill Details</h2>
+
+<label>State / UT</label>
+<select id="state">
+<option value="DL">Delhi</option>
+<option value="AP">Andhra Pradesh</option>
+<option value="AR">Arunachal Pradesh</option>
+<option value="AS">Assam</option>
+<option value="BR">Bihar</option>
+<option value="CG">Chhattisgarh</option>
+<option value="GA">Goa</option>
+<option value="GJ">Gujarat</option>
+<option value="HR">Haryana</option>
+<option value="HP">Himachal Pradesh</option>
+<option value="JH">Jharkhand</option>
+<option value="KA">Karnataka</option>
+<option value="KL">Kerala</option>
+<option value="MP">Madhya Pradesh</option>
+<option value="MH">Maharashtra</option>
+<option value="MN">Manipur</option>
+<option value="ML">Meghalaya</option>
+<option value="MZ">Mizoram</option>
+<option value="NL">Nagaland</option>
+<option value="OD">Odisha</option>
+<option value="PB">Punjab</option>
+<option value="RJ">Rajasthan</option>
+<option value="SK">Sikkim</option>
+<option value="TN">Tamil Nadu</option>
+<option value="TS">Telangana</option>
+<option value="TR">Tripura</option>
+<option value="UP">Uttar Pradesh</option>
+<option value="UK">Uttarakhand</option>
+<option value="WB">West Bengal</option>
+<option value="AN">Andaman & Nicobar</option>
+<option value="CH">Chandigarh</option>
+<option value="DD">Dadra Nagar Haveli & Daman Diu</option>
+<option value="JK">Jammu & Kashmir</option>
+<option value="LA">Ladakh</option>
+<option value="LD">Lakshadweep</option>
+<option value="PY">Puducherry</option>
+</select>
+
+<label>Purchased By</label>
+<input type="text" id="purchasedBy">
+
+<label>Second Party</label>
+<input type="text" id="secondParty">
+
+<label>Consideration Price (Rs.)</label>
+<input type="number" id="price">
+
+<label>Stamp Duty Amount (Rs.)</label>
+<input type="number" id="stampAmount">
+
+<label>Description Options</label>
+
+<div>
+<input type="checkbox" value="SEC1"> SEC1<br>
+<input type="checkbox" value="SEC2"> SEC2<br>
+<input type="checkbox" value="SEC3"> SEC3<br>
+<input type="checkbox" value="SEC4"> SEC4<br>
+<input type="checkbox" value="SEC5"> SEC5<br>
+<input type="checkbox" value="SEC6"> SEC6<br>
+<input type="checkbox" value="SEC7"> SEC7<br>
+<input type="checkbox" value="SEC8"> SEC8<br>
+<input type="checkbox" value="SEC9"> SEC9
+</div>
+
+<label>Custom Description</label>
+<input type="text" id="customDesc">
+
+<button onclick="generateCertificate()">Generate</button>
+
+</div>
+
+<div class="preview-section">
+
+<div class="header">
+
+<img src="emblem.jpg" alt="Emblem">
+
+<div class="heading">
+<h1>INDIA NON JUDICIAL</h1>
+<h2 id="govtText">Government of Delhi</h2>
+</div>
+
+</div>
+
+<div class="detail"><span class="label">Certificate Number :</span> <span id="certNo"></span></div>
+
+<div class="detail"><span class="label">Certificate Issue Date :</span> <span id="issueDate"></span></div>
+
+<div class="detail"><span class="label">Unique Doc. Reference :</span> DL-71-YASH-KUMAR-UDR-260608-9471</div>
+
+<div class="detail"><span class="label">Purchased By :</span> <span id="outPurchaser"></span></div>
+
+<div class="detail"><span class="label">Description of Document :</span> <span id="outDescription"></span></div>
+
+<div class="detail"><span class="label">Consideration Price (Rs.) :</span> <span id="outPrice"></span></div>
+
+<div class="detail"><span class="label">First Party :</span> <span id="outFirstParty"></span></div>
+
+<div class="detail"><span class="label">Second Party :</span> <span id="outSecondParty"></span></div>
+
+<div class="detail"><span class="label">Stamp Duty Paid By :</span> <span id="outPaidBy"></span></div>
+
+<div class="detail"><span class="label">Stamp Duty Amount (Rs.) :</span> <span id="outStampAmount"></span></div>
+
+<div style="margin-top:30px;">
+
+    <div class="detail">
+        <b>Digital Verification QR Code</b>
+    </div>
+
+    <div id="qrcode" class="qr-box"></div>
+
+</div>
+
+<br><br>
+
+<button id="printBtn" onclick="window.print()">Print Certificate</button>
+
+</div>
+
+</div>
+
+<script>
+
+const stateNames={
+"DL":"Delhi",
+"AP":"Andhra Pradesh",
+"AR":"Arunachal Pradesh",
+"AS":"Assam",
+"BR":"Bihar",
+"CG":"Chhattisgarh",
+"GA":"Goa",
+"GJ":"Gujarat",
+"HR":"Haryana",
+"HP":"Himachal Pradesh",
+"JH":"Jharkhand",
+"KA":"Karnataka",
+"KL":"Kerala",
+"MP":"Madhya Pradesh",
+"MH":"Maharashtra",
+"MN":"Manipur",
+"ML":"Meghalaya",
+"MZ":"Mizoram",
+"NL":"Nagaland",
+"OD":"Odisha",
+"PB":"Punjab",
+"RJ":"Rajasthan",
+"SK":"Sikkim",
+"TN":"Tamil Nadu",
+"TS":"Telangana",
+"TR":"Tripura",
+"UP":"Uttar Pradesh",
+"UK":"Uttarakhand",
+"WB":"West Bengal",
+"AN":"Andaman & Nicobar",
+"CH":"Chandigarh",
+"DD":"Dadra Nagar Haveli & Daman Diu",
+"JK":"Jammu & Kashmir",
+"LA":"Ladakh",
+"LD":"Lakshadweep",
+"PY":"Puducherry"
+};
+
+function random14Digit(){
+return Math.floor(
+10000000000000 +
+Math.random()*90000000000000
+);
+}
+
+function generateCertificate(){
+
+let state=document.getElementById("state").value;
+let purchaser=document.getElementById("purchasedBy").value.trim();
+let secondParty=document.getElementById("secondParty").value;
+let price=document.getElementById("price").value;
+let stamp=document.getElementById("stampAmount").value;
+
+let firstLetter="X";
+
+if(purchaser.length>0){
+firstLetter=purchaser.charAt(0).toUpperCase();
+}
+
+let certNo=
+"IN-" +
+state +
+random14Digit() +
+firstLetter;
+
+document.getElementById("certNo").innerHTML=certNo;
+
+let now=new Date();
+
+document.getElementById("issueDate").innerHTML=
+now.toLocaleString();
+
+document.getElementById("govtText").innerHTML=
+"Government of " + stateNames[state];
+
+let desc=[];
+
+document.querySelectorAll(
+'input[type="checkbox"]:checked'
+).forEach(cb=>{
+desc.push(cb.value);
+});
+
+let custom=
+document.getElementById("customDesc").value;
+
+if(custom!=""){
+desc.push(custom);
+}
+
+document.getElementById("outPurchaser").innerHTML=purchaser;
+document.getElementById("outDescription").innerHTML=desc.join(", ");
+document.getElementById("outPrice").innerHTML=price;
+document.getElementById("outFirstParty").innerHTML=purchaser;
+document.getElementById("outSecondParty").innerHTML=secondParty;
+document.getElementById("outPaidBy").innerHTML=purchaser;
+document.getElementById("outStampAmount").innerHTML=stamp;
+
+let qrData =
+`INDIA NON JUDICIAL CERTIFICATE
+
+Certificate No: ${certNo}
+
+Issue Date: ${now.toLocaleString()}
+
+UDR: DL-71-YASH-KUMAR-UDR-260608-9471
+
+Purchased By: ${purchaser}
+
+Description: ${desc.join(", ")}
+
+Consideration Price: Rs.${price}
+
+First Party: ${purchaser}
+
+Second Party: ${secondParty}
+
+Stamp Duty Paid By: ${purchaser}
+
+Stamp Duty Amount: Rs.${stamp}`;
+
+document.getElementById("qrcode").innerHTML="";
+
+new QRCode(
+document.getElementById("qrcode"),
+{
+text:qrData,
+width:180,
+height:180,
+correctLevel:QRCode.CorrectLevel.H
+}
+);
+
+}
+
+</script>
+
+</body>
+</html>
