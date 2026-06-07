@@ -228,19 +228,28 @@ margin-top:20px;
 <label>Stamp Duty Amount (Rs.)</label>
 <input type="number" id="stampAmount">
 
-<label>Description Options</label>
+<label>Description of Document</label>
+<select id="descriptionType">
+    <option value="">Select Description</option>
+    <option value="Affidavit">Affidavit</option>
+    <option value="Rent Agreement">Rent Agreement</option>
+    <option value="Lease Deed">Lease Deed</option>
+    <option value="Sale Deed">Sale Deed</option>
+    <option value="Gift Deed">Gift Deed</option>
+    <option value="Partnership Deed">Partnership Deed</option>
+    <option value="Power of Attorney">Power of Attorney</option>
+    <option value="Indemnity Bond">Indemnity Bond</option>
+    <option value="Declaration">Declaration</option>
+    <option value="Undertaking">Undertaking</option>
+    <option value="Employment Agreement">Employment Agreement</option>
+    <option value="Loan Agreement">Loan Agreement</option>
+    <option value="Service Agreement">Service Agreement</option>
+    <option value="Property Agreement">Property Agreement</option>
+    <option value="General Agreement">General Agreement</option>
+</select>
 
-<div>
-<input type="checkbox" value="SEC1"> SEC1<br>
-<input type="checkbox" value="SEC2"> SEC2<br>
-<input type="checkbox" value="SEC3"> SEC3<br>
-<input type="checkbox" value="SEC4"> SEC4<br>
-<input type="checkbox" value="SEC5"> SEC5<br>
-<input type="checkbox" value="SEC6"> SEC6<br>
-<input type="checkbox" value="SEC7"> SEC7<br>
-<input type="checkbox" value="SEC8"> SEC8<br>
-<input type="checkbox" value="SEC9"> SEC9
-</div>
+<label>Custom Description (Optional)</label>
+<input type="text" id="customDesc">
 
 <label>Custom Description</label>
 <input type="text" id="customDesc">
@@ -380,17 +389,18 @@ document.getElementById("govtText").innerHTML=
 
 let desc=[];
 
-document.querySelectorAll(
-'input[type="checkbox"]:checked'
-).forEach(cb=>{
-desc.push(cb.value);
-});
+let selectedDesc =
+document.getElementById("descriptionType").value;
 
-let custom=
-document.getElementById("customDesc").value;
+if(selectedDesc!=""){
+    desc.push(selectedDesc);
+}
+
+let custom =
+document.getElementById("customDesc").value.trim();
 
 if(custom!=""){
-desc.push(custom);
+    desc.push(custom);
 }
 
 document.getElementById("outPurchaser").innerHTML=purchaser;
