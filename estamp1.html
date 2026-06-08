@@ -146,6 +146,30 @@ margin-top:20px;
         min-height:100vh;
         padding:15mm;
         box-sizing:border-box;
+        border:5px solid #0b6b2f;
+        position:relative;
+    }
+
+    .preview-section::after{
+        content:"";
+        position:absolute;
+        top:8px;
+        left:8px;
+        right:8px;
+        bottom:8px;
+        border:1.5px solid #000;
+        pointer-events:none;
+    }
+
+    .court-seal{
+       position:absolute;
+       right:40px;
+       bottom:40px;
+       width:150px;
+       opacity:0.85;
+       transform:rotate(-12deg);
+       mix-blend-mode:multiply;
+       z-index:2;
     }
 
     /* WATERMARK FULL PAPER */
@@ -166,6 +190,17 @@ margin-top:20px;
         print-color-adjust:exact;
     }
 }
+
+.court-seal{
+    position:absolute;
+    right:40px;
+    bottom:40px;
+    width:140px;
+    height:140px;
+    object-fit:contain;
+    opacity:0.95;
+    z-index:2;
+}
 </style>
 </head>
 <body>
@@ -178,19 +213,25 @@ margin-top:20px;
 
 <label>State / UT</label>
 <select id="state">
-<option value="DL">Delhi</option>
+<option value="AN">Andaman and Nicobar Islands</option>
 <option value="AP">Andhra Pradesh</option>
 <option value="AR">Arunachal Pradesh</option>
 <option value="AS">Assam</option>
 <option value="BR">Bihar</option>
 <option value="CG">Chhattisgarh</option>
+<option value="CH">Chandigarh</option>
+<option value="DN">Dadra and Nagar Haveli and Daman and Diu</option>
+<option value="DL">National Capital Territory of Delhi</option>
 <option value="GA">Goa</option>
 <option value="GJ">Gujarat</option>
 <option value="HR">Haryana</option>
 <option value="HP">Himachal Pradesh</option>
 <option value="JH">Jharkhand</option>
+<option value="JK">Jammu and Kashmir</option>
 <option value="KA">Karnataka</option>
 <option value="KL">Kerala</option>
+<option value="LA">Ladakh</option>
+<option value="LD">Lakshadweep</option>
 <option value="MP">Madhya Pradesh</option>
 <option value="MH">Maharashtra</option>
 <option value="MN">Manipur</option>
@@ -199,6 +240,7 @@ margin-top:20px;
 <option value="NL">Nagaland</option>
 <option value="OD">Odisha</option>
 <option value="PB">Punjab</option>
+<option value="PY">Puducherry</option>
 <option value="RJ">Rajasthan</option>
 <option value="SK">Sikkim</option>
 <option value="TN">Tamil Nadu</option>
@@ -207,13 +249,6 @@ margin-top:20px;
 <option value="UP">Uttar Pradesh</option>
 <option value="UK">Uttarakhand</option>
 <option value="WB">West Bengal</option>
-<option value="AN">Andaman & Nicobar</option>
-<option value="CH">Chandigarh</option>
-<option value="DD">Dadra Nagar Haveli & Daman Diu</option>
-<option value="JK">Jammu & Kashmir</option>
-<option value="LA">Ladakh</option>
-<option value="LD">Lakshadweep</option>
-<option value="PY">Puducherry</option>
 </select>
 
 <label>Purchased By</label>
@@ -303,6 +338,7 @@ margin-top:20px;
 
 <br><br>
 
+<img src="seal1.jpg" class="court-seal" alt="Court Seal">
 <button id="printBtn" onclick="window.print()">Print Certificate</button>
 
 </div>
@@ -312,42 +348,42 @@ margin-top:20px;
 <script>
 
 const stateNames={
-"DL":"Delhi",
-"AP":"Andhra Pradesh",
-"AR":"Arunachal Pradesh",
-"AS":"Assam",
-"BR":"Bihar",
-"CG":"Chhattisgarh",
-"GA":"Goa",
-"GJ":"Gujarat",
-"HR":"Haryana",
-"HP":"Himachal Pradesh",
-"JH":"Jharkhand",
-"KA":"Karnataka",
-"KL":"Kerala",
-"MP":"Madhya Pradesh",
-"MH":"Maharashtra",
-"MN":"Manipur",
-"ML":"Meghalaya",
-"MZ":"Mizoram",
-"NL":"Nagaland",
-"OD":"Odisha",
-"PB":"Punjab",
-"RJ":"Rajasthan",
-"SK":"Sikkim",
-"TN":"Tamil Nadu",
-"TS":"Telangana",
-"TR":"Tripura",
-"UP":"Uttar Pradesh",
-"UK":"Uttarakhand",
-"WB":"West Bengal",
-"AN":"Andaman & Nicobar",
-"CH":"Chandigarh",
-"DD":"Dadra Nagar Haveli & Daman Diu",
-"JK":"Jammu & Kashmir",
-"LA":"Ladakh",
-"LD":"Lakshadweep",
-"PY":"Puducherry"
+  "AN":"Andaman and Nicobar Islands",
+  "AP":"Andhra Pradesh",
+  "AR":"Arunachal Pradesh",
+  "AS":"Assam",
+  "BR":"Bihar",
+  "CG":"Chhattisgarh",
+  "CH":"Chandigarh",
+  "DN":"Dadra and Nagar Haveli and Daman and Diu",
+  "DL":"National Capital Territory of Delhi",
+  "GA":"Goa",
+  "GJ":"Gujarat",
+  "HR":"Haryana",
+  "HP":"Himachal Pradesh",
+  "JH":"Jharkhand",
+  "JK":"Jammu and Kashmir",
+  "KA":"Karnataka",
+  "KL":"Kerala",
+  "LA":"Ladakh",
+  "LD":"Lakshadweep",
+  "MP":"Madhya Pradesh",
+  "MH":"Maharashtra",
+  "MN":"Manipur",
+  "ML":"Meghalaya",
+  "MZ":"Mizoram",
+  "NL":"Nagaland",
+  "OD":"Odisha",
+  "PB":"Punjab",
+  "PY":"Puducherry",
+  "RJ":"Rajasthan",
+  "SK":"Sikkim",
+  "TN":"Tamil Nadu",
+  "TS":"Telangana",
+  "TR":"Tripura",
+  "UP":"Uttar Pradesh",
+  "UK":"Uttarakhand",
+  "WB":"West Bengal"
 };
 
 function random14Digit(){
