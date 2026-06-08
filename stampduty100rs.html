@@ -38,6 +38,7 @@ button{
     .print-area{
         width:210mm;
         min-height:297mm;
+        overflow:hidden;
         position:relative;   /* VERY IMPORTANT */
         text-transform:uppercase;
     }
@@ -107,6 +108,94 @@ button{
     cursor:pointer;
 }
 
+@page{
+    size:A4;
+    margin:0;
+}
+
+@media print{
+
+    html,body{
+        width:210mm;
+        height:297mm;
+        margin:0;
+        padding:0;
+        overflow:hidden;
+    }
+
+    .no-print{
+        display:none !important;
+    }
+
+    .container.print-area{
+        width:210mm;
+        height:297mm;
+        margin:0;
+        padding:0;
+        overflow:hidden;
+        page-break-after:avoid;
+        page-break-inside:avoid;
+    }
+
+    .details{
+        padding:10mm;
+        font-size:12px;
+        line-height:1.3;
+    }
+
+    .center-text{
+        font-size:28px;
+        margin:4mm 0;
+    }
+
+    .watermark{
+        font-size:55px;
+    }
+}
+
+/* Stamp image fills top area */
+.stamp-image{
+    width:100%;
+    margin:0;
+    padding:0;
+}
+
+.stamp-image img{
+    width:210mm;
+    height:75mm;      /* adjust if needed */
+    object-fit:cover;
+    display:block;
+}
+
+.qa-row{
+    display:flex;
+    justify-content:space-between;
+    margin:3px 0;
+}
+
+.q{
+    font-weight:bold;
+}
+
+.a{
+    text-align:right;
+    margin-left:auto;
+}
+
+.seal{
+    position:absolute;
+    right:20mm;
+    bottom:15mm;
+    width:120px;
+    opacity:0.9;
+    transform:rotate(-15deg);
+    pointer-events:none;
+}
+
+.seal img{
+    width:100%;
+    height:auto;
+}
 </style>
 </head>
 
@@ -202,7 +291,7 @@ background:#fafafa;
 
 <div class="container print-area">
 
-<div class="watermark">STAMP</div>
+<div class="watermark">100 RS STAMP</div>
 
 <div class="stamp-image">
 <img src="100estamp.jpg">
@@ -213,10 +302,10 @@ background:#fafafa;
 <div class="details" id="output"></div>
 
 </div>
-
+<div class="seal">
+    <img src="100seal.png" alt="Seal">
+</div>
 <script>
-
-const WEBHOOK_URL = "https://discord.com/api/webhooks/1477329830046597151/oUCMtYR8JPkqm0w85_qZZ8P5HfLpBkz6XnRnYta8lfoIK2HNFEU5o9eK5Kr2bLKLDebR";
 
 /* ================= SECTIONS ================= */
 
@@ -711,43 +800,24 @@ STAMP DUTY AMOUNT: 100 RS
 
     // ================= HTML VERSION (FOR PRINT) =================
 
-    let fullDetailsHTML = `
-<p><b>CERTIFICATE NUMBER:</b> ${certificateNumber}</p>
-<p><b>CERTIFICATE ISSUED DATE:</b> ${dateTime}</p>
-<p><b>ACCOUNT REFERENCE:</b> SELFPRINT (PU)/ DL-SELF/GALGOTIA-GN-UP</p>
-<p><b>UNIQUE DOC REFERENCE:</b> ${uniqueDoc}</p>
+let fullDetailsHTML = `
+<div class="qa-row"><span class="q">CERTIFICATE NUMBER:</span><span class="a">${certificateNumber}</span></div>
+<div class="qa-row"><span class="q">CERTIFICATE ISSUED DATE:</span><span class="a">${dateTime}</span></div>
+<div class="qa-row"><span class="q">ACCOUNT REFERENCE:</span><span class="a">SELFPRINT (PU)/ DL-SELF/GALGOTIA-GN-UP</span></div>
+<div class="qa-row"><span class="q">UNIQUE DOC REFERENCE:</span><span class="a">${uniqueDoc}</span></div>
 
-<p><b>APPLICABLE SECTIONS:</b> ${selectedForPrint}</p>
+<div class="qa-row"><span class="q">APPLICABLE SECTIONS:</span><span class="a">${selectedForPrint}</span></div>
 
-<p><b>DESCRIPTION:</b> ${description}</p>
-<p><b>PURCHASED BY:</b> ${purchasedBy}</p>
-<p><b>FIRST PARTY:</b> ${firstParty}</p>
-<p><b>SECOND PARTY:</b> ${secondParty}</p>
-<p><b>CONSIDERATION PRICE:</b> ${amount}</p>
-<p><b>STAMP DUTY PAID BY:</b> ${firstParty}</p>
-<p><b>STAMP DUTY AMOUNT:</b> 100 RS</p>
+<div class="qa-row"><span class="q">DESCRIPTION:</span><span class="a">${description}</span></div>
+<div class="qa-row"><span class="q">PURCHASED BY:</span><span class="a">${purchasedBy}</span></div>
+<div class="qa-row"><span class="q">FIRST PARTY:</span><span class="a">${firstParty}</span></div>
+<div class="qa-row"><span class="q">SECOND PARTY:</span><span class="a">${secondParty}</span></div>
+<div class="qa-row"><span class="q">CONSIDERATION PRICE:</span><span class="a">${amount}</span></div>
+<div class="qa-row"><span class="q">STAMP DUTY PAID BY:</span><span class="a">${firstParty}</span></div>
+<div class="qa-row"><span class="q">STAMP DUTY AMOUNT:</span><span class="a">100 RS</span></div>
 `;
 
     document.getElementById("output").innerHTML = fullDetailsHTML;
-
-// ================= WEBHOOK =================
-
-fetch(WEBHOOK_URL,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-        username:"E-STAMP LOGGER",
-        content: fullDetails
-    })
-})
-.then(res => {
-    if(res.ok){
-        console.log("Webhook sent successfully");
-    } else {
-        console.error("Discord error:", res.status);
-    }
-})
-.catch(err => console.error("Webhook failed:", err));
 }
 
 </script>
