@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SATYAMEV JAYATE - Digital Legal Portal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Poppins',sans-serif;
+}
+
+/* HEADER */
+
+.header{
+    background:linear-gradient(135deg,#0b2d5c,#123d77);
+    color:white;
+    text-align:center;
+    padding:30px 15px;
+    border-bottom:5px solid #d4af37;
+}
+
+.emblem{
+    font-size:60px;
+    margin-bottom:10px;
+}
+
+.heading{
+    font-size:42px;
+    font-weight:700;
+    letter-spacing:2px;
+}
+
+.subheading{
+    margin-top:8px;
+    font-size:16px;
+    opacity:.9;
+}
+
+/* NOTICE BAR */
+
+.notice{
+    background:#d4af37;
+    color:#111;
+    padding:12px;
+    text-align:center;
+    font-weight:600;
+}
+
+/* CONTAINER */
+
+.container{
+    width:95%;
+    max-width:1400px;
+    margin:auto;
+    padding:30px 0;
+}
+
+/* STATUS CARDS */
+
+.status{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.status-card{
+    background:white;
+    border-left:5px solid #0b2d5c;
+    padding:20px;
+    min-width:250px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.status-card h3{
+    color:#0b2d5c;
+    margin-bottom:5px;
+}
+
+/* MAIN PORTAL BOX */
+
+.portal-box{
+    background:white;
+    border-radius:15px;
+    padding:35px;
+    margin-top:25px;
+    box-shadow:0 3px 15px rgba(0,0,0,.08);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+/* PORTAL BUTTONS */
+
+.portal-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    min-height:95px;
+    background:white;
+    color:var(--gov-blue);
+    border:1px solid #d8dee8;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.25s;
+}
+
+.portal-btn:hover{
+    background:var(--gov-blue);
+    color:white;
+    border-color:var(--gov-blue);
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    padding:25px;
+    margin-top:30px;
+    background:#0b2d5c;
+    color:white;
+    font-size:14px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+    .heading{
+        font-size:30px;
+    }
+
+    .portal-btn{
+        font-size:15px;
+    }
+
+}
+
+:root{
+    --gov-blue:#0b2e59;
+    --gov-light:#164a8a;
+    --gov-gold:#d4af37;
+    --bg:#f5f7fa;
+    --card:#ffffff;
+    --text:#222;
+}
+
+.gov-ribbon{
+    background:#111;
+    color:#fff;
+    padding:8px 20px;
+    font-size:13px;
+    text-align:center;
+}
+
+.header{
+    background:var(--gov-blue);
+    color:white;
+    text-align:center;
+    padding:35px 20px;
+    border-bottom:4px solid var(--gov-gold);
+}
+
+.heading{
+    font-size:42px;
+    font-weight:700;
+    margin-top:10px;
+}
+
+.subheading{
+    margin-top:8px;
+    opacity:.9;
+}
+
+.dashboard-stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:30px;
+}
+
+@media(max-width:768px){
+    .dashboard-stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+.stat-card{
+    background:#fff;
+    border-left:5px solid var(--gov-blue);
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    flex:1;
+}
+
+.stat-card h2{
+    color:var(--gov-blue);
+    font-size:30px;
+}
+
+.footer{
+    background:var(--gov-blue);
+    color:white;
+    text-align:center;
+    padding:25px;
+    margin-top:40px;
+    line-height:1.8;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+
+    <img src="emblem.jpg" style="height:90px;">
+
+    <div class="heading">
+        SATYAMEV JAYATE
+    </div>
+
+<div class="notice">
+National Digital Legal & Record Management Portal
+</div>
+
+<div class="gov-ribbon">
+    Government of India | Digital Legal & Record Management System
+</div>
+
+</div>
+
+<div class="marquee">
+<marquee>
+ • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • Government Digital Record System • Secure Case Documentation • Evidence Management • Legal Forms Repository • Student Portfolio Records • 
+</marquee>
+</div>
+
+<div class="container">
+
+<div class="status">
+
+<div class="status-card">
+<h3>Case Records</h3>
+<p>Case Record Management is the systematic process of organizing, maintaining, tracking, and storing case-related information and documents. It ensures accurate record keeping, quick retrieval of data, and secure preservation of evidence, reports, and legal documents. Effective case record management improves efficiency, transparency, accountability, and decision-making while supporting investigations, legal proceedings, and administrative operations.
+</p>
+</div>
+
+<div class="status-card">
+<h3>Digital Records</h3>
+<p>Digital records are electronic documents and data stored on computers or digital devices. They help organizations manage information efficiently, reduce paper usage, and improve accessibility. Digital records can include emails, reports, images, and databases. They provide quick retrieval, secure storage, easy sharing, and better preservation of important information over time.</p>
+</div>
+
+<div class="status-card">
+<h3>Legal Documents</h3>
+<p>Legal documents are official written records that establish rights, duties, and agreements between individuals, organizations, or governments. They include contracts, affidavits, wills, deeds, and court orders. These documents provide legal evidence, ensure compliance with laws, protect interests, and help resolve disputes through proper legal procedures.</p>
+</div>
+
+<div class="dashboard-stats">
+
+<div class="stat-card">
+<h2>1,248</h2>
+<p>Case Records</p>
+</div>
+
+<div class="stat-card">
+<h2>876</h2>
+<p>Legal Forms</p>
+</div>
+
+<div class="stat-card">
+<h2>542</h2>
+<p>Evidence Files</p>
+</div>
+
+<div class="stat-card">
+<h2>100%</h2>
+<p>Digital Archive</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="portal-box">
+
+<div class="grid">
+
+<a href="caserecord.html" class="portal-btn">
+⚖️ CASE RECORD MANAGEMENT
+</a>
+
+<a href="studentportfolio.html" class="portal-btn">
+🎓 STUDENT PORTFOLIO
+</a>
+
+<a href="3.html" class="portal-btn">
+🆔 CREDENTIAL
+</a>
+
+<a href="evidence.html" class="portal-btn">
+📂 EVIDENCES
+</a>
+
+<a href="5.html" class="portal-btn">
+📜 AFFIDAVIT
+</a>
+
+<a href="6.html" class="portal-btn">
+📝 FORM 1A
+</a>
+
+<a href="7.html" class="portal-btn">
+📄 FORM 2A
+</a>
+
+<a href="8.html" class="portal-btn">
+📄 FORM 2B
+</a>
+
+<a href="9.html" class="portal-btn">
+📑 FORM 3A
+</a>
+
+<a href="assingmednt.html" class="portal-btn">
+📚 fircopy
+</a>
+
+<a href="estamp1.html" class="portal-btn">
+📜 E STAMP
+</a>
+
+<a href="stampduty100rs.html" class="portal-btn">
+📜 STAMP DUTY - ₹100
+</a>
+
+<a href="stampduty200rs.html" class="portal-btn">
+📜 STAMP DUTY - ₹200
+</a>
+
+<a href="stampduty500rs.html" class="portal-btn">
+📜 STAMP DUTY - ₹500
+</a>
+
+<a href="stampduty1000rs.html" class="portal-btn">
+📜 STAMP DUTY - ₹1000
+</a>
+
+<a href="assingment.html" class="portal-btn">
+📚 ASSINGMENT & PRINT
+</a>
+
+</div>
+
+</div>
+
+<footer class="footer">
+
+<div>
+© 2026 SATYAMEV JAYATE
+</div>
+
+<div>
+Digital Legal & Record Management System
+</div>
+
+<div>
+Secure • Reliable • Government Standards
+</div>
+
+</footer>
+
+</div>
+
+</body>
+</html>
