@@ -70,8 +70,8 @@ button{
 
 .stamp-image img{
     width:100%;
+    max-width:100%;
     height:auto;
-    object-fit:contain;
     display:block;
 }
 
@@ -156,14 +156,15 @@ button{
 /* Stamp image fills top area */
 .stamp-image{
     width:100%;
+    text-align:center;
     margin:0;
     padding:0;
 }
 
 .stamp-image img{
-    width:210mm;
-    height:75mm;      /* adjust if needed */
-    object-fit:cover;
+    width:100%;
+    height:auto;
+    object-fit:contain;
     display:block;
 }
 
