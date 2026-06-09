@@ -141,6 +141,35 @@ button{
     cursor:pointer;
 }
 
+.qa-row{
+    display:flex;
+    justify-content:space-between;
+    margin:3px 0;
+}
+
+.q{
+    font-weight:bold;
+}
+
+.a{
+    text-align:right;
+    margin-left:auto;
+}
+
+.seal{
+    position:absolute;
+    right:20mm;
+    bottom:15mm;
+    width:120px;
+    opacity:0.9;
+    transform:rotate(-15deg);
+    pointer-events:none;
+}
+
+.seal img{
+    width:100%;
+    height:auto;
+}
 </style>
 </head>
 
@@ -743,21 +772,21 @@ STAMP DUTY AMOUNT: 100 RS
 
     // ================= HTML VERSION (FOR PRINT) =================
 
-    let fullDetailsHTML = `
-<p><b>CERTIFICATE NUMBER:</b> ${certificateNumber}</p>
-<p><b>CERTIFICATE ISSUED DATE:</b> ${dateTime}</p>
-<p><b>ACCOUNT REFERENCE:</b> SELFPRINT (PU)/ DL-SELF/GALGOTIA-GN-UP</p>
-<p><b>UNIQUE DOC REFERENCE:</b> ${uniqueDoc}</p>
+let fullDetailsHTML = `
+<div class="qa-row"><span class="q">CERTIFICATE NUMBER:</span><span class="a">${certificateNumber}</span></div>
+<div class="qa-row"><span class="q">CERTIFICATE ISSUED DATE:</span><span class="a">${dateTime}</span></div>
+<div class="qa-row"><span class="q">ACCOUNT REFERENCE:</span><span class="a">SELFPRINT (PU)/ DL-SELF/GALGOTIA-GN-UP</span></div>
+<div class="qa-row"><span class="q">UNIQUE DOC REFERENCE:</span><span class="a">${uniqueDoc}</span></div>
 
-<p><b>APPLICABLE SECTIONS:</b> ${selectedForPrint}</p>
+<div class="qa-row"><span class="q">APPLICABLE SECTIONS:</span><span class="a">${selectedForPrint}</span></div>
 
-<p><b>DESCRIPTION:</b> ${description}</p>
-<p><b>PURCHASED BY:</b> ${purchasedBy}</p>
-<p><b>FIRST PARTY:</b> ${firstParty}</p>
-<p><b>SECOND PARTY:</b> ${secondParty}</p>
-<p><b>CONSIDERATION PRICE:</b> ${amount}</p>
-<p><b>STAMP DUTY PAID BY:</b> ${firstParty}</p>
-<p><b>STAMP DUTY AMOUNT:</b> 100 RS</p>
+<div class="qa-row"><span class="q">DESCRIPTION:</span><span class="a">${description}</span></div>
+<div class="qa-row"><span class="q">PURCHASED BY:</span><span class="a">${purchasedBy}</span></div>
+<div class="qa-row"><span class="q">FIRST PARTY:</span><span class="a">${firstParty}</span></div>
+<div class="qa-row"><span class="q">SECOND PARTY:</span><span class="a">${secondParty}</span></div>
+<div class="qa-row"><span class="q">CONSIDERATION PRICE:</span><span class="a">${amount}</span></div>
+<div class="qa-row"><span class="q">STAMP DUTY PAID BY:</span><span class="a">${firstParty}</span></div>
+<div class="qa-row"><span class="q">STAMP DUTY AMOUNT:</span><span class="a">100 RS</span></div>
 `;
 
     document.getElementById("output").innerHTML = fullDetailsHTML;
