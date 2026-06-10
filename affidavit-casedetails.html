@@ -167,6 +167,37 @@ button{
     margin-top:20px;
     margin-bottom:20px;
 }
+
+#affidavitContent b{
+    color:red;
+    text-decoration:underline;
+}
+
+.affidavit-title{
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+
+.offence-circle{
+    display:inline-block;
+    min-width:90px;
+    min-height:90px;
+    padding:10px;
+    border:3px solid red;
+    border-radius:50%;
+    color:red;
+    font-weight:bold;
+    text-align:center;
+    line-height:1.2;
+    vertical-align:middle;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+}
 </style>
 </head>
 <body>
@@ -1489,24 +1520,23 @@ The petitioner(s) in the aforesaid matter are <b>${na(document.getElementById('p
 <p>
 The proceedings arise out of FIR No. <b>${na(document.getElementById('firNo').value)}</b>, dated <b>${na(document.getElementById('firDate').value)}</b>, registered at <b>${na(document.getElementById('policeStation').value)}</b> Police Station, under Sections <b>${na(document.getElementById('sections').value)}</b>.
 </p>
-
-<br>
-
 <p>
-The case pertains to the nature of offence/dispute, namely <b>${na(document.getElementById('nature').value)}</b>, and the proceedings are presently pending before/at <b>${na(document.getElementById('proceedingLocation').value)}</b>.
+The case pertains to the nature of offence/dispute, namely <b>${na(document.getElementById('nature').value)}</b>, and the proceedings are presently pending before/at <b>${na(document.getElementById('proceedingLocation').value)}</b>.That the requisite stamp duty of
+<b>₹${stampAmount}</b>
+has been duly paid by the Petitioner/Deponent as applicable to the nature of dispute/offence mentioned herein.
 </p>
 <p>
 Based upon my examination of the available records and documents, I state that the particulars set forth herein accurately reflect the details of the aforesaid case and are true and correct to the best of my knowledge, information, and belief.
 </p>
-
 <p>
-That the requisite stamp duty of
-<b>₹${stampAmount}</b>
-has been duly paid by the Petitioner/Deponent as applicable to the nature of dispute/offence mentioned herein.
+The case pertains to the nature of offence/dispute, namely
+<span class="offence-circle">
+${na(document.getElementById('nature').value)}
+</span>.
 </p>
-
+<br>
 <div class="verification">
-
+<br>
 <b>VERIFICATION</b>
 
 <br>
