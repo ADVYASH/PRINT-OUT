@@ -19,6 +19,11 @@ body{
     padding:20px;
 }
 
+html,
+body{
+    overflow-x:hidden;
+}
+
 .print-btn{
     position:fixed;
     top:15px;
@@ -34,14 +39,14 @@ body{
 }
 
 .page{
-    width:100%;
-    min-height:100%;
+    width:190mm;
+    min-height:277mm;
     background:#fff;
     border:2px solid #000;
-    padding:8mm;
+    padding:4mm;
     position:relative;
+    margin:auto;
 }
-
 .header{
     text-align:center;
     border-bottom:3px solid #000;
@@ -50,13 +55,12 @@ body{
 }
 
 .header h1{
-    font-size:30px;
+    font-size:22px;
 }
 
 .header h2{
-    margin-top:5px;
-    font-size:16px;
-    font-weight:normal;
+    margin-top:2px;
+    font-size:12px;
 }
 
 .watermark{
@@ -98,21 +102,25 @@ body{
 
 .info-table td{
     border:1px solid #000;
-    padding:5px 8px;
-    font-size:12px;
+    padding:3px 6px;
+    font-size:11px;
+    line-height:1.2;
 }
 
 .info-table td:first-child{
-    width:250px;
+    width:35%;
     font-weight:bold;
     background:#f3f3f3;
+    word-break:break-word;
 }
 
 .input-field{
     width:100%;
     border:none;
     outline:none;
-    font-size:15px;
+    font-size:11px;
+    padding:1px;
+    white-space:normal;
 }
 
 .textarea-field{
@@ -165,9 +173,11 @@ body{
 
 @media print{
 
+    html,
     body{
-        background:#fff;
+        margin:0;
         padding:0;
+        background:#fff;
     }
 
     .print-btn{
@@ -175,37 +185,58 @@ body{
     }
 
     .page{
-        border:none;
         width:100%;
+        min-height:auto;
         margin:0;
-    }
-
-}
-
-@media print{
-
-    html,
-    body{
-        width:210mm;
-        height:297mm;
-        margin:0;
-        padding:0;
-        overflow:hidden;
-    }
-
-    .page{
-        width:210mm;
-        height:297mm;
-        margin:0;
-        padding:6mm;
         border:none;
-        overflow:hidden;
+        padding:4mm;
+        box-sizing:border-box;
     }
 }
 
 @page{
     size:A4;
     margin:0;
+}
+
+.input-field,
+.textarea-field{
+    text-transform: uppercase;
+}
+
+.info-table td:nth-child(2){
+    text-transform: uppercase;
+}
+
+table,
+tr,
+td{
+    page-break-inside:avoid;
+}
+
+.section-title{
+    margin-top:4px;
+    margin-bottom:3px;
+    padding:3px 6px;
+}
+
+.info-table td{
+    word-wrap:break-word;
+    overflow-wrap:break-word;
+    vertical-align:top;
+}
+
+.expand-field{
+    width:100%;
+    border:none;
+    outline:none;
+    resize:none;
+    overflow:hidden;
+    min-height:20px;
+    font-size:11px;
+    line-height:1.4;
+    text-transform:uppercase;
+    font-family:Arial, Helvetica, sans-serif;
 }
 </style>
 </head>
@@ -220,54 +251,21 @@ body{
     <h2>Official Academic & Research Record</h2>
 </div>
 
-<div class="photo-box">
-    <img src="myphoto.jpg" alt="Student Photo">
-</div>
-
-<div class="section-title">
-CASE DETAILS
-</div>
-
 <table class="info-table">
-
-<tr>
-<td>Case Name</td>
-<td><input type="text" class="input-field" placeholder="Enter Case Name"></td>
-</tr>
-
-<tr>
-<td>Case Year</td>
-<td><input type="text" class="input-field" placeholder="Enter Case Year"></td>
-</tr>
-
-<tr>
-<td>Case Number</td>
-<td><input type="text" class="input-field" placeholder="Enter Case Number"></td>
-</tr>
-
-<tr>
-<td>Citation</td>
-<td><input type="text" class="input-field" placeholder="Enter Citation"></td>
-</tr>
-
-<tr>
-<td>Case Notes / Description</td>
-<td>
-<textarea class="textarea-field" placeholder="Write case details, facts, judgment summary, legal issues, etc."></textarea>
-</td>
-</tr>
-
-</table>
 
 <div class="section-title">
 STUDENT DETAILS
 </div>
 
-<table class="info-table">
 
 <tr>
 <td>Name</td>
 <td>Yash Kumar (Student)</td>
+<td rowspan="9" style="width:140px;text-align:center;vertical-align:top;">
+    <img src="myphoto.jpg"
+         alt="Student Photo"
+         style="width:90px;height:105px;border:2px solid #000;object-fit:cover;">
+</td>
 </tr>
 
 <tr>
@@ -312,6 +310,54 @@ STUDENT DETAILS
 
 </table>
 
+<div class="section-title">
+CASE DETAILS
+</div>
+
+<table class="info-table">
+
+<tr>
+<td>Case Name</td>
+<td><textarea class="expand-field" placeholder="Enter Case Name"></textarea></td>
+</tr>
+
+<tr>
+<td>Petitioner Name</td>
+<td><textarea class="expand-field" placeholder="Enter Petitioner Name"></textarea></td>
+</tr>
+
+<tr>
+<td>Respondant Name</td>
+<td><textarea class="expand-field" placeholder="Enter Respondant Name"></textarea></td>
+</tr>
+
+<tr>
+<td>On Bench</td>
+<td><textarea class="expand-field" placeholder="Enter On Bench Judges Name"></textarea></td>
+</tr>
+
+<tr>
+<td>Judgement By</td>
+<td><textarea class="expand-field" placeholder="Enter Who Gave Judgement"></textarea></td>
+</tr>
+
+<tr>
+<td>Judgement Date</td>
+<td><input type="date" class="date-field"></td>
+</tr>
+
+<tr>
+<td>Citation</td>
+<td><textarea class="expand-field" placeholder="Enter Citation"></textarea></td>
+</tr>
+
+<tr>
+<td>Type of Offences</td>
+<td><textarea class="expand-field" placeholder="Write Type of Offences"></textarea></td>
+</tr>
+
+</table>
+
 <div class="footer-section">
 
     <div class="stamp-image">
@@ -326,6 +372,18 @@ STUDENT DETAILS
 </div>
 
 </div>
+<script>
+document.querySelectorAll('.expand-field').forEach(field => {
 
+    function autoGrow(){
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+    }
+
+    field.addEventListener('input', autoGrow);
+    autoGrow.call(field);
+
+});
+</script>
 </body>
 </html>
