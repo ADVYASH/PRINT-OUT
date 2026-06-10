@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Affidavit Generator</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f0f0f0;
+    padding:20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.form-section{
+    background:#fff;
+    padding:20px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:10px;
+}
+
+input, textarea{
+    width:100%;
+    padding:8px;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+
+textarea{
+    height:70px;
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    background:#000;
+    color:#fff;
+    cursor:pointer;
+    border-radius:5px;
+    margin-top:10px;
+    margin-right:10px;
+}
+
+#a4{
+    background:white;
+    width:210mm;
+    height:297mm;
+    margin:auto;
+    padding:15mm;
+    overflow:hidden;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+.affidavit-title{
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.content{
+    font-size:13px;
+    line-height:1.45;
+    text-align:justify;
+}
+
+.verification{
+    margin-top:20px;
+}
+
+.signature{
+    margin-top:40px;
+    text-align:right;
+}
+
+@media print{
+
+    body{
+        background:white;
+        padding:0;
+    }
+
+    .form-section,
+    .print-btn{
+        display:none;
+    }
+
+    #a4{
+        box-shadow:none;
+        margin:0;
+        width:100%;
+        height:auto;
+        padding:15mm;
+    }
+
+    @page{
+        size:A4;
+        margin:10mm;
+    }
+}
+
+#a4{
+    position:relative;
+}
+
+.affidavit-seal{
+    position:absolute;
+    top:10mm;
+    right:10mm;
+    width:120px;
+    height:120px;
+    border:5px double #b30000;
+    border-radius:50%;
+    color:#b30000;
+    background:rgba(255,255,255,0.95);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-weight:900;
+    font-size:12px;
+    line-height:1.3;
+    transform:rotate(-22deg);
+    text-transform:uppercase;
+    z-index:10;
+    padding:10px;
+    box-sizing:border-box;
+}
+
+.affidavit-seal::before{
+    content:"";
+    position:absolute;
+    top:6px;
+    left:6px;
+    right:6px;
+    bottom:6px;
+    border:2px solid #b30000;
+    border-radius:50%;
+}
+
+.affidavit-title{
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="form-section">
+
+<h1>Affidavit Generator</h1>
+
+<div class="grid">
+
+<input id="caseName" placeholder="Case Name">
+<input id="caseNo" placeholder="Case Number">
+<input id="courtName" placeholder="Court Name">
+<input id="courtState" placeholder="Court State">
+
+<input id="bench" placeholder="On Bench">
+<input id="judgmentBy" placeholder="Judgment By">
+<label>Judgment Date (Court Decision Date)</label>
+<input type="date" id="judgmentDate">
+<input id="citationNo" placeholder="Citation Number">
+
+<input id="petitioners" placeholder="Petitioner Names">
+<input id="petAdv" placeholder="Petitioner Advocates">
+
+<input id="respondents" placeholder="Respondent Names">
+<input id="resAdv" placeholder="Respondent Advocates">
+
+<input id="firNo" placeholder="FIR Number">
+<label>FIR Registration Date</label>
+<input type="date" id="firDate">
+<input id="policeStation" placeholder="Police Station">
+
+<input id="sections" placeholder="Sections Included">
+<input
+    list="caseTypes"
+    id="nature"
+    placeholder="Type offence or dispute..."
+    autocomplete="off">
+
+<datalist id="caseTypes"></datalist>
+
+<input id="proceedingLocation" placeholder="Case Proceeding Location">
+
+</div>
+
+<button onclick="generateAffidavit()">Generate Affidavit</button>
+<button class="print-btn" onclick="window.print()">Print Affidavit</button>
+
+</div>
+
+<div id="a4">
+
+<div class="affidavit-seal" id="sealText">
+AFFIDAVIT<br>N/A
+</div>
+
+<div class="affidavit-title">
+AFFIDAVIT
+</div>
+
+<div id="affidavitContent" class="content">
+
+Generate affidavit to preview here.
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+const caseDatabase = {
+
+"Murder":1000,
+"Attempt to Murder":1000,
+"Contract Killing":1000,
+"Serial Murder":1000,
+"Mass Murder":1000,
+"Honour Killing":1000,
+"Dowry Death":1000,
+"Culpable Homicide":1000,
+"Custodial Death":1000,
+"Lynching":1000,
+"Rape":1000,
+"Gang Rape":1000,
+"Custodial Rape":1000,
+"Marital Rape":1000,
+"Aggravated Rape":1000,
+"Child Rape":1000,
+"POCSO Offences":1000,
+"Sexual Assault on Minor":1000,
+"Aggravated Sexual Assault":1000,
+"Human Trafficking":1000,
+"Child Trafficking":1000,
+"Organ Trafficking":1000,
+"Forced Labour Trafficking":1000,
+"Sex Trafficking":1000,
+"Kidnapping for Ransom":1000,
+"Child Kidnapping":1000,
+"Abduction for Murder":1000,
+"Hostage Taking":1000,
+"Wrongful Confinement with Torture":1000,
+"Terrorism":1000,
+"Terror Funding":1000,
+"Terror Recruitment":1000,
+"Terror Conspiracy":1000,
+"Bomb Blast Cases":1000,
+"Explosive Substance Cases":1000,
+"Aircraft Hijacking":1000,
+"Cyber Terrorism":1000,
+"Waging War Against India":1000,
+"Organized Crime":1000,
+"Mafia Activities":1000,
+"Gang Warfare":1000,
+"Insurgency Cases":1000,
+"Naxal Activities":1000,
+"Cross-Border Terrorism":1000,
+"Biological Attack Cases":1000,
+"Chemical Attack Cases":1000,
+"Acid Attack":1000,
+"Attempted Acid Attack":1000,
+"Custodial Torture":1000,
+"Police Encounter Death Cases":1000,
+"Illegal Arms Trafficking":1000,
+"Arms Smuggling":1000,
+"Ammunition Smuggling":1000,
+"Weapons Supply to Terrorists":1000,
+"Drug Trafficking":1000,
+"International Drug Trafficking":1000,
+"Narcotics Cartel Cases":1000,
+"Large Scale Heroin Trafficking":1000,
+"Cocaine Trafficking":1000,
+"Synthetic Drug Manufacturing":1000,
+"Money Laundering Linked to Organized Crime":1000,
+"Hawala Linked Terror Financing":1000,
+"Counterfeit Currency Network":1000,
+"National Security Violations":1000,
+"Espionage":1000,
+"State Secrets Leakage":1000,
+"Sedition Related Serious Cases":1000,
+"Treason":1000,
+"Genocide":1000,
+"Ethnic Cleansing":1000,
+"Crimes Against Humanity":1000,
+"War Crimes":1000,
+"Human Organ Harvesting":1000,
+"Child Pornography Production":1000,
+"Child Sexual Exploitation Network":1000,
+"Online Child Abuse Network":1000,
+"Human Sacrifice":1000,
+"Witch Hunting Murder":1000,
+"Ritual Killing":1000,
+"Mass Poisoning":1000,
+"Poisoning Leading to Death":1000,
+"Food Adulteration Causing Death":1000,
+"Medical Negligence Causing Multiple Deaths":1000,
+"Building Collapse Due to Criminal Negligence":1000,
+"Industrial Disaster Cases":1000,
+"Mine Disaster Causing Death":1000,
+"Illegal Firearms Manufacturing":1000,
+"Explosive Manufacturing Ring":1000,
+"Dacoity with Murder":1000,
+"Robbery with Murder":1000,
+"Armed Robbery Resulting in Death":1000,
+"Prison Riot Causing Death":1000,
+"Rioting Causing Death":1000,
+"Mob Violence Causing Death":1000,
+"Honour-Based Violence":1000,
+"Custodial Sexual Assault":1000,
+"Forced Prostitution Rackets":1000,
+"Child Prostitution Rings":1000,
+"International Human Smuggling":1000,
+"Illegal Detention with Torture":1000,
+"Murder by Poison":1000,
+"Murder by Burning":1000,
+"Triple Murder":1000,
+"Multiple Victim Homicide":1000,
+"Contract Assassination":1000,
+"Murder for Insurance":1000,
+"Murder for Property":1000,
+"Political Assassination":1000,
+"Election Violence Murder":1000,
+"Religious Violence Murder":1000,
+"Communal Violence Murder":1000,
+"Caste Atrocity Murder":1000,
+"SC/ST Atrocity Causing Death":1000,
+"Honour Crime Conspiracy":1000,
+"Child Murder":1000,
+"Infanticide":1000,
+"Female Foeticide Network":1000,
+"Bride Burning":1000,
+"Dowry Murder Conspiracy":1000,
+"Forced Marriage Trafficking":1000,
+"Cross-Border Human Trafficking":1000,
+"International Child Trafficking":1000,
+"Organ Trade Syndicate":1000,
+"Large Scale Cyber Terror Attack":1000,
+"Critical Infrastructure Attack":1000,
+"Power Grid Sabotage":1000,
+"Railway Sabotage":1000,
+"Airport Terror Attack":1000,
+"Metro Bombing":1000,
+"School Terror Attack":1000,
+"Religious Place Terror Attack":1000,
+"Suicide Bombing":1000,
+"Terror Financing Through Hawala":1000,
+"Terror Sleeper Cell Operations":1000,
+"Recruitment for Terror Groups":1000,
+"Arms Supply Conspiracy":1000,
+"Illegal Explosives Storage":1000,
+"Bomb Manufacturing Unit":1000,
+"Hostage Crisis":1000,
+"Prison Escape Through Violence":1000,
+"Gangland Execution":1000,
+"Organized Extortion Syndicate":1000,
+"Cartel Violence":1000,
+"Drug Cartel Homicide":1000,
+"Witness Murder":1000,
+"Witness Intimidation Leading to Death":1000,
+"Judicial Officer Murder":1000,
+"Police Officer Murder":1000,
+"Public Servant Murder on Duty":1000,
+"Mass Casualty Criminal Attack":1000,
+"Attempted Terror Bombing":1000,
+"Railway Bomb Blast":1000,
+"Bus Bomb Blast":1000,
+"Market Bomb Blast":1000,
+"Court Complex Bomb Blast":1000,
+"Government Building Bomb Blast":1000,
+"Parliament Attack Conspiracy":1000,
+"Military Installation Attack":1000,
+"Naval Base Attack":1000,
+"Air Force Base Attack":1000,
+"Armed Insurrection":1000,
+"Terrorist Training Camp Operation":1000,
+"Recruitment of Child Soldiers":1000,
+"Cross-Border Militant Infiltration":1000,
+"Terrorist Harbouring":1000,
+"Terrorist Logistics Support":1000,
+"Terrorist Weapons Storage":1000,
+"Terrorist Communication Network":1000,
+"Financing Extremist Organizations":1000,
+"Manufacture of Improvised Explosive Devices":1000,
+"Distribution of Explosives for Terror Activities":1000,
+"Suicide Attack Planning":1000,
+"Hostage Rescue Operation Related Crimes":1000,
+"Nuclear Material Smuggling":1000,
+"Radioactive Material Trafficking":1000,
+"Chemical Weapons Possession":1000,
+"Biological Weapons Possession":1000,
+"Biological Agent Release":1000,
+"Chemical Agent Release":1000,
+"Deliberate Epidemic Spread":1000,
+"Mass Contamination of Water Supply":1000,
+"Deliberate Food Poisoning Scheme":1000,
+"Industrial Sabotage Causing Deaths":1000,
+"Dam Sabotage Causing Fatalities":1000,
+"Power Plant Sabotage":1000,
+"Airport Sabotage":1000,
+"Seaport Sabotage":1000,
+"Railway Track Sabotage":1000,
+"Metro System Sabotage":1000,
+"Critical Infrastructure Destruction":1000,
+"Organized Human Smuggling Ring":1000,
+"Child Abduction Network":1000,
+"International Kidnapping Ring":1000,
+"Forced Organ Removal":1000,
+"Organ Harvesting Network":1000,
+"Sale of Human Organs":1000,
+"Trafficking for Forced Marriage":1000,
+"Trafficking for Sexual Slavery":1000,
+"Trafficking for Forced Begging":1000,
+"Child Labour Trafficking Network":1000,
+"Large-Scale Child Exploitation Ring":1000,
+"Production of Child Sexual Abuse Material":1000,
+"Distribution of Child Sexual Abuse Material":1000,
+"Online Child Grooming Network":1000,
+"Live Streaming Child Abuse":1000,
+"Sexual Exploitation Syndicate":1000,
+"Forced Prostitution Enterprise":1000,
+"Brothel Network Involving Minors":1000,
+"Abduction for Sexual Exploitation":1000,
+"Murder Following Sexual Assault":1000,
+"Murder to Conceal Rape":1000,
+"Serial Sexual Assault Cases":1000,
+"Repeat Violent Sexual Offender Cases":1000,
+"Custodial Sexual Exploitation":1000,
+"Institutional Child Abuse":1000,
+"Human Experimentation Without Consent":1000,
+"Illegal Medical Trials Causing Death":1000,
+"Sale of Infants":1000,
+"Child Adoption Trafficking Scam":1000,
+"Child Sale Across Borders":1000,
+"Murder of Witnesses":1000,
+"Witness Elimination Conspiracy":1000,
+"Judge Assassination Plot":1000,
+"Prosecutor Murder":1000,
+"Police Officer Assassination":1000,
+"Armed Attack on Law Enforcement":1000,
+"Attack on Security Forces":1000,
+"Ambush of Security Personnel":1000,
+"Prison Gang Homicide":1000,
+"Organized Prison Violence":1000,
+"Custodial Murder Conspiracy":1000,
+"Political Assassination Attempt":1000,
+"Election Violence Resulting in Death":1000,
+"Mass Communal Violence":1000,
+"Religious Site Attack":1000,
+"Targeted Ethnic Violence":1000,
+"Hate Crime Resulting in Death":1000,
+"Caste-Based Mass Violence":1000,
+"Honour Crime Syndicate":1000,
+"Forced Conversion Through Violence":1000,
+"Mob Justice Killing":1000,
+"Vigilante Murder":1000,
+"Contract Torture Operation":1000,
+"Torture Resulting in Death":1000,
+"Torture of Minor Resulting in Death":1000,
+"Kidnapping with Torture":1000,
+"Illegal Detention with Fatality":1000,
+"Enforced Disappearance":1000,
+"Human Rights Violation Causing Death":1000,
+"Smuggling Arms to Terror Groups":1000,
+"International Arms Network":1000,
+"Illegal Firearms Factory":1000,
+"Military Grade Weapons Trafficking":1000,
+"Grenade Supply Network":1000,
+"Rocket Launcher Possession":1000,
+"Explosive Trafficking Ring":1000,
+"Ammunition Manufacturing Ring":1000,
+"Smuggling Explosives Across Borders":1000,
+"Organized Violent Gang Activities":1000,
+"Criminal Syndicate Leadership":1000,
+"Mafia Contract Enforcement Killing":1000,
+"Cartel Execution Cases":1000,
+"Drug Cartel Violence":1000,
+"Drug Cartel Torture Cases":1000,
+"Drug Cartel Murder Conspiracy":1000,
+"Drug Cartel Kidnapping":1000,
+"International Narcotics Network":1000,
+"Production of Synthetic Drugs at Scale":1000,
+"Drug Manufacturing Laboratory Operations":1000,
+"Heroin Processing Unit Operations":1000,
+"Cocaine Distribution Network":1000,
+"Methamphetamine Manufacturing Network":1000,
+"Fentanyl Distribution Network":1000,
+"Narco-Terrorism Activities":1000,
+"Terror Funding Through Narcotics":1000,
+"Organized Money Laundering for Crime Syndicates":1000,
+"Laundering Terror Funds":1000,
+"International Hawala Network":1000,
+"Counterfeit Currency Manufacturing":1000,
+"Counterfeit Currency Distribution Network":1000,
+"Economic Sabotage Conspiracy":1000,
+"Cyber Attack on National Infrastructure":1000,
+"Cyber Attack on Defence Systems":1000,
+"Cyber Espionage Against Government":1000,
+"Hacking Military Networks":1000,
+"Theft of National Security Data":1000,
+"Digital Sabotage of Public Utilities":1000,
+"Destruction of Critical Government Data":1000,
+"Ransomware Attack on Hospitals Causing Death":1000,
+"Cyber Attack on Air Traffic Systems":1000,
+"Cyber Attack on Banking Infrastructure":1000,
+"Cyber Attack Resulting in Public Casualties":1000,
+"Organized International Cybercrime Network":1000,
+"Human Trafficking Resulting in Death":1000,
+"Illegal Migration Network Causing Fatalities":1000,
+"Maritime Piracy Resulting in Death":1000,
+"Aircraft Sabotage Resulting in Death":1000,
+"Large-Scale Criminal Conspiracy Resulting in Multiple Deaths":1000,
+"Mass Casualty Organized Criminal Operation":1000,
+
+"Property Dispute": 500,
+"Land Ownership Dispute": 500,
+"Boundary Dispute": 500,
+"Partition Dispute": 500,
+"Easement Rights Dispute": 500,
+"Encroachment Case": 500,
+"Illegal Possession of Property": 500,
+"Land Grabbing": 500,
+"Agricultural Land Dispute": 500,
+"Urban Property Dispute": 500,
+"Commercial Property Dispute": 500,
+"Builder-Buyer Dispute": 500,
+"Property Fraud": 500,
+"Property Forgery": 500,
+"Fake Sale Deed Case": 500,
+"Duplicate Registry Case": 500,
+"Mutation Dispute": 500,
+"Revenue Record Dispute": 500,
+"Inheritance Property Dispute": 500,
+"Family Property Dispute": 500,
+"Co-owner Property Dispute": 500,
+"Joint Property Dispute": 500,
+"Unauthorized Construction": 500,
+"Property Demolition Dispute": 500,
+"Government Land Encroachment": 500,
+"Illegal Occupation": 500,
+"Possession Recovery Case": 500,
+"Property Damage Dispute": 500,
+"Real Estate Scam": 500,
+"Housing Society Dispute": 500,
+"Apartment Ownership Dispute": 500,
+"Lease Agreement Violation": 500,
+"Commercial Lease Dispute": 500,
+"Property Rent Recovery": 500,
+"Builder Fraud": 500,
+"Delayed Possession by Builder": 500,
+"Development Agreement Dispute": 500,
+"Property Title Dispute": 500,
+"Property Tax Dispute": 500,
+"Property Registration Dispute": 500,
+"Property Transfer Fraud": 500,
+"Unauthorized Sale of Property": 500,
+"Illegal Land Transfer": 500,
+"Benami Property Dispute": 500,
+"Land Acquisition Dispute": 500,
+"Compensation Dispute": 500,
+"Industrial Land Dispute": 500,
+"Trust Property Dispute": 500,
+"Religious Property Dispute": 500,
+"Wakf Property Dispute": 500,
+"Cooperative Housing Dispute": 500,
+"Land Measurement Dispute": 500,
+"Survey Record Dispute": 500,
+"Encroachment Removal Case": 500,
+"Land Conversion Dispute": 500,
+"Property Development Fraud": 500,
+"Plot Allotment Dispute": 500,
+"Illegal Plotting": 500,
+"Housing Board Dispute": 500,
+"Property Valuation Dispute": 500,
+"Property Auction Dispute": 500,
+"Mortgage Property Dispute": 500,
+"Bank Seizure Property Dispute": 500,
+"Property Possession Conflict": 500,
+"Tenant Eviction Dispute": 500,
+"Unauthorized Occupancy": 500,
+"Property Maintenance Dispute": 500,
+"Property Agreement Breach": 500,
+"Ownership Certificate Dispute": 500,
+"Society Land Dispute": 500,
+"Colony Development Dispute": 500,
+"Residential Property Fraud": 500,
+"Property Encumbrance Dispute": 500,
+"Property Recovery Suit": 500,
+"Property Possession Litigation": 500,
+"Cheating": 500,
+"Criminal Breach of Trust": 500,
+"Fraud": 500,
+"Investment Fraud": 500,
+"Ponzi Scheme": 500,
+"Bank Fraud": 500,
+"Loan Fraud": 500,
+"Credit Card Fraud": 500,
+"Insurance Fraud": 500,
+"Online Fraud": 500,
+"UPI Fraud": 500,
+"ATM Fraud": 500,
+"Fake Loan Scam": 500,
+"GST Fraud": 500,
+"Tax Evasion": 500,
+"Corporate Fraud": 500,
+"Business Fraud": 500,
+"Financial Misappropriation": 500,
+"Embezzlement": 500,
+"Forgery": 500,
+"Document Forgery": 500,
+"Signature Forgery": 500,
+"Fake Identity Fraud": 500,
+"Fake Company Fraud": 500,
+"Tender Fraud": 500,
+"Procurement Fraud": 500,
+"Scholarship Fraud": 500,
+"Examination Fraud": 500,
+"Recruitment Scam": 500,
+"Employment Fraud": 500,
+"Fake Job Scam": 500,
+"Fake Degree Scam": 500,
+"Educational Fraud": 500,
+"Real Estate Fraud": 500,
+"Deposit Scam": 500,
+"Chit Fund Scam": 500,
+"Cooperative Society Fraud": 500,
+"Charity Fraud": 500,
+"NGO Fund Fraud": 500,
+"Bribery": 500,
+"Corruption": 500,
+"Public Fund Misuse": 500,
+"Illegal Commission Case": 500,
+"Hawala Transaction": 500,
+"Money Laundering": 500,
+"Illegal Financial Transaction": 500,
+"Counterfeit Currency Possession": 500,
+"Counterfeit Currency Distribution": 500,
+"Financial Conspiracy": 500,
+"Stock Market Fraud": 500,
+"Securities Fraud": 500,
+"Insider Trading": 500,
+"Pyramid Scheme": 500,
+"Cryptocurrency Fraud": 500,
+"Digital Asset Fraud": 500,
+"Fake Invoice Fraud": 500,
+"Fake Billing Fraud": 500,
+"Corporate Misconduct": 500,
+"Accounting Fraud": 500,
+"Procurement Scam": 500,
+"Welfare Fund Fraud": 500,
+"Pension Fraud": 500,
+"Tax Refund Fraud": 500,
+"Public Procurement Fraud": 500,
+"Financial Trust Violation": 500,
+"Cooperative Bank Fraud": 500,
+"Investment Scheme Scam": 500,
+"Consumer Deposit Fraud": 500,
+"Loan Recovery Fraud": 500,
+"Banking Misconduct": 500,
+"Financial Breach of Trust": 500,
+"Public Distribution Fraud": 500,
+"Subsidy Fraud": 500,
+"Welfare Scheme Fraud": 500,
+"Commercial Fraud": 500,
+"Cyber Fraud": 500,
+"Identity Theft": 500,
+"Hacking": 500,
+"Data Theft": 500,
+"Phishing Scam": 500,
+"Social Media Fraud": 500,
+"Email Fraud": 500,
+"OTP Fraud": 500,
+"SIM Swap Fraud": 500,
+"Online Banking Fraud": 500,
+"Fake Website Scam": 500,
+"Cyber Stalking": 500,
+"Cyber Harassment": 500,
+"Cyber Bullying": 500,
+"Online Defamation": 500,
+"Unauthorized Data Access": 500,
+"Malware Distribution": 500,
+"Ransomware Attack": 500,
+"Business Email Compromise": 500,
+"Cyber Extortion": 500,
+"Online Blackmail": 500,
+"Data Privacy Violation": 500,
+"Digital Forgery": 500,
+"Digital Document Fraud": 500,
+"Intellectual Property Theft": 500,
+"Software Piracy": 500,
+"Copyright Violation": 500,
+"Trademark Infringement": 500,
+"Patent Infringement": 500,
+"Trade Secret Theft": 500,
+"Robbery": 500,
+"Armed Robbery": 500,
+"Dacoity": 500,
+"Extortion": 500,
+"Criminal Intimidation": 500,
+"Blackmail": 500,
+"Rioting": 500,
+"Unlawful Assembly": 500,
+"Public Violence": 500,
+"Group Clashes": 500,
+"Communal Disturbance": 500,
+"Election Violence": 500,
+"Political Violence": 500,
+"Arson": 500,
+"Mischief by Fire": 500,
+"Public Property Damage": 500,
+"Government Property Damage": 500,
+"Railway Property Damage": 500,
+"Vandalism": 500,
+"Serious Assault": 500,
+"Grievous Hurt": 500,
+"Dangerous Weapon Assault": 500,
+"Kidnapping": 500,
+"Abduction": 500,
+"Wrongful Confinement": 500,
+"Stalking": 500,
+"Voyeurism": 500,
+"Sexual Harassment": 500,
+"Workplace Harassment": 500,
+"Domestic Violence": 500,
+"Dowry Harassment": 500,
+"Cruelty to Spouse": 500,
+"Child Abuse": 500,
+"Elder Abuse": 500,
+"Custodial Misconduct": 500,
+"Illegal Arms Possession": 500,
+"Arms Act Violation": 500,
+"Ammunition Possession": 500,
+"Smuggling": 500,
+"Wildlife Crime": 500,
+"Illegal Mining": 500,
+"Sand Mining Violation": 500,
+"Forest Offence": 500,
+"Environmental Pollution": 500,
+"Hazardous Waste Violation": 500,
+"Industrial Pollution": 500,
+"Illegal Quarrying": 500,
+"Labour Exploitation": 500,
+"Bonded Labour": 500,
+"Child Labour": 500,
+"Human Rights Violation": 500,
+"Medical Negligence": 500,
+"Hospital Fraud": 500,
+"Fake Medicine Distribution": 500,
+"Drug Adulteration": 500,
+"Food Adulteration": 500,
+"Consumer Safety Violation": 500,
+"Dangerous Goods Transport Violation": 500,
+"Transport Permit Fraud": 500,
+"Public Distribution Misconduct": 500,
+"Cooperative Society Misconduct": 500,
+"Election Code Violation": 500,
+"Public Servant Misconduct": 500,
+"Abuse of Official Position": 500,
+"Government Record Tampering": 500,
+"Official Document Destruction": 500,
+"Evidence Tampering": 500,
+"Witness Intimidation": 500,
+"False Evidence": 500,
+"Perjury": 500,
+"Court Order Violation": 500,
+"Contempt Related Criminal Matter": 500,
+"Bail Condition Violation": 500,
+"Prison Misconduct": 500,
+"Jail Contraband Case": 500,
+"Escape from Custody": 500,
+"Harbouring Offender": 500,
+"Obstruction of Justice": 500,
+"Interference with Investigation": 500,
+"Criminal Conspiracy": 500,
+"Organized Fraud Ring": 500,
+"Illegal Association Activity": 500,
+"Syndicate Crime": 500,
+"Commercial Espionage": 500,
+"Trade Restriction Violation": 500,
+"Market Manipulation": 500,
+"Hoarding": 500,
+"Black Marketing": 500,
+"Essential Commodity Violation": 500,
+"Public Health Violation": 500,
+"Illegal Medical Practice": 500,
+"Fake Doctor Case": 500,
+"Fake Certificate Case": 500,
+"Educational Institution Fraud": 500,
+"University Admission Scam": 500,
+"Recruitment Examination Leak": 500,
+"Question Paper Leak": 500,
+"Examination Impersonation": 500,
+"Visa Fraud": 500,
+"Passport Fraud": 500,
+"Immigration Fraud": 500,
+"Illegal Immigration Facilitation": 500,
+"Foreign Exchange Violation": 500,
+"FEMA Violation": 500,
+"Customs Evasion": 500,
+"Import Fraud": 500,
+"Export Fraud": 500,
+"Shipping Fraud": 500,
+"Logistics Fraud": 500,
+"Cargo Theft": 500,
+"Warehouse Fraud": 500,
+"Commercial Theft": 500,
+"Business Contract Fraud": 500,
+"Commercial Misrepresentation": 500,
+"Large Scale Consumer Fraud": 500,
+"Multi-State Fraud Case": 500,
+"Organized Cheating Network": 500,
+"Corporate Criminal Negligence": 500,
+"High Value Economic Offence": 500,
+"Major Commercial Crime": 500,
+
+"Minor Physical Altercation": 200,
+"Verbal Threat": 200,
+"Verbal Abuse": 200,
+"Public Nuisance": 200,
+"Disturbing Public Peace": 200,
+"Affray": 200,
+"Minor Mischief": 200,
+"Property Damage (Minor)": 200,
+"Stone Throwing": 200,
+"Neighbourhood Fight": 200,
+"Local Community Dispute": 200,
+"Minor Trespass": 200,
+"Residential Trespass": 200,
+"Workplace Altercation": 200,
+"School Altercation": 200,
+"College Altercation": 200,
+"Disorderly Conduct": 200,
+"Obscene Conduct in Public": 200,
+"Public Drunkenness": 200,
+"Minor Gambling Offence": 200,
+"Loudspeaker Violation": 200,
+"Noise Pollution Complaint": 200,
+"Pet-related Nuisance": 200,
+"Animal Disturbance Complaint": 200,
+"Small Theft": 200,
+"Shoplifting": 200,
+"Bicycle Theft": 200,
+"Mobile Phone Theft": 200,
+"Purse Theft": 200,
+"Lost Property Dispute": 200,
+"Receiving Lost Property": 200,
+"Minor Cheating": 200,
+"Small Financial Dispute": 200,
+"Small Recovery Claim": 200,
+"Local Market Dispute": 200,
+"Vendor Dispute": 200,
+"Hawker Dispute": 200,
+"Parking Dispute": 200,
+"Vehicle Parking Obstruction": 200,
+"Minor Road Rage": 200,
+"Traffic Obstruction": 200,
+"Street Vendor Conflict": 200,
+"Local Event Dispute": 200,
+"Public Place Misconduct": 200,
+"False Complaint (Minor)": 200,
+"Misrepresentation": 200,
+"Community Disturbance": 200,
+"Housing Society Complaint": 200,
+"Residential Association Dispute": 200,
+"Club Membership Dispute": 200,
+"Recreational Facility Dispute": 200,
+"Playground Dispute": 200,
+"Local Festival Dispute": 200,
+"Religious Procession Dispute": 200,
+"Loud Music Complaint": 200,
+"Water Usage Dispute": 200,
+"Shared Property Usage Dispute": 200,
+"Community Hall Dispute": 200,
+"Minor Defamation": 200,
+"Social Media Argument": 200,
+"Online Harassment (Minor)": 200,
+"Public Insult Complaint": 200,
+"Neighbour Harassment Complaint": 200,
+"Boundary Access Dispute": 200,
+"Common Pathway Dispute": 200,
+"Common Area Dispute": 200,
+"Small Property Encroachment": 200,
+"Tree Cutting Dispute": 200,
+"Parking Space Dispute": 200,
+"Vehicle Scratching Complaint": 200,
+"Pet Damage Complaint": 200,
+"Household Damage Complaint": 200,
+"Minor Disturbance Complaint": 200,
+
+"Divorce Petition": 200,
+"Mutual Consent Divorce": 200,
+"Judicial Separation": 200,
+"Restitution of Conjugal Rights": 200,
+"Maintenance Petition": 200,
+"Interim Maintenance": 200,
+"Child Custody Case": 200,
+"Child Visitation Rights": 200,
+"Guardianship Petition": 200,
+"Adoption Matter": 200,
+"Family Settlement Dispute": 200,
+"Matrimonial Property Dispute": 200,
+"Marriage Registration Issue": 200,
+"Domestic Disagreement": 200,
+"Family Property Sharing Issue": 200,
+"Family Maintenance Dispute": 200,
+"Senior Citizen Maintenance Claim": 200,
+"Parent Care Dispute": 200,
+"Family Mediation Matter": 200,
+"Inheritance Disagreement": 200,
+"Succession Claim": 200,
+"Legal Heir Certificate Matter": 200,
+"Family Business Dispute": 200,
+"Family Partnership Dispute": 200,
+"Engagement Dispute": 200,
+"Marriage Expense Recovery": 200,
+"Child Education Expense Claim": 200,
+"Child Support Claim": 200,
+"Spousal Support Claim": 200,
+"Family Residence Dispute": 200,
+"Joint Family Dispute": 200,
+"Sibling Property Dispute": 200,
+"Cousin Property Dispute": 200,
+"Family Loan Dispute": 200,
+"Family Trust Matter": 200,
+"Marriage Validity Petition": 200,
+"Marriage Annulment": 200,
+"Custody Modification Petition": 200,
+"Family Agreement Enforcement": 200,
+"Family Welfare Application": 200,
+"Domestic Mediation Case": 200,
+"Parent-Child Conflict Matter": 200,
+"Family Reconciliation Petition": 200,
+"Family Settlement Agreement": 200,
+"Family Account Dispute": 200,
+"Elder Care Dispute": 200,
+"Child Welfare Petition": 200,
+"Custody Enforcement Petition": 200,
+"Child Travel Permission Petition": 200,
+"School Admission Parent Dispute": 200,
+"Family Asset Distribution": 200,
+"Marriage Registration Delay": 200,
+"Adoption Registration Issue": 200,
+"Child Name Change Matter": 200,
+"Guardian Appointment Matter": 200,
+"Family Affidavit Matter": 200,
+"Family Status Declaration": 200,
+"Family Relationship Declaration": 200,
+"Family Residence Claim": 200,
+"Shared Household Dispute": 200,
+"Family Maintenance Recovery": 200,
+"Family Financial Support Matter": 200,
+"Joint Custody Petition": 200,
+"Child Passport Consent Matter": 200,
+"Child Relocation Petition": 200,
+"Family Counseling Matter": 200,
+"Marriage Record Correction": 200,
+"Family Mediation Application": 200,
+"Child Custody Mediation": 200,
+"Spousal Communication Dispute": 200,
+"Family Welfare Complaint": 200,
+"Family Protection Application": 200,
+"Family Residence Rights Petition": 200,
+"Family Legal Notice Matter": 200,
+"Consumer Complaint": 200,
+"Defective Product Complaint": 200,
+"Faulty Electronics Complaint": 200,
+"Warranty Dispute": 200,
+"Refund Claim": 200,
+"Product Replacement Claim": 200,
+"Service Deficiency Complaint": 200,
+"Delayed Service Complaint": 200,
+"Internet Service Complaint": 200,
+"Mobile Network Complaint": 200,
+"Cable TV Complaint": 200,
+"Online Shopping Dispute": 200,
+"E-commerce Refund Dispute": 200,
+"Courier Service Complaint": 200,
+"Delivery Delay Complaint": 200,
+"Banking Service Complaint": 200,
+"ATM Service Complaint": 200,
+"Credit Card Service Complaint": 200,
+"Insurance Service Complaint": 200,
+"Hospital Billing Complaint": 200,
+"Medical Service Complaint": 200,
+"School Fee Dispute": 200,
+"College Fee Dispute": 200,
+"Coaching Institute Complaint": 200,
+"Educational Service Complaint": 200,
+"Travel Agency Complaint": 200,
+"Airline Refund Complaint": 200,
+"Bus Ticket Refund Claim": 200,
+"Railway Refund Complaint": 200,
+"Hotel Service Complaint": 200,
+"Restaurant Service Complaint": 200,
+"Labour Dispute": 200,
+"Salary Recovery Claim": 200,
+"Wage Dispute": 200,
+"Overtime Payment Claim": 200,
+"Employment Contract Dispute": 200,
+"Workplace Grievance": 200,
+"Leave Salary Claim": 200,
+"Bonus Claim": 200,
+"Provident Fund Dispute": 200,
+"Pension Claim": 200,
+"Gratuity Claim": 200,
+"Employee Benefit Dispute": 200,
+"Workplace Transfer Dispute": 200,
+"Promotion Dispute": 200,
+"Service Record Correction": 200,
+"Employee Misconduct Appeal": 200,
+"Labour Welfare Claim": 200,
+"Workplace Safety Complaint": 200,
+"Contract Labour Dispute": 200,
+"Internship Dispute": 200,
+"Apprentice Dispute": 200,
+"Employment Certificate Dispute": 200,
+"Experience Certificate Claim": 200,
+"Salary Certificate Dispute": 200,
+"Recruitment Complaint": 200,
+"Interview Process Complaint": 200,
+"Service Termination Appeal": 200,
+"Consumer Compensation Claim": 200,
+"Customer Service Complaint": 200,
+"Utility Service Complaint": 200,
+"Water Supply Complaint": 200,
+"Electricity Billing Complaint": 200,
+"Gas Connection Complaint": 200,
+"Municipal Service Complaint": 200,
+"Property Maintenance Complaint": 200,
+"Housing Service Complaint": 200,
+"Society Maintenance Dispute": 200,
+"Parking Service Complaint": 200,
+"Ticketing Dispute": 200,
+"Membership Fee Dispute": 200,
+"Subscription Refund Claim": 200,
+"Club Service Complaint": 200,
+"Recreation Service Complaint": 200,
+"Name Change Petition": 200,
+"Marksheet Correction": 200,
+"Degree Verification Matter": 200,
+"Domicile Certificate Matter": 200,
+"Income Certificate Matter": 200,
+"Caste Certificate Matter": 200,
+"Residence Certificate Matter": 200,
+"Character Certificate Matter": 200,
+"Passport Application Issue": 200,
+"Passport Correction Matter": 200,
+"Visa Documentation Issue": 200,
+"Vehicle Registration Correction": 200,
+"Aadhaar Correction Matter": 200,
+"PAN Card Correction Matter": 200,
+"Voter ID Correction Matter": 200,
+"Election Roll Correction": 200,
+"Revenue Record Correction": 200,
+"Mutation Entry Correction": 200,
+"Land Record Update Matter": 200,
+"Survey Record Correction": 200,
+"Tax Assessment Appeal": 200,
+"Property Tax Complaint": 200,
+"RTI Application Matter": 200,
+"RTI First Appeal": 200,
+"RTI Second Appeal": 200,
+"Public Information Complaint": 200,
+"Scholarship Application Dispute": 200,
+"Pension Application Matter": 200,
+"Government Benefit Application": 200,
+"Subsidy Application Matter": 200,
+"Welfare Scheme Complaint": 200,
+"Public Distribution Complaint": 200,
+"Ration Card Correction": 200,
+"Ration Card Inclusion Matter": 200,
+"Ration Card Deletion Matter": 200,
+"Electoral Registration Matter": 200,
+"Local Body Election Complaint": 200,
+"Municipality Complaint": 200,
+"Panchayat Complaint": 200,
+"Public Grievance Petition": 200,
+"Public Utility Complaint": 200,
+"Water Connection Application": 200,
+"Electricity Connection Application": 200,
+"Trade Licence Application": 200,
+"Shop Licence Renewal Matter": 200,
+"Vendor Licence Matter": 200,
+"Building Permission Matter": 200,
+"Occupancy Certificate Matter": 200,
+"Affidavit Verification Matter": 200,
+"Notary Related Matter": 200,
+"Gazette Publication Matter": 200,
+"Document Authentication Matter": 200,
+"Record Verification Matter": 200,
+"Identity Verification Matter": 200,
+"Educational Admission Appeal": 200,
+"University Administrative Matter": 200,
+"Examination Result Representation": 200,
+"Certificate Duplicate Issue": 200,
+"Government Record Correction": 200,
+"Administrative Review Petition": 200,
+"Public Authority Complaint": 200,
+"Civic Amenity Complaint": 200,
+"Public Sanitation Complaint": 200,
+"Street Light Complaint": 200,
+"Drainage Complaint": 200,
+"Road Maintenance Complaint": 200,
+"General Administrative Matter": 200,
+
+"Birth Certificate Correction": 100,
+"Birth Certificate Duplicate Copy": 100,
+"Death Certificate Application": 100,
+"Death Certificate Correction": 100,
+"Death Certificate Duplicate Copy": 100,
+"Marriage Certificate Application": 100,
+"Marriage Certificate Correction": 100,
+"Marriage Certificate Duplicate Copy": 100,
+"Name Change Application": 100,
+"Surname Change Application": 100,
+"Gazette Notification Matter": 100,
+"Identity Proof Correction": 100,
+"Aadhaar Update Request": 100,
+"PAN Card Correction": 100,
+"PAN Card Duplicate Request": 100,
+"Voter ID Correction": 100,
+"Voter ID Inclusion Request": 100,
+"Voter ID Transfer Request": 100,
+"Passport Correction": 100,
+"Passport Reissue Request": 100,
+"Driving Licence Correction": 100,
+"Driving Licence Renewal": 100,
+"Duplicate Driving Licence": 100,
+"Vehicle RC Correction": 100,
+"Duplicate RC Application": 100,
+"Domicile Certificate Application": 100,
+"Residence Certificate Application": 100,
+"Income Certificate Application": 100,
+"Caste Certificate Application": 100,
+"EWS Certificate Application": 100,
+"Character Certificate Application": 100,
+"Nationality Certificate Application": 100,
+"Migration Certificate Request": 100,
+"Transfer Certificate Request": 100,
+"Bonafide Certificate Request": 100,
+"Degree Verification": 100,
+"Marksheet Verification": 100,
+"Educational Certificate Correction": 100,
+"Duplicate Degree Request": 100,
+"Duplicate Marksheet Request": 100,
+"School Record Correction": 100,
+"University Record Correction": 100,
+"Signature Verification": 100,
+"Document Verification": 100,
+"Record Authentication": 100,
+"Affidavit Verification": 100,
+"Notary Certification": 100,
+"Legal Heir Certificate": 100,
+"Family Member Certificate": 100,
+"Family Tree Certificate": 100,
+"Survivor Certificate": 100,
+"Dependency Certificate": 100,
+"Residence Proof Verification": 100,
+"Employment Certificate Verification": 100,
+"Experience Certificate Verification": 100,
+"Salary Certificate Verification": 100,
+"Pension Certificate Verification": 100,
+"Service Certificate Request": 100,
+"Medical Certificate Verification": 100,
+"Disability Certificate Application": 100,
+"Disability Certificate Renewal": 100,
+"Veteran Certificate Matter": 100,
+"Freedom Fighter Certificate Matter": 100,
+"Senior Citizen Certificate Matter": 100,
+"Minority Certificate Matter": 100,
+"Widow Certificate Matter": 100,
+"Orphan Certificate Matter": 100,
+"Farmer Certificate Matter": 100,
+"Labour Card Verification": 100,
+"Trade Certificate Verification": 100,
+"GST Registration Correction": 100,
+"Business Registration Correction": 100,
+"Shop Licence Verification": 100,
+"Miscellaneous Certificate Matter": 100,
+"Property Tax Correction": 100,
+"Property Tax Assessment Review": 100,
+"Water Tax Dispute": 100,
+"House Tax Correction": 100,
+"Municipal Tax Appeal": 100,
+"Sewer Tax Issue": 100,
+"Drainage Tax Issue": 100,
+"Utility Bill Correction": 100,
+"Electricity Bill Correction": 100,
+"Water Bill Correction": 100,
+"Gas Bill Correction": 100,
+"Telephone Bill Complaint": 100,
+"Broadband Bill Complaint": 100,
+"Water Connection Transfer": 100,
+"Water Connection Correction": 100,
+"Electricity Connection Transfer": 100,
+"Electricity Meter Correction": 100,
+"Gas Connection Transfer": 100,
+"Gas Connection Correction": 100,
+"New Sewer Connection": 100,
+"Drainage Connection Request": 100,
+"Property Number Correction": 100,
+"House Number Allotment": 100,
+"Building Number Correction": 100,
+"Street Name Correction": 100,
+"Address Correction Request": 100,
+"Municipal Record Update": 100,
+"Municipal Complaint": 100,
+"Garbage Collection Complaint": 100,
+"Sanitation Complaint": 100,
+"Road Repair Complaint": 100,
+"Drain Cleaning Complaint": 100,
+"Public Park Complaint": 100,
+"Tree Trimming Request": 100,
+"Water Leakage Complaint": 100,
+"Sewer Blockage Complaint": 100,
+"Stray Animal Complaint": 100,
+"Public Toilet Complaint": 100,
+"Encroachment Complaint": 100,
+"Parking Complaint": 100,
+"Market Licence Renewal": 100,
+"Trade Licence Renewal": 100,
+"Hawker Licence Renewal": 100,
+"Vendor Registration Matter": 100,
+"Shop Registration Renewal": 100,
+"Building Permission Clarification": 100,
+"Occupancy Certificate Request": 100,
+"Completion Certificate Request": 100,
+"Mutation Entry Request": 100,
+"Land Record Copy Request": 100,
+"Khata Correction": 100,
+"Jamabandi Copy Request": 100,
+"Khasra Record Request": 100,
+"Property Map Copy Request": 100,
+"Survey Record Request": 100,
+"Land Measurement Request": 100,
+"Land Demarcation Request": 100,
+"Property Valuation Request": 100,
+"Circle Rate Clarification": 100,
+"Revenue Appeal (Minor)": 100,
+"Property Record Verification": 100,
+"Agricultural Record Correction": 100,
+"Rural Land Record Request": 100,
+"Municipal Permission Matter": 100,
+"NOC Request": 100,
+"Building Plan Copy Request": 100,
+"Utility Service Transfer": 100,
+"Property Ownership Record Copy": 100,
+"Municipal Information Request": 100,
+"Public Utility Grievance": 100,
+"Miscellaneous Revenue Matter": 100,
+"School Admission Request": 100,
+"School Transfer Request": 100,
+"Student ID Correction": 100,
+"Examination Form Correction": 100,
+"Examination Centre Change Request": 100,
+"Result Verification": 100,
+"Revaluation Application": 100,
+"Duplicate Admit Card Request": 100,
+"Duplicate Hall Ticket Request": 100,
+"Scholarship Application Issue": 100,
+"Scholarship Verification": 100,
+"Scholarship Renewal": 100,
+"Student Welfare Application": 100,
+"Hostel Allotment Matter": 100,
+"Hostel Fee Refund": 100,
+"Library Card Issue": 100,
+"University Enrollment Correction": 100,
+"Degree Issue Clarification": 100,
+"Convocation Certificate Request": 100,
+"Employment Registration Matter": 100,
+"Employment Exchange Registration": 100,
+"Employment Record Correction": 100,
+"Service Book Correction": 100,
+"Leave Record Correction": 100,
+"Salary Slip Request": 100,
+"Pension Record Correction": 100,
+"Pension Verification": 100,
+"Gratuity Verification": 100,
+"Provident Fund Verification": 100,
+"Labour Welfare Application": 100,
+"Labour Registration Matter": 100,
+"ESI Record Correction": 100,
+"Insurance Record Update": 100,
+"Employee Identity Card Issue": 100,
+"Experience Letter Request": 100,
+"No Objection Certificate Request": 100,
+"Character Verification Request": 100,
+"Recruitment Document Verification": 100,
+"Apprentice Registration Matter": 100,
+"Internship Certificate Request": 100,
+"Promotion Record Correction": 100,
+"Departmental Record Correction": 100,
+"Welfare Scheme Application": 100,
+"Subsidy Verification": 100,
+"Farmer Welfare Application": 100,
+"Student Benefit Application": 100,
+"Social Security Verification": 100,
+"Senior Citizen Benefit Application": 100,
+"Widow Pension Application": 100,
+"Disability Pension Application": 100,
+"Family Pension Verification": 100,
+"Public Distribution Application": 100,
+"Ration Card Inclusion": 100,
+"Ration Card Deletion": 100,
+"BPL Card Verification": 100,
+"Welfare Record Correction": 100,
+"Government Benefit Clarification": 100,
+"Employment Certificate Request": 100,
+"Academic Record Request": 100,
+"Educational Affidavit Matter": 100,
+"Academic Name Correction": 100,
+"Parent Name Correction": 100,
+"Date of Birth Correction": 100,
+"Educational Verification Request": 100,
+"Student Migration Request": 100,
+"Training Certificate Verification": 100,
+"Course Completion Certificate": 100,
+"Education Loan Document Verification": 100,
+"Government Scholarship Clarification": 100,
+"Welfare Grievance Petition": 100,
+"Miscellaneous Educational Matter": 100,
+"RTI Application": 100,
+"Information Request Petition": 100,
+"Public Grievance Application": 100,
+"Citizen Charter Complaint": 100,
+"Government Information Request": 100,
+"Record Inspection Request": 100,
+"File Inspection Application": 100,
+"Certified Copy Application": 100,
+"Court Copy Request": 100,
+"Record Retrieval Request": 100,
+"Document Search Application": 100,
+"Affidavit Filing Matter": 100,
+"Self Declaration Matter": 100,
+"Undertaking Submission Matter": 100,
+"Indemnity Bond Matter": 100,
+"NOC Application": 100,
+"Police Verification Request": 100,
+"Tenant Verification Request": 100,
+"Employee Verification Request": 100,
+"Passport Police Verification": 100,
+"Civic Complaint": 100,
+"Public Facility Complaint": 100,
+"Community Hall Booking Dispute": 100,
+"Library Membership Issue": 100,
+"Sports Facility Complaint": 100,
+"Public Transport Complaint": 100,
+"Bus Pass Application": 100,
+"Railway Pass Application": 100,
+"Concession Certificate Matter": 100,
+"Parking Permit Request": 100,
+"Vehicle Pass Request": 100,
+"Local Authority Complaint": 100,
+"Village Record Request": 100,
+"Panchayat Record Request": 100,
+"Municipality Record Request": 100,
+"Public Notice Matter": 100,
+"Public Hearing Request": 100,
+"Civic Amenity Request": 100,
+"Market Permission Request": 100,
+"Festival Permission Request": 100,
+"Public Event Permission": 100,
+"Community Certificate Request": 100,
+"Resident Welfare Complaint": 100,
+"Apartment Association Matter": 100,
+"Housing Society Membership Issue": 100,
+"Membership Transfer Request": 100,
+"Cooperative Membership Matter": 100,
+"Election Roll Verification": 100,
+"Polling Booth Correction Request": 100,
+"Public Consultation Request": 100,
+"Citizen Service Delay Complaint": 100,
+"Administrative Clarification Petition": 100,
+"Legal Notice Acknowledgement Matter": 100,
+"Record Preservation Request": 100,
+"Public Archive Request": 100,
+"Government Form Correction": 100,
+"Form Submission Error Matter": 100,
+"Application Status Dispute": 100,
+"Service Delivery Delay Complaint": 100,
+"Digital Record Correction": 100,
+"Online Portal Grievance": 100,
+"E-Governance Complaint": 100,
+"Citizen Facilitation Matter": 100,
+"Administrative Support Request": 100,
+"Record Updating Matter": 100,
+"General Representation Petition": 100,
+"Miscellaneous Civil Application": 100,
+"Miscellaneous Administrative Application": 100,
+"General Documentation Matter": 100,
+"General Verification Matter": 100,
+"General Certificate Matter": 100,
+"Other Miscellaneous Matter": 100,
+
+};
+
+const dataList =
+document.getElementById("caseTypes");
+
+Object.keys(caseDatabase).forEach(item=>{
+
+    const option =
+    document.createElement("option");
+
+    option.value = item;
+
+    dataList.appendChild(option);
+
+});
+
+function getStampAmount(){
+
+    const offence =
+    document.getElementById("nature").value;
+
+    return caseDatabase[offence] || 100;
+}
+
+function na(v){
+    return v.trim() === "" ? "N/A" : v.trim();
+}
+
+function generateAffidavit(){
+
+const d = new Date();
+
+const day = String(d.getDate()).padStart(2,'0');
+const month = d.toLocaleString('en-US',{month:'long'});
+const year = d.getFullYear();
+
+const judgmentDate =
+document.getElementById('judgmentDate').value.trim() || 'N/A';
+
+document.getElementById("sealText").innerHTML =
+`AFFIDAVIT<br>${judgmentDate}`;
+
+const stampAmount = getStampAmount();
+
+let html = `
+
+<p>
+I, Yash Kumar, aged about 21 years, resident of Delhi, do hereby solemnly affirm and state as follows:
+</p>
+
+<br>
+
+<p>
+That I have examined the records, pleadings, First Information Report, orders, and judgment pertaining to the matter titled <b>${na(document.getElementById('caseName').value)}</b>, bearing Case No. <b>${na(document.getElementById('caseNo').value)}</b>, adjudicated by the <b>${na(document.getElementById('courtName').value)}</b> Court within the State of <b>${na(document.getElementById('courtState').value)}</b>. The matter was heard by the Hon'ble Bench comprising <b>${na(document.getElementById('bench').value)}</b>, and the judgment was pronounced by <b>${na(document.getElementById('judgmentBy').value)}</b> on <b>${na(document.getElementById('judgmentDate').value)}</b>, reported as Citation No. <b>${na(document.getElementById('citationNo').value)}</b>.
+</p>
+
+<br>
+
+<p>
+The petitioner(s) in the aforesaid matter are <b>${na(document.getElementById('petitioners').value)}</b>, represented through learned counsel <b>${na(document.getElementById('petAdv').value)}</b>, while the respondent(s) are <b>${na(document.getElementById('respondents').value)}</b>, represented through learned counsel <b>${na(document.getElementById('resAdv').value)}</b>.
+</p>
+
+<br>
+
+<p>
+The proceedings arise out of FIR No. <b>${na(document.getElementById('firNo').value)}</b>, dated <b>${na(document.getElementById('firDate').value)}</b>, registered at <b>${na(document.getElementById('policeStation').value)}</b> Police Station, under Sections <b>${na(document.getElementById('sections').value)}</b>.
+</p>
+
+<br>
+
+<p>
+Based upon my examination of the available records and documents, I state that the particulars set forth herein accurately reflect the details of the aforesaid case and are true and correct to the best of my knowledge, information, and belief.
+</p>
+
+<p>
+That the requisite stamp duty of
+<b>₹${stampAmount}</b>
+has been duly paid by the Petitioner/Deponent as applicable to the nature of dispute/offence mentioned herein.
+</p>
+
+<div class="verification">
+
+<b>VERIFICATION</b>
+
+<br>
+
+<p>
+I, the above-named Deponent, do hereby verify that the contents of the foregoing affidavit are true and correct to the best of my knowledge, information, and belief, derived from the records examined by me, and that no material fact has been concealed or suppressed therefrom.
+</p>
+
+<br>
+
+<p>
+Verified at DELHI on this <b>${day}</b> day of <b>${month}</b>, <b>${year}</b>.
+</p>
+
+<div class="signature">
+
+<b>DEPONENT</b>
+
+<br><br><br>
+
+(Signature)
+
+</div>
+
+</div>
+`;
+
+document.getElementById("affidavitContent").innerHTML = html;
+
+}
+
+generateAffidavit();
+document.getElementById('judgmentDate').addEventListener('input', function(){
+
+document.getElementById('sealText').innerHTML =
+`AFFIDAVIT<br>${this.value || 'N/A'}`;
+
+});
+</script>
+
+</body>
+</html>
