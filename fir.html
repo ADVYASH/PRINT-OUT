@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>FIR Generator</title>
+
+<style>
+
+body{
+font-family:"Times New Roman",serif;
+margin:20px;
+}
+
+.form-box{
+max-width:800px;
+margin:auto;
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin-bottom:10px;
+}
+
+button{
+padding:10px 20px;
+cursor:pointer;
+}
+
+#printArea{
+    display:none;
+    width:190mm;
+    height:277mm;
+    margin:0 auto;
+    padding:10mm;
+    box-sizing:border-box;
+    background:#fff;
+    overflow:hidden;
+    position:relative;
+}
+
+.header{
+text-align:center;
+}
+
+.logo{
+font-size:40px;
+}
+
+.title{
+font-size:24px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.section{
+margin-top:15px;
+}
+
+.label{
+font-weight:bold;
+}
+
+/* A4 PAGE */
+
+body{
+    margin:0;
+    padding:0;
+    background:#e5e7eb;
+    font-family:"Times New Roman",serif;
+}
+
+/* FORM SECTION */
+.form-container{
+    max-width:900px;
+    margin:30px auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+}
+
+/* PRINT PAPER */
+#printPaper{
+    width:210mm;
+    min-height:297mm;
+    margin:20px auto;
+    background:white;
+    padding:15mm;
+    position:relative;
+    box-sizing:border-box;
+    box-shadow:0 0 15px rgba(0,0,0,.15);
+    display:none;
+}
+
+/* HEADER */
+.gov-header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.police-logo{
+    width:100px;
+    height:100px;
+    display:block;
+    margin:auto;
+}
+
+.hindi{
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.main-title{
+    text-align:center;
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:1px;
+    margin-top:8px;
+}
+
+#headText{
+    text-align:center;
+    font-size:18px;
+    margin-top:10px;
+}
+
+/* WATERMARK */
+.watermark{
+    position:absolute;
+    top:35%;
+    left:50%;
+    transform:translate(-50%,-50%) rotate(-25deg);
+    font-size:120px;
+    opacity:.05;
+    font-weight:bold;
+    pointer-events:none;
+    z-index:0;
+}
+
+.content{
+    position:relative;
+    z-index:1;
+}
+
+.field{
+    margin-top:12px;
+    line-height:1.8;
+}
+
+.section{
+    margin-top:20px;
+}
+
+.section-title{
+    font-weight:bold;
+    font-size:17px;
+}
+
+/* SEAL */
+.seal{
+    width:140px;
+    height:140px;
+    border:3px solid #000;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    transform:rotate(-20deg);
+    margin-top:40px;
+    opacity:.4;
+}
+
+/* NOTE */
+.note-box{
+    margin-top:25px;
+    font-size:14px;
+}
+
+.note-box ol{
+    margin-left:20px;
+}
+
+/* PRINT */
+@media print{
+
+}
+@page{
+    size:A4 portrait;
+    margin:10mm;
+}
+
+body{
+    margin:0;
+}
+
+.section{
+    margin-top:10px;
+}
+
+.note-box{
+    font-size:12px;
+    line-height:1.3;
+}
+
+.gov-header{
+    margin-bottom:10px;
+}
+
+.police-logo{
+    width:70px;
+    height:70px;
+}
+
+@media print{
+
+html,
+body{
+    margin:0;
+    padding:0;
+    background:#fff;
+}
+
+.form-box,
+.no-print{
+    display:none !important;
+}
+
+}
+
+.footer-note{
+    position:absolute;
+    left:10mm;
+    right:10mm;
+    bottom:10mm;
+    font-size:11px;
+    line-height:1.2;
+}
+
+.footer-note ol{
+    margin:3px 0 8px 20px;
+}
+
+select{
+width:100%;
+padding:10px;
+margin-bottom:10px;
+border:1px solid #ccc;
+border-radius:4px;
+font-size:16px;
+background:white;
+}
+
+.paragraph-text{
+    margin-top:3px;
+    margin-bottom:5px;
+    line-height:1;
+    text-align:justify;
+    white-space:pre-wrap;
+    word-wrap:break-word;
+}
+
+#sealArea{
+    position:absolute;
+    right:20mm;
+    top:85%;
+    transform:rotate(-15deg);
+    font-size:18px;
+    font-weight:bold;
+    opacity:0.7;
+}
+
+#sealImage{
+    position:absolute;
+    right:15mm;
+    top:80%;
+    width:90px;
+    height:90px;
+    opacity:0.8;
+    transform:rotate(-30deg);
+}
+
+#photoBox{
+position:absolute;
+top:10mm;
+right:10mm;
+
+width:3.5cm;
+height:4.5cm;
+
+border:1px solid #000;
+overflow:hidden;
+background:#fff;
+
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+#photoPreview{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+</style>
+</head>
+
+<body>
+
+<div class="form-box">
+
+<h2>FIR Form</h2>
+
+<input id="firNo" placeholder="FIR Number">
+
+<label>Passport Size Photo</label>
+
+<input
+type="file"
+id="photoUpload"
+accept="image/*">
+
+<select id="state">
+
+<option value="">Select State</option>
+
+<option>Andaman and Nicobar Islands</option>
+<option>Andhra Pradesh</option>
+<option>Arunachal Pradesh</option>
+<option>Assam</option>
+<option>Bihar</option>
+<option>Chandigarh</option>
+<option>Chhattisgarh</option>
+<option>Dadra and Nagar Haveli and Daman and Diu</option>
+<option>Delhi</option>
+<option>Goa</option>
+<option>Gujarat</option>
+<option>Haryana</option>
+<option>Himachal Pradesh</option>
+<option>Jammu and Kashmir</option>
+<option>Jharkhand</option>
+<option>Karnataka</option>
+<option>Kerala</option>
+<option>Ladakh</option>
+<option>Lakshadweep</option>
+<option>Madhya Pradesh</option>
+<option>Maharashtra</option>
+<option>Manipur</option>
+<option>Meghalaya</option>
+<option>Mizoram</option>
+<option>Nagaland</option>
+<option>Odisha</option>
+<option>Puducherry</option>
+<option>Punjab</option>
+<option>Rajasthan</option>
+<option>Sikkim</option>
+<option>Tamil Nadu</option>
+<option>Telangana</option>
+<option>Tripura</option>
+<option>Uttar Pradesh</option>
+<option>Uttarakhand</option>
+<option>West Bengal</option>
+
+</select>
+
+<input id="policeStation" placeholder="Police Station">
+
+<input type="date" id="firDate">
+
+<select id="reportTitle">
+
+<option value="">Select Report Category</option>
+
+<option>Lost Articles</option>
+<option>Lost Documents</option>
+<option>Theft Cases</option>
+<option>Missing Persons</option>
+<option>Cyber Crimes</option>
+<option>Financial & Economic Offences</option>
+<option>Property Disputes & Property Offences</option>
+<option>Assault & Physical Violence</option>
+<option>Homicide & Serious Crimes</option>
+<option>Women-Related Offences</option>
+<option>Child-Related Offences</option>
+<option>Sexual Offences</option>
+<option>Public Order & Disturbance Cases</option>
+<option>Traffic & Road Accident Cases</option>
+<option>Miscellaneous Complaints</option>
+
+</select>
+
+<textarea id="complainant" placeholder="Complainant Details"></textarea>
+
+<textarea id="occurrence" placeholder="Occurrence Details"></textarea>
+
+<textarea id="reportDetails" placeholder="Report Details"></textarea>
+
+<textarea id="otherDetails" placeholder="Any Other Details"></textarea>
+
+<div style="display:flex;gap:10px;">
+
+<button type="button" onclick="generateFIR()">
+Generate FIR
+</button>
+
+<button type="button" onclick="window.print()">
+Print FIR
+</button>
+
+</div>
+
+</div>
+
+<div id="printArea">
+
+<div id="photoBox">
+
+<img id="photoPreview" src="">
+
+</div>
+
+<div class="gov-header">
+
+<div style="text-align:center;">
+
+<img id="policeLogo" src="default.png"
+style="
+width:100px;
+height:100px;
+display:block;
+margin:0 auto 10px auto;
+">
+
+<div style="
+font-size:20px;
+font-weight:bold;
+text-align:center;
+">
+शांति सेवा न्याय
+</div>
+
+<div style="
+font-size:32px;
+font-weight:bold;
+text-align:center;
+margin-top:10px;
+text-transform:uppercase;
+">
+INFORMATION REPORT
+</div>
+
+<div id="headText"
+style="
+font-size:18px;
+font-weight:bold;
+text-align:center;
+margin-top:5px;
+margin-bottom:5px;
+">
+</div>
+
+</div>
+
+<hr style="
+margin-top:5px;
+margin-bottom:5px;
+border:1px solid black;
+">
+
+</div>
+
+<div style="
+text-align:center;
+font-size:18px;
+font-weight:bold;
+margin-top:10px;
+">
+
+SO No:
+<span id="pFirNo"></span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<span id="pState"></span> Police
+
+</div>
+
+<div style="
+text-align:center;
+font-size:16px;
+margin-top:8px;
+">
+
+P.S:
+<span id="pPoliceStation"></span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+DATE:
+<span id="pDate"></span>
+
+</div>
+
+<div class="section">
+<b>1. Complainant's Details:</b>
+<p id="pComplainant" class="paragraph-text"></p>
+</div>
+
+<div class="section">
+<b>2. Occurrence Details:</b>
+<p id="pOccurrence" class="paragraph-text"></p>
+</div>
+
+<div class="section">
+<b>3. Report Details:</b>
+<p id="pReport" class="paragraph-text"></p>
+</div>
+
+<div class="section">
+<b>4. Any Other Details:</b>
+<p id="pOther" class="paragraph-text"></p>
+</div>
+
+<img id="sealImage" src="" alt="">
+
+<div class="footer-note">
+
+<b>Note:</b>
+
+<ol>
+<li>This is a digitally signed document.</li>
+<li>Authority issuing duplicate document/article may obtain proof of identity.</li>
+</ol>
+
+<b>Disclaimer</b>
+
+<ol>
+<li>This application is for lodging report.</li>
+<li>Report lodged under this application is not a subject matter for enquiry/investigation.</li>
+<li>In case loss is due to theft or any other crime, contact nearest Police Station.</li>
+<li>False report to Police is a punishable offence.</li>
+</ol>
+
+</div>
+
+</div>
+
+<script>
+
+function generateFIR(){
+
+const state = document.getElementById("state").value;
+
+const file =
+document.getElementById("photoUpload").files[0];
+
+if(file){
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+document.getElementById("photoPreview").src =
+e.target.result;
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
+const logoMap = {
+"Andaman and Nicobar Islands":"logos/andamanandnicobarislands.png",
+"Andhra Pradesh":"logos/andhrapradesh.png",
+"Arunachal Pradesh":"logos/arunachalpradesh.png",
+"Assam":"logos/assam.png",
+"Bihar":"logos/bihar.png",
+"Chandigarh":"logos/chandigarh.png",
+"Chhattisgarh":"logos/chhattisgarh.png",
+"Dadra and Nagar Haveli and Daman and Diu":"logos/dadraandnagarhavelianddamananddiu.png",
+"Delhi":"logos/delhi.png",
+"Goa":"logos/goa.png",
+"Gujarat":"logos/gujarat.png",
+"Haryana":"logos/haryana.png",
+"Himachal Pradesh":"logos/himachalpradesh.png",
+"Jammu and Kashmir":"logos/jammuandkashmir.png",
+"Jharkhand":"logos/jharkhand.png",
+"Karnataka":"logos/karnataka.png",
+"Kerala":"logos/kerala.png",
+"Ladakh":"logos/ladakh.png",
+"Lakshadweep":"logos/lakshadweep.png",
+"Madhya Pradesh":"logos/madhyapradesh.png",
+"Maharashtra":"logos/maharashtra.png",
+"Manipur":"logos/manipur.png",
+"Meghalaya":"logos/meghalaya.png",
+"Mizoram":"logos/mizoram.png",
+"Nagaland":"logos/nagaland.png",
+"Odisha":"logos/odisha.png",
+"Puducherry":"logos/puducherry.png",
+"Punjab":"logos/punjab.png",
+"Rajasthan":"logos/rajasthan.png",
+"Sikkim":"logos/sikkim.png",
+"Tamil Nadu":"logos/tamilnadu.png",
+"Telangana":"logos/telangana.png",
+"Tripura":"logos/tripura.png",
+"Uttar Pradesh":"logos/uttarpradesh.png",
+"Uttarakhand":"logos/uttarakhand.png",
+"West Bengal":"logos/westbengal.png"
+};
+
+document.getElementById("policeLogo").src =
+logoMap[state] || "default.png";
+
+const sealMap = {
+"Andaman and Nicobar Islands":"seals/andamanandnicobarislandsseal.png",
+"Andhra Pradesh":"seals/andhrapradeshseal.png",
+"Arunachal Pradesh":"seals/arunachalpradeshseal.png",
+"Assam":"seals/assamseal.png",
+"Bihar":"seals/biharseal.png",
+"Chandigarh":"seals/chandigarhseal.png",
+"Chhattisgarh":"seals/chhattisgarhseal.png",
+"Dadra and Nagar Haveli and Daman and Diu":"seals/dadraandnagarhavelianddamananddiuseal.png",
+"Delhi":"seals/delhiseal.png",
+"Goa":"seals/goaseal.png",
+"Gujarat":"seals/gujaratseal.png",
+"Haryana":"seals/haryanaseal.png",
+"Himachal Pradesh":"seals/himachalpradeshseal.png",
+"Jammu and Kashmir":"seals/jammuandkashmirseal.png",
+"Jharkhand":"seals/jharkhandseal.png",
+"Karnataka":"seals/karnatakaseal.png",
+"Kerala":"seals/keralaseal.png",
+"Ladakh":"seals/ladakhseal.png",
+"Lakshadweep":"seals/lakshadweepseal.png",
+"Madhya Pradesh":"seals/madhyapradeshseal.png",
+"Maharashtra":"seals/maharashtraseal.png",
+"Manipur":"seals/manipurseal.png",
+"Meghalaya":"seals/meghalayaseal.png",
+"Mizoram":"seals/mizoramseal.png",
+"Nagaland":"seals/nagalandseal.png",
+"Odisha":"seals/odishaseal.png",
+"Puducherry":"seals/puducherryseal.png",
+"Punjab":"seals/punjabseal.png",
+"Rajasthan":"seals/rajasthanseal.png",
+"Sikkim":"seals/sikkimseal.png",
+"Tamil Nadu":"seals/tamilnaduseal.png",
+"Telangana":"seals/telanganaseal.png",
+"Tripura":"seals/tripuraseal.png",
+"Uttar Pradesh":"seals/uttarpradeshseal.png",
+"Uttarakhand":"seals/uttarakhandseal.png",
+"West Bengal":"seals/westbengalseal.png"
+};
+
+document.getElementById("sealImage").src =
+sealMap[state] || "";
+
+document.getElementById("printArea").style.display="block";
+
+document.getElementById("headText").innerHTML=
+"In respect of <b>"+
+document.getElementById("reportTitle").value+
+"</b> in <b>"+
+document.getElementById("state").value+
+"</b>";
+
+document.getElementById("pFirNo").innerText=
+document.getElementById("firNo").value;
+
+document.getElementById("pState").innerText=
+document.getElementById("state").value;
+
+document.getElementById("pPoliceStation").innerText=
+document.getElementById("policeStation").value;
+
+document.getElementById("pDate").innerText=
+document.getElementById("firDate").value;
+
+document.getElementById("pComplainant").innerText=
+document.getElementById("complainant").value;
+
+document.getElementById("pOccurrence").innerText=
+document.getElementById("occurrence").value;
+
+document.getElementById("pReport").innerText=
+document.getElementById("reportDetails").value;
+
+document.getElementById("pOther").innerText=
+document.getElementById("otherDetails").value;
+
+}
+
+</script>
+
+</body>
+</html>
