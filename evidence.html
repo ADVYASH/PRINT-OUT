@@ -1,656 +1,317 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Digital Evidence Management System</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<title>Evidence Report Generator</title>
 
 <style>
 
-*{
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
 body{
-margin:0;
-background:#f4f6f8;
-}
-
-header{
-background:#1e293b;
-color:#fff;
-padding:15px;
-text-align:center;
+font-family:Arial,sans-serif;
+margin:20px;
 }
 
 .container{
-padding:20px;
-max-width:1400px;
+max-width:900px;
 margin:auto;
-}
-
-.toolbar{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-margin-bottom:20px;
-}
-
-button{
-padding:10px 15px;
-border:none;
-cursor:pointer;
-border-radius:5px;
-}
-
-.primary{
-background:#2563eb;
-color:white;
-}
-
-.success{
-background:#16a34a;
-color:white;
-}
-
-.warning{
-background:#d97706;
-color:white;
-}
-
-.danger{
-background:#dc2626;
-color:white;
-}
-
-.card{
-background:white;
-padding:15px;
-margin-bottom:15px;
-border-radius:8px;
-box-shadow:0 2px 6px rgba(0,0,0,.1);
 }
 
 input,textarea{
 width:100%;
 padding:8px;
-margin-top:5px;
 margin-bottom:10px;
 }
 
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
+button{
+padding:10px 20px;
+margin:5px;
+cursor:pointer;
 }
 
-.dropzone{
-border:2px dashed #999;
-padding:20px;
+.evidence-box{
+border:1px solid #ccc;
+padding:15px;
+margin-top:15px;
+}
+
+#printArea{
+display:none;
+width:210mm;
+min-height:297mm;
+margin:auto;
+padding:15mm;
+background:white;
+position:relative;
+border:2px solid #000;
+box-sizing:border-box;
+}
+
+#printArea::before{
+content:"";
+position:absolute;
+top:8mm;
+left:8mm;
+right:8mm;
+bottom:8mm;
+border:1px solid #000;
+pointer-events:none;
+}
+
+.evidence-stamp{
+position:absolute;
+top:20px;
+right:20px;
+width:140px;
+height:140px;
+opacity:0.85;
+z-index:999;
+transform:rotate(-25deg);
+transform-origin:center;
+}
+
+.print-photo{
+width:170px;
+height:auto;
+margin:5px;
+border:1px solid #000;
+}
+
+.evidence-section{
+border:2px solid #000;
+padding:15px;
+margin-top:20px;
+margin-bottom:20px;
+page-break-inside:avoid;
+}
+
+.evidence-section h2{
+margin-top:0;
 text-align:center;
-border-radius:8px;
-background:#fafafa;
+border-bottom:1px solid #000;
+padding-bottom:5px;
 }
 
-.images{
+.photo-container{
 display:flex;
 flex-wrap:wrap;
 gap:10px;
 margin-top:10px;
 }
 
-.images img{
-width:120px;
-height:120px;
-object-fit:cover;
-cursor:pointer;
-border-radius:5px;
-border:1px solid #ccc;
+.print-photo{
+width:170px;
+height:auto;
+border:1px solid #000;
+padding:3px;
 }
 
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-gap:15px;
+@media print{
+
+body *{
+visibility:hidden;
 }
 
-.gallery-item{
-background:white;
-padding:10px;
-border-radius:8px;
-text-align:center;
+#printArea,
+#printArea *{
+visibility:visible;
 }
 
-.gallery-item img{
-width:100%;
-height:150px;
-object-fit:cover;
+#printArea{
+display:block !important;
+position:absolute;
+left:0;
+top:0;
+width:210mm;
 }
 
-#modal{
+button{
 display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.9);
+}
+
+}
+
+.report-stamp{
+position:absolute;
+top:20px;
+right:20px;
+width:140px;
+height:140px;
+border:4px solid red;
+border-radius:50%;
+color:red;
+font-weight:bold;
+text-align:center;
+display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
-z-index:9999;
+transform:rotate(-25deg);
+opacity:0.75;
+font-family:Arial,sans-serif;
+line-height:1.2;
+overflow:hidden;
+word-break:break-word;
+padding:10px;
+box-sizing:border-box;
 }
 
-#modal img{
-max-width:90%;
-max-height:90%;
+.report-stamp .stamp-title{
+font-size:24px;
 }
 
-.logo{
-max-height:100px;
-}
-
-@media print {
-
-.evidence-sheet{
-    page-break-after:always;
-    border:2px solid #000;
-    padding:15px;
-    min-height:10in;
-    position:relative;
-}
-
-.report-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    border-bottom:2px solid #000;
-    padding-bottom:10px;
-    margin-bottom:15px;
-}
-
-.logo{
-    width:90px;
-    height:90px;
-    object-fit:contain;
-}
-
-.department{
-    flex:1;
-    text-align:center;
-}
-
-.department h1{
-    margin:0;
-    font-size:24px;
-}
-
-.qr{
-    width:100px;
-    height:100px;
-}
-
-.evidence-photo{
-    width:5in;
-    height:5in;
-    object-fit:contain;
-    border:1px solid #000;
-    margin:10px;
-}
-
-.photos{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-}
-
-.seal{
-    position:absolute;
-    bottom:20px;
-    right:20px;
-    width:120px;
-    opacity:.85;
-    transform:rotate(-15deg);
-}
-
+.report-stamp .stamp-citation{
+font-size:11px;
+max-width:100%;
+overflow-wrap:anywhere;
 }
 </style>
 </head>
-<body>
 
-<header>
-<h1>Digital Evidence Management System</h1>
-</header>
+<body>
 
 <div class="container">
 
-<div class="toolbar">
+<h2>Evidence Report Generator</h2>
 
-<button class="success" onclick="addEvidence()">
+<input type="text" id="caseName" placeholder="Case Name">
+
+<input type="text" id="mainCitation" placeholder="Main Citation">
+
+<input type="text" id="otherCitation" placeholder="Other Citation">
+
+<input type="date" id="judgementDate">
+
+<div id="evidenceContainer"></div>
+
+<button onclick="addEvidence()">
 Add Evidence
 </button>
 
-<button class="primary" onclick="showGallery()">
-Gallery View
+<button onclick="generateReport()">
+Generate Report
 </button>
 
-<button class="primary" onclick="showReport()">
-Report View
-</button>
-
-<button class="warning" onclick="exportJSON()">
-Export JSON
-</button>
-
-<button class="warning" onclick="document.getElementById('importFile').click()">
-Import JSON
-</button>
-
-<button class="primary" onclick="window.print()">
+<button onclick="window.print()">
 Print
 </button>
 
 </div>
 
-<input type="file" id="importFile" hidden>
-
-<div class="card">
-
-<h3>Department Information</h3>
-
-<label>Department Name</label>
-<input id="deptName">
-
-<label>Case Number</label>
-<input id="caseNo">
-
-<label>Officer Name</label>
-<input id="officer">
-
-<label>Upload Logo</label>
-<input type="file" id="logoInput">
-
-<img id="logoPreview" class="logo">
-
-<label>Upload Seal</label>
-<input type="file" id="sealInput">
-
-<img id="sealPreview" class="logo">
-
-<div id="qrcode"></div>
-
-</div>
-
-<div id="evidenceContainer"></div>
-
-<div id="gallerySection" style="display:none;">
-<h2>Evidence Gallery</h2>
-<div class="gallery" id="gallery"></div>
-</div>
-
-</div>
-
-<div class="evidence-sheet">
-
-    <div class="report-header">
-
-        <img src="logo.png" class="logo">
-
-        <div class="department">
-            <h1>CRIME INVESTIGATION DEPARTMENT</h1>
-            <p>Case No: 2026/1458</p>
-        </div>
-
-        <div id="qrcode" class="qr"></div>
-
-    </div>
-
-    <h2>Evidence ID: EV-001</h2>
-
-    <p><b>Title:</b> Mobile Phone Seized</p>
-
-    <p><b>Description:</b> Recovered from crime scene.</p>
-
-    <div class="photos">
-
-        <img src="photo1.jpg" class="evidence-photo">
-        <img src="photo2.jpg" class="evidence-photo">
-
-    </div>
-
-    <img src="seal.png" class="seal">
-
-</div>
-
-<div id="modal">
-<img id="modalImg">
-</div>
+<div id="printArea"></div>
 
 <script>
 
-let evidenceCounter=1;
+let evidenceCount=0;
 
-const container=document.getElementById("evidenceContainer");
+function addEvidence(){
 
-function nextId(){
-return "EV-"+String(evidenceCounter++).padStart(3,"0");
-}
+evidenceCount++;
 
-function addEvidence(data={}){
+const div=document.createElement("div");
 
-const id=data.id||nextId();
+div.className="evidence-box";
 
-const card=document.createElement("div");
-card.className="card evidence";
+div.innerHTML=`
+<h3>Evidence #${String(evidenceCount).padStart(3,'0')}</h3>
 
-card.innerHTML=`
-<h3>${id}</h3>
+<input type="text"
+class="title"
+placeholder="Evidence Title">
 
-<label>Title</label>
-<input class="title" value="${data.title||""}">
+<textarea
+class="description"
+placeholder="Evidence Description"></textarea>
 
-<label>Description</label>
-<textarea class="desc">${data.desc||""}</textarea>
-
-<div class="dropzone">
-Drop Images Here
-<br><br>
-<input type="file" multiple accept="image/*">
-</div>
-
-<div class="images"></div>
-
-<button class="danger no-print">
-Remove
-</button>
+<input type="file"
+class="photos"
+multiple
+accept="image/*">
 `;
 
-container.appendChild(card);
-
-const imgContainer=card.querySelector(".images");
-
-card.querySelector(".danger").onclick=()=>{
-card.remove();
-saveData();
-};
-
-const input=card.querySelector("input[type=file]");
-
-input.onchange=e=>{
-handleFiles(e.target.files,imgContainer);
-};
-
-const drop=card.querySelector(".dropzone");
-
-drop.addEventListener("dragover",e=>{
-e.preventDefault();
-});
-
-drop.addEventListener("drop",e=>{
-e.preventDefault();
-handleFiles(e.dataTransfer.files,imgContainer);
-});
-
-if(data.images){
-
-data.images.forEach(src=>{
-createImage(src,imgContainer);
-});
+document.getElementById("evidenceContainer")
+.appendChild(div);
 
 }
 
-saveData();
+function generateReport(){
+
+let html=`
+
+<img src="evidencestamp.png" class="evidence-stamp">
+
+<h1 style="text-align:center;">
+EVIDENCE REPORT
+</h1>
+
+<p>
+<b>Case Name :</b>
+${document.getElementById("caseName").value}
+</p>
+
+<p>
+<b>Main Citation :</b>
+${document.getElementById("mainCitation").value}
+</p>
+
+<p>
+<b>Other Citation :</b>
+${document.getElementById("otherCitation").value || "No Other Citation"}
+</p>
+
+<p>
+<b>Judgement Date :</b>
+${document.getElementById("judgementDate").value}
+</p>
+
+`;
+
+const boxes=document.querySelectorAll(".evidence-box");
+
+boxes.forEach((box,index)=>{
+
+html+=`
+<div class="evidence-section">
+
+<h2>
+EVIDENCE #${String(index+1).padStart(3,'0')}
+</h2>
+
+<p>
+<b>Title:</b>
+${box.querySelector(".title").value}
+</p>
+
+<p>
+${box.querySelector(".description").value}
+</p>
+`;
+
+const files=
+box.querySelector(".photos").files;
+
+for(let file of files){
+
+const url=URL.createObjectURL(file);
+
+html+=`
+<img src="${url}"
+class="print-photo">
+`;
 }
 
-function handleFiles(files,target){
-
-Array.from(files).forEach(file=>{
-
-const reader=new FileReader();
-
-reader.onload=e=>{
-
-createImage(e.target.result,target);
-saveData();
-
-};
-
-reader.readAsDataURL(file);
-
-});
-
-}
-
-function createImage(src,target){
-
-const img=document.createElement("img");
-
-img.src=src;
-
-img.onclick=()=>{
-
-modal.style.display="flex";
-modalImg.src=src;
-
-};
-
-target.appendChild(img);
-
-}
-
-modal.onclick=()=>{
-modal.style.display="none";
-};
-
-function exportJSON(){
-
-const data=collectData();
-
-const blob=new Blob(
-[JSON.stringify(data,null,2)],
-{type:"application/json"}
-);
-
-const a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download="evidence-report.json";
-a.click();
-
-}
-
-document.getElementById("importFile")
-.addEventListener("change",e=>{
-
-const file=e.target.files[0];
-
-if(!file)return;
-
-const reader=new FileReader();
-
-reader.onload=x=>{
-
-const data=JSON.parse(x.target.result);
-
-loadData(data);
-
-};
-
-reader.readAsText(file);
+html+=`
+<hr>
+</div>
+`;
 
 });
 
-function collectData(){
-
-return{
-
-department:deptName.value,
-caseNo:caseNo.value,
-officer:officer.value,
-logo:logoPreview.src,
-seal:sealPreview.src,
-
-evidences:[
-...document.querySelectorAll(".evidence")
-].map(card=>({
-
-id:card.querySelector("h3").textContent,
-title:card.querySelector(".title").value,
-desc:card.querySelector(".desc").value,
-
-images:[
-...card.querySelectorAll(".images img")
-].map(i=>i.src)
-
-}))
-
-};
+document.getElementById("printArea").innerHTML=html;
+document.getElementById("printArea").style.display="block";
 
 }
-
-function loadData(data){
-
-container.innerHTML="";
-gallery.innerHTML="";
-
-deptName.value=data.department||"";
-caseNo.value=data.caseNo||"";
-officer.value=data.officer||"";
-
-if(data.logo) logoPreview.src=data.logo;
-if(data.seal) sealPreview.src=data.seal;
-
-evidenceCounter=1;
-
-data.evidences.forEach(e=>{
-
-addEvidence(e);
-
-const n=parseInt(e.id.replace("EV-",""));
-
-if(n>=evidenceCounter)
-evidenceCounter=n+1;
-
-});
-
-saveData();
-
-}
-
-function saveData(){
-
-localStorage.setItem(
-"evidenceSystem",
-JSON.stringify(collectData())
-);
-
-}
-
-window.onload=()=>{
-
-const saved=localStorage.getItem(
-"evidenceSystem"
-);
-
-if(saved){
-
-loadData(JSON.parse(saved));
-
-}else{
 
 addEvidence();
-
-}
-
-generateQR();
-
-};
-
-function showGallery(){
-
-gallerySection.style.display="block";
-
-gallery.innerHTML="";
-
-document
-.querySelectorAll(".evidence")
-.forEach(card=>{
-
-const title=
-card.querySelector(".title").value;
-
-const id=
-card.querySelector("h3").textContent;
-
-const img=
-card.querySelector(".images img");
-
-if(!img)return;
-
-gallery.innerHTML+=`
-<div class="gallery-item">
-<img src="${img.src}">
-<h4>${id}</h4>
-<div>${title}</div>
-</div>
-`;
-
-});
-
-}
-
-function showReport(){
-
-gallerySection.style.display="none";
-
-}
-
-function generateQR(){
-
-new QRCode(
-document.getElementById("qrcode"),
-{
-text:"Verification Page",
-width:120,
-height:120
-}
-);
-
-}
-
-function previewUpload(input,target){
-
-input.onchange=e=>{
-
-const file=e.target.files[0];
-
-if(!file)return;
-
-const reader=new FileReader();
-
-reader.onload=x=>{
-
-target.src=x.target.result;
-
-saveData();
-
-};
-
-reader.readAsDataURL(file);
-
-};
-
-}
-
-previewUpload(
-logoInput,
-logoPreview
-);
-
-previewUpload(
-sealInput,
-sealPreview
-);
-
-setInterval(saveData,5000);
 
 </script>
 
