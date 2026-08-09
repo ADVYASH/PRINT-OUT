@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>e-Stamp</title>
+
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    font-family:Arial, sans-serif;
+    background:#eaeaea;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:20px;
+}
+
+input, select, textarea{
+    width:100%;
+    padding:8px;
+    margin:5px 0 15px;
+    box-sizing:border-box;
+}
+
+button{
+    padding:10px 20px;
+    cursor:pointer;
+}
+
+.category-title{
+    font-weight:bold;
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+.category-select{
+    font-weight:bold;
+}
+
+@page{
+    size:A4;
+    margin:0;
+}
+
+@media print{
+
+    html,body{
+        width:210mm;
+        height:297mm;
+        margin:0;
+        padding:0;
+        overflow:hidden;
+    }
+
+    .no-print{
+        display:none !important;
+    }
+
+    .container.print-area{
+        width:210mm;
+        height:297mm;
+        margin:0;
+        padding:0;
+        overflow:hidden;
+        page-break-after:avoid;
+        page-break-inside:avoid;
+    }
+
+    .details{
+        padding:10mm;
+        font-size:12px;
+        line-height:1.3;
+    }
+
+    .center-text{
+        font-size:28px;
+        margin:4mm 0;
+    }
+
+    .watermark{
+        font-size:55px;
+    }
+}
+
+.watermark{
+    position:absolute;
+    top:45%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:70px;
+    color:rgba(0,0,0,0.05);
+    font-weight:bold;
+    pointer-events:none;
+}
+
+.print-area{
+    margin:0;
+    padding:0;
+    width:210mm;
+    min-height:297mm;
+    position:relative;
+}
+
+.stamp-image{
+    width:100%;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.stamp-image img{
+    width:100%;
+    max-width:100%;
+    height:auto;
+    display:block;
+}
+
+.center-text{
+    text-align:center;
+    font-family:'UnifrakturCook', cursive;
+    font-size:42px;
+    letter-spacing:3px;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.details{
+    padding:25px;
+    margin-top:10px;
+    font-size:16px;
+    line-height:1.5;
+}
+
+.qa-row{
+    display:flex;
+    justify-content:space-between;
+    margin:1px 0;
+}
+
+.q{
+    font-weight:bold;
+}
+
+.a{
+    text-align:right;
+    margin-left:auto;
+    max-width:65%;
+}
+
+.seal{
+    position:absolute;
+    right:20mm;
+    bottom:15mm;
+    width:120px;
+    opacity:0.9;
+    transform:rotate(-15deg);
+    pointer-events:none;
+}
+
+.seal img{
+    width:100%;
+    height:auto;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= FORM ================= -->
+
+<div class="container no-print">
+
+<h2>e-Stamp</h2>
+
+<!-- CATEGORY -->
+<div class="category-title">Select Stamp Category</div>
+
+<select id="categorySelect" class="category-select">
+    <option value="">-- Select Category --</option>
+    <option value="Core Critical">Core Critical - ₹1000</option>
+    <option value="Crucial">Crucial - ₹500</option>
+    <option value="Specialized">Specialized - ₹200</option>
+    <option value="Procedural">Procedural - ₹100</option>
+</select>
+
+<label>Select State / Union Territory</label>
+
+<select id="stateSelect">
+<option value="">-- Select --</option>
+
+<!-- STATES -->
+<option value="AP">Andhra Pradesh</option>
+<option value="AR">Arunachal Pradesh</option>
+<option value="AS">Assam</option>
+<option value="BR">Bihar</option>
+<option value="CG">Chhattisgarh</option>
+<option value="GA">Goa</option>
+<option value="GJ">Gujarat</option>
+<option value="HR">Haryana</option>
+<option value="HP">Himachal Pradesh</option>
+<option value="JH">Jharkhand</option>
+<option value="KA">Karnataka</option>
+<option value="KL">Kerala</option>
+<option value="MP">Madhya Pradesh</option>
+<option value="MH">Maharashtra</option>
+<option value="MN">Manipur</option>
+<option value="ML">Meghalaya</option>
+<option value="MZ">Mizoram</option>
+<option value="NL">Nagaland</option>
+<option value="OD">Odisha</option>
+<option value="PB">Punjab</option>
+<option value="RJ">Rajasthan</option>
+<option value="SK">Sikkim</option>
+<option value="TN">Tamil Nadu</option>
+<option value="TS">Telangana</option>
+<option value="TR">Tripura</option>
+<option value="UP">Uttar Pradesh</option>
+<option value="UK">Uttarakhand</option>
+<option value="WB">West Bengal</option>
+
+<!-- UNION TERRITORIES -->
+<option value="AN">Andaman & Nicobar Islands</option>
+<option value="CH">Chandigarh</option>
+<option value="DN">Dadra & Nagar Haveli and Daman & Diu</option>
+<option value="DL">Delhi (NCT)</option>
+<option value="JK">Jammu & Kashmir</option>
+<option value="LA">Ladakh</option>
+<option value="LD">Lakshadweep</option>
+<option value="PY">Puducherry</option>
+
+</select>
+
+<label>Purchased By</label>
+<input type="text" id="purchasedBy">
+
+<label>Sections</label>
+<input type="text" id="sections"
+placeholder="Enter sections, e.g. 101, 103, 109 BNS">
+
+<label>Description</label>
+<textarea id="description"></textarea>
+
+<label>Consideration Price (Rs.)</label>
+<input type="number" id="amount">
+
+<label>First Party</label>
+<input type="text" id="firstParty">
+
+<label>Second Party</label>
+<input type="text" id="secondParty">
+
+<button onclick="generate()">Stamp</button>
+<button onclick="window.print()">Print</button>
+
+</div>
+
+
+<!-- ================= PRINT AREA ================= -->
+
+<div class="container print-area">
+
+<div class="watermark">STAMP</div>
+
+<div class="stamp-image">
+    <img id="stampImage" src="100estamp.png" alt="Stamp">
+</div>
+
+<div class="center-text">
+    INDIA NON JUDICIAL
+</div>
+
+<div class="details" id="output"></div>
+
+<div class="seal">
+    <img id="sealImage" src="100seal.png" alt="Seal">
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   CATEGORY CONFIGURATION
+===================================================== */
+
+const stampCategories = {
+
+    "Core Critical": {
+        duty: 1000,
+        stamp: "1000rsestamp.png",
+        seal: "1000seal.png"
+    },
+
+    "Crucial": {
+        duty: 500,
+        stamp: "500rsestamp.png",
+        seal: "500seal.png"
+    },
+
+    "Specialized": {
+        duty: 200,
+        stamp: "200rsestamp.png",
+        seal: "200seal.png"
+    },
+
+    "Procedural": {
+        duty: 100,
+        stamp: "100rsestamp.png",
+        seal: "100seal.png"
+    }
+
+};
+
+
+/* =====================================================
+   COUNTER
+===================================================== */
+
+let docCounter = localStorage.getItem("docCounter");
+
+if(!docCounter){
+    docCounter = 10705610947280;
+}else{
+    docCounter = parseInt(docCounter);
+}
+
+
+/* =====================================================
+   RANDOM 14 DIGIT NUMBER
+===================================================== */
+
+function random14Digit(){
+
+    return Math.floor(
+        10000000000000 +
+        Math.random() * 90000000000000
+    );
+
+}
+
+
+/* =====================================================
+   CHANGE STAMP / SEAL WHEN CATEGORY CHANGES
+===================================================== */
+
+document.getElementById("categorySelect").addEventListener("change", function(){
+
+    let category = this.value;
+
+    if(!stampCategories[category]){
+        return;
+    }
+
+    let data = stampCategories[category];
+
+    document.getElementById("stampImage").src = data.stamp;
+    document.getElementById("sealImage").src = data.seal;
+
+});
+
+
+/* =====================================================
+   GENERATE STAMP
+===================================================== */
+
+function generate(){
+
+    /* CATEGORY */
+
+    let category =
+        document.getElementById("categorySelect").value;
+
+    if(!category){
+
+        alert("Please select a Stamp Category.");
+
+        return;
+    }
+
+
+    let categoryData =
+        stampCategories[category];
+
+
+    /* FORM DATA */
+
+    let stateCode =
+        document.getElementById("stateSelect").value;
+
+    let purchasedBy =
+        document.getElementById("purchasedBy").value.trim();
+
+    let firstParty =
+        document.getElementById("firstParty").value.trim();
+
+    let secondParty =
+        document.getElementById("secondParty").value.trim();
+
+    let amount =
+        document.getElementById("amount").value;
+
+    let description =
+        document.getElementById("description").value.trim();
+
+    let selectedForPrint =
+        document.getElementById("sections").value.trim();
+
+
+    /* DATE */
+
+    let now = new Date();
+
+    let dateTime =
+        now.toLocaleString();
+
+
+    /* RANDOM NUMBER */
+
+    let randomNumber =
+        random14Digit();
+
+
+    /* LAST CHARACTER */
+
+    let lastChar =
+        purchasedBy
+        ? purchasedBy.charAt(0).toUpperCase()
+        : "X";
+
+
+    /* CERTIFICATE NUMBER */
+
+    let certificateNumber =
+        "IN" +
+        stateCode +
+        randomNumber +
+        lastChar;
+
+
+    /* UNIQUE DOCUMENT */
+
+    let uniqueDoc =
+        "SUBIN-UPUP-SELF" +
+        docCounter +
+        lastChar;
+
+
+    /* COUNTER */
+
+    docCounter++;
+
+    localStorage.setItem(
+        "docCounter",
+        docCounter
+    );
+
+
+    /* =================================================
+       UPDATE IMAGE AGAIN
+    ================================================= */
+
+    document.getElementById("stampImage").src =
+        categoryData.stamp;
+
+    document.getElementById("sealImage").src =
+        categoryData.seal;
+
+
+    /* =================================================
+       HTML OUTPUT
+    ================================================= */
+
+    let fullDetailsHTML = `
+
+    <div class="qa-row">
+        <span class="q">STAMP CATEGORY:</span>
+        <span class="a">${category}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">STAMP DUTY AMOUNT:</span>
+        <span class="a">₹${categoryData.duty}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">CERTIFICATE NUMBER:</span>
+        <span class="a">${certificateNumber}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">CERTIFICATE ISSUED DATE:</span>
+        <span class="a">${dateTime}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">ACCOUNT REFERENCE:</span>
+        <span class="a">
+            SELFPRINT (PU)/ DL-SELF/GALGOTIA-GN-UP
+        </span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">UNIQUE DOC REFERENCE:</span>
+        <span class="a">${uniqueDoc}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">APPLICABLE SECTIONS:</span>
+        <span class="a">${selectedForPrint}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">DESCRIPTION:</span>
+        <span class="a">${description}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">PURCHASED BY:</span>
+        <span class="a">${purchasedBy}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">FIRST PARTY:</span>
+        <span class="a">${firstParty}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">SECOND PARTY:</span>
+        <span class="a">${secondParty}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">CONSIDERATION PRICE:</span>
+        <span class="a">₹${amount}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">STAMP DUTY PAID BY:</span>
+        <span class="a">${firstParty}</span>
+    </div>
+
+    <div class="qa-row">
+        <span class="q">STAMP DUTY AMOUNT:</span>
+        <span class="a">₹${categoryData.duty}</span>
+    </div>
+
+    `;
+
+
+    document.getElementById("output").innerHTML =
+        fullDetailsHTML;
+
+}
+
+</script>
+
+</body>
+</html>
