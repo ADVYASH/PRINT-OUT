@@ -253,9 +253,25 @@ placeholder="Enter sections, e.g. 101, 103, 109 BNS">
 <label>Second Party</label>
 <input type="text" id="secondParty">
 
-<button onclick="generate()">Stamp</button>
-<button onclick="window.print()">Print</button>
+<button type="button" onclick="generate()">Stamp</button>
 
+<button type="button" onclick="window.print()">Print</button>
+
+<button type="button" onclick="exportJSON()">
+    Export JSON
+</button>
+
+<button type="button" onclick="document.getElementById('jsonImport').click()">
+    Import JSON
+</button>
+
+<input
+    type="file"
+    id="jsonImport"
+    accept=".json,application/json"
+    style="display:none"
+    onchange="importJSON(event)"
+>
 </div>
 
 
@@ -292,25 +308,25 @@ const stampCategories = {
 
     "Core Critical": {
         duty: 1000,
-        stamp: "1000estamp.png",
+        stamp: "1000rsestamp.png",
         seal: "1000seal.png"
     },
 
     "Crucial": {
         duty: 500,
-        stamp: "500estamp.png",
+        stamp: "500rsestamp.png",
         seal: "500seal.png"
     },
 
     "Specialized": {
         duty: 200,
-        stamp: "200estamp.png",
+        stamp: "200rsestamp.png",
         seal: "200seal.png"
     },
 
     "Procedural": {
         duty: 100,
-        stamp: "100estamp.png",
+        stamp: "100rsestamp.png",
         seal: "100seal.png"
     }
 
@@ -557,6 +573,293 @@ function generate(){
 
 }
 
+/* =====================================================
+   EXPORT FORM DATA TO JSON
+===================================================== */
+
+function exportJSON(){
+
+    /*
+       Collect ONLY the information
+       from this e-Stamp form
+    */
+
+    const data = {
+
+        category:
+            document.getElementById("categorySelect").value,
+
+        state:
+            document.getElementById("stateSelect").value,
+
+        purchasedBy:
+            document.getElementById("purchasedBy").value,
+
+        sections:
+            document.getElementById("sections").value,
+
+        description:
+            document.getElementById("description").value,
+
+        amount:
+            document.getElementById("amount").value,
+
+        firstParty:
+            document.getElementById("firstParty").value,
+
+        secondParty:
+            document.getElementById("secondParty").value
+
+    };
+
+
+    /*
+       Convert data to JSON
+    */
+
+    const json =
+        JSON.stringify(data, null, 4);
+
+
+    /*
+       Create downloadable file
+    */
+
+    const blob =
+        new Blob(
+            [json],
+            { type: "application/json" }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const link =
+        document.createElement("a");
+
+
+    link.href = url;
+
+
+    /*
+       Create useful filename
+    */
+
+    let name =
+        document.getElementById("purchasedBy")
+        .value
+        .trim();
+
+
+    if(!name){
+        name = "eStamp";
+    }
+
+
+    /*
+       Remove unsafe filename characters
+    */
+
+    name =
+        name.replace(
+            /[^a-zA-Z0-9_-]/g,
+            "_"
+        );
+
+
+    link.download =
+        name + "-eStamp.json";
+
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =====================================================
+   IMPORT JSON
+===================================================== */
+
+function importJSON(event){
+
+    const file =
+        event.target.files[0];
+
+
+    if(!file){
+        return;
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(e){
+
+            try{
+
+                /*
+                   Read JSON
+                */
+
+                const data =
+                    JSON.parse(e.target.result);
+
+
+                /*
+                   ONLY READ THE FIELDS
+                   THIS FORM NEEDS
+                */
+
+
+                if(data.category !== undefined){
+
+                    document.getElementById(
+                        "categorySelect"
+                    ).value =
+                        data.category;
+
+                }
+
+
+                if(data.state !== undefined){
+
+                    document.getElementById(
+                        "stateSelect"
+                    ).value =
+                        data.state;
+
+                }
+
+
+                if(data.purchasedBy !== undefined){
+
+                    document.getElementById(
+                        "purchasedBy"
+                    ).value =
+                        data.purchasedBy;
+
+                }
+
+
+                if(data.sections !== undefined){
+
+                    document.getElementById(
+                        "sections"
+                    ).value =
+                        data.sections;
+
+                }
+
+
+                if(data.description !== undefined){
+
+                    document.getElementById(
+                        "description"
+                    ).value =
+                        data.description;
+
+                }
+
+
+                if(data.amount !== undefined){
+
+                    document.getElementById(
+                        "amount"
+                    ).value =
+                        data.amount;
+
+                }
+
+
+                if(data.firstParty !== undefined){
+
+                    document.getElementById(
+                        "firstParty"
+                    ).value =
+                        data.firstParty;
+
+                }
+
+
+                if(data.secondParty !== undefined){
+
+                    document.getElementById(
+                        "secondParty"
+                    ).value =
+                        data.secondParty;
+
+                }
+
+
+                /*
+                   Update stamp and seal
+                   according to imported category
+                */
+
+                const category =
+                    document.getElementById(
+                        "categorySelect"
+                    ).value;
+
+
+                if(stampCategories[category]){
+
+                    document.getElementById(
+                        "stampImage"
+                    ).src =
+                        stampCategories[category].stamp;
+
+
+                    document.getElementById(
+                        "sealImage"
+                    ).src =
+                        stampCategories[category].seal;
+
+                }
+
+
+                alert(
+                    "JSON imported successfully.\n\n" +
+                    "The required form details have been filled automatically."
+                );
+
+
+            }
+            catch(error){
+
+                alert(
+                    "Invalid JSON file.\n\n" +
+                    "Please select a valid e-Stamp JSON file."
+                );
+
+            }
+
+        };
+
+
+    reader.readAsText(file);
+
+
+    /*
+       Allows the same file to be
+       selected again later.
+    */
+
+    event.target.value = "";
+
+}
 </script>
 
 </body>
