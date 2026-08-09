@@ -47,50 +47,6 @@ background:rgba(0,0,0,0.75);
 z-index:-1;
 }
 
-/* ================= LOADER ================= */
-
-#loader{
-position:fixed;
-inset:0;
-background:#0d0d0d;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:9999;
-transition:opacity 0.8s ease, visibility 0.8s ease;
-}
-
-.loader-logo{
-font-size:40px;
-font-weight:800;
-letter-spacing:2px;
-margin-bottom:25px;
-}
-
-.loader-line{
-width:200px;
-height:3px;
-background:#222;
-overflow:hidden;
-}
-
-.loader-progress{
-height:100%;
-width:0%;
-background:#ff3cac;
-animation:load 2.5s forwards ease;
-}
-
-@keyframes load{
-to{width:100%;}
-}
-
-.hide-loader{
-opacity:0;
-visibility:hidden;
-}
-
 /* ================= NAVBAR ================= */
 
 nav{
@@ -132,9 +88,8 @@ width:100%;
 /* ================= HERO ================= */
 
 .hero{
-text-align:center;
-padding:140px 20px 100px;
-animation:fadeIn 1.5s ease;
+    text-align:center;
+    padding:140px 20px 100px;
 }
 
 .hero h3{
@@ -154,11 +109,6 @@ animation:float 4s ease-in-out infinite;
 .hero h4{
 font-weight:400;
 opacity:0.85;
-}
-
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(30px);}
-to{opacity:1;transform:translateY(0);}
 }
 
 @keyframes float{
@@ -2072,14 +2022,6 @@ font-size:14px;
 
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-<div class="loader-logo">Aafat Gaming</div>
-<div class="loader-line">
-<div class="loader-progress"></div>
-</div>
-</div>
-
 <nav>
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
@@ -2091,23 +2033,27 @@ font-size:14px;
 </nav>
 
 <div class="hero">
-<h3>💥🚪 You Are Now Entering ⚡🔥</h3>
-<h1>Aafat Gaming World</h1>
-<h4>🎮🔥 “No Fear, Only Aafat!” ⚡💪</h4>
+<h3>⚖️National Digital Court & Legal Services Portal⚖️</h3>
+<h1>Nyaya Setu  |  न्याय सेतु</h1>
+<h4>“Forms • Affidavits • Court Information • Legal Records • Case Resources — All in One Place”</h4>
 </div>
 
 <div class="announcement">
 <div class="announcement-content">
-<h2>🔥 ASRP SEASON 2 OFFICIAL LAUNCH 🔥</h2>
-<h4>The Next Chapter of Minecraft Roleplay Begins Now!</h4>
-<div class="date">📅 02 March 2026</div>
-<p>The wait is finally over — ASRP Season 2 is launching with a brand-new world, fresh opportunities, and bigger ambitions. A new map means new kingdoms to rise, new rivalries to begin, and new legends to be created. This is your chance to start fresh and dominate from day one.</p>
-<p>New map, improved systems, better economy, and exciting events — this season is built to be stronger and more competitive than ever.</p>
-<p>Gather your team, build your empire, and make your mark. The adventure begins now — see you in ASRP Season 2! 🚀🎮</p>
-<p>👑 Right now ASRP Season 2 is open only for Creators — Public release coming soon!</p>
-<h4>By ASRP Head Management</h4>
+<h2>📚 NEW BARE ACTS & LEGAL RESOURCES ADDED</h2>
+<h4>We are pleased to announce that new Bare Acts and legal resources have been added to the National Digital Court & Legal Services Portal.</h4>
+<div class="date">📅 11 August 2026</div>
+<p>📖 Access important legislation and legal materials in a simple, organized, and easy-to-use digital format.</p>
+<p>⚖️ New Resources Include:</p>
+<p>📜 Bare Acts & Statutes</p>
+<p>🏛️ Constitutional & Legal Provisions</p>
+<p>📚 Important Legal References</p>
+<p>⚖️ Court-Related Legal Materials</p>
+<p>🔎 Easy Access to Legal Information</p>
+<p>🔔 More Acts, Laws & Legal Resources will be added regularly.</p>
+<h4>“Knowledge of Law • Access to Law • Justice through Law” ⚖️🇮🇳</h4>
 </div>
-<img src="https://raw.githubusercontent.com/ADVYASH/AafatGaming/main/update.jpg">
+<img src="https://raw.githubusercontent.com/ADVYASH/PRINT-OUT/announcement/announcementupdate.png">
 </div>
 
 <!-- ================= BUTTONS + LIVE MESSAGE ================= -->
@@ -2963,31 +2909,6 @@ font-size:14px;
 </footer>
 
 <script>
-
-/* ===== EXTREME LOCK MODE ===== */
-
-document.body.style.overflow = "hidden";
-document.body.style.pointerEvents = "none";
-
-/* Disable right click */
-document.addEventListener("contextmenu", e => e.preventDefault());
-
-/* Disable all keys */
-document.addEventListener("keydown", e => e.preventDefault());
-
-/* Disable drag */
-document.addEventListener("dragstart", e => e.preventDefault());
-
-/* Cinematic Unlock After Loader */
-setTimeout(() => {
-
-    document.getElementById("loader").classList.add("hide-loader");
-
-    /* Unlock page */
-    document.body.style.pointerEvents = "auto";
-    document.body.style.overflow = "auto";
-
-}, 3000);
 
 /* =====================================================
    COURT CALENDAR
