@@ -201,6 +201,18 @@ margin-top:20px;
     opacity:0.95;
     z-index:2;
 }
+
+.button-group{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:15px;
+}
+
+.button-group button{
+    flex:1;
+    min-width:120px;
+}
 </style>
 </head>
 <body>
@@ -264,32 +276,34 @@ margin-top:20px;
 <input type="number" id="stampAmount">
 
 <label>Description of Document</label>
-<select id="descriptionType">
-    <option value="">Select Description</option>
-    <option value="Affidavit">Affidavit</option>
-    <option value="Rent Agreement">Rent Agreement</option>
-    <option value="Lease Deed">Lease Deed</option>
-    <option value="Sale Deed">Sale Deed</option>
-    <option value="Gift Deed">Gift Deed</option>
-    <option value="Partnership Deed">Partnership Deed</option>
-    <option value="Power of Attorney">Power of Attorney</option>
-    <option value="Indemnity Bond">Indemnity Bond</option>
-    <option value="Declaration">Declaration</option>
-    <option value="Undertaking">Undertaking</option>
-    <option value="Employment Agreement">Employment Agreement</option>
-    <option value="Loan Agreement">Loan Agreement</option>
-    <option value="Service Agreement">Service Agreement</option>
-    <option value="Property Agreement">Property Agreement</option>
-    <option value="General Agreement">General Agreement</option>
-</select>
+<input 
+    type="text" 
+    id="descriptionType" 
+    placeholder="Enter description of document">
 
-<label>Custom Description (Optional)</label>
-<input type="text" id="customDesc">
+<div class="button-group">
 
-<label>Custom Description</label>
-<input type="text" id="customDesc">
+    <button onclick="generateCertificate()">
+        Generate
+    </button>
 
-<button onclick="generateCertificate()">Generate</button>
+    <button type="button" onclick="exportJSON()">
+        Export JSON
+    </button>
+
+    <button type="button" onclick="openImport()">
+        Import JSON
+    </button>
+
+    <input
+        type="file"
+        id="jsonFile"
+        accept=".json,application/json"
+        style="display:none"
+        onchange="importJSON(event)"
+    >
+
+</div>
 
 </div>
 
@@ -423,24 +437,11 @@ now.toLocaleString();
 document.getElementById("govtText").innerHTML=
 "Government of " + stateNames[state];
 
-let desc=[];
-
-let selectedDesc =
-document.getElementById("descriptionType").value;
-
-if(selectedDesc!=""){
-    desc.push(selectedDesc);
-}
-
-let custom =
-document.getElementById("customDesc").value.trim();
-
-if(custom!=""){
-    desc.push(custom);
-}
+let desc =
+    document.getElementById("descriptionType").value.trim();
 
 document.getElementById("outPurchaser").innerHTML=purchaser;
-document.getElementById("outDescription").innerHTML=desc.join(", ");
+document.getElementById("outDescription").innerHTML = desc;
 document.getElementById("outPrice").innerHTML=price;
 document.getElementById("outFirstParty").innerHTML=purchaser;
 document.getElementById("outSecondParty").innerHTML=secondParty;
@@ -458,7 +459,7 @@ UDR: DL-71-YASH-KUMAR-UDR-260608-9471
 
 Purchased By: ${purchaser}
 
-Description: ${desc.join(", ")}
+Description: ${desc}
 
 Consideration Price: Rs.${price}
 
@@ -484,6 +485,252 @@ correctLevel:QRCode.CorrectLevel.H
 
 }
 
+/* =========================================
+   EXPORT FORM DATA TO JSON
+========================================= */
+
+function exportJSON(){
+
+    const formData = {
+
+        /* Only the fields used by this form */
+
+        state:
+            document.getElementById("state").value,
+
+        purchasedBy:
+            document.getElementById("purchasedBy").value,
+
+        secondParty:
+            document.getElementById("secondParty").value,
+
+        price:
+            document.getElementById("price").value,
+
+        stampAmount:
+            document.getElementById("stampAmount").value,
+
+        descriptionType:
+            document.getElementById("descriptionType").value,
+
+        customDesc:
+            document.getElementById("customDesc").value
+
+    };
+
+
+    /*
+       Extra information can also be stored
+       in the JSON if you want.
+    */
+
+    const exportData = {
+
+        version: "1.0",
+
+        form: "India Non Judicial Stamp Certificate",
+
+        exportedAt: new Date().toISOString(),
+
+        data: formData
+
+    };
+
+
+    /* Convert to JSON */
+
+    const json =
+        JSON.stringify(exportData, null, 4);
+
+
+    /* Create JSON file */
+
+    const blob =
+        new Blob(
+            [json],
+            {
+                type:"application/json"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const link =
+        document.createElement("a");
+
+
+    link.href = url;
+
+    link.download =
+        "stamp-certificate-data.json";
+
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+
+    alert("Form data exported successfully.");
+}
+
+
+/* =========================================
+   OPEN IMPORT FILE WINDOW
+========================================= */
+
+function openImport(){
+
+    document
+        .getElementById("jsonFile")
+        .click();
+
+}
+
+
+/* =========================================
+   IMPORT JSON
+========================================= */
+
+function importJSON(event){
+
+    const file =
+        event.target.files[0];
+
+
+    if(!file){
+        return;
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload = function(e){
+
+        try{
+
+            const imported =
+                JSON.parse(e.target.result);
+
+
+            /*
+               Get the data section.
+            */
+
+            const data =
+                imported.data || imported;
+
+
+            /*
+               ONLY take the fields required
+               by this form.
+               
+               Any other JSON data is ignored.
+            */
+
+            if(data.state !== undefined){
+
+                document.getElementById("state").value =
+                    data.state;
+
+            }
+
+
+            if(data.purchasedBy !== undefined){
+
+                document.getElementById("purchasedBy").value =
+                    data.purchasedBy;
+
+            }
+
+
+            if(data.secondParty !== undefined){
+
+                document.getElementById("secondParty").value =
+                    data.secondParty;
+
+            }
+
+
+            if(data.price !== undefined){
+
+                document.getElementById("price").value =
+                    data.price;
+
+            }
+
+
+            if(data.stampAmount !== undefined){
+
+                document.getElementById("stampAmount").value =
+                    data.stampAmount;
+
+            }
+
+
+            if(data.descriptionType !== undefined){
+
+                document.getElementById("descriptionType").value =
+                    data.descriptionType;
+
+            }
+
+
+            if(data.customDesc !== undefined){
+
+                document.getElementById("customDesc").value =
+                    data.customDesc;
+
+            }
+
+
+            /*
+               Automatically generate the certificate
+               after importing the data.
+            */
+
+            generateCertificate();
+
+
+            alert(
+                "JSON imported successfully.\n\n" +
+                "The form has been filled automatically."
+            );
+
+
+        }
+        catch(error){
+
+            console.error(error);
+
+            alert(
+                "Invalid JSON file.\n\n" +
+                "Please select a valid form-data JSON file."
+            );
+
+        }
+
+    };
+
+
+    reader.readAsText(file);
+
+
+    /*
+       Allows importing the same file again.
+    */
+
+    event.target.value = "";
+
+}
 </script>
 
 </body>
