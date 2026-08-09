@@ -398,10 +398,18 @@ accept="image/*">
 
 <textarea id="otherDetails" placeholder="Any Other Details"></textarea>
 
-<div style="display:flex;gap:10px;">
+<div style="display:flex;gap:10px;flex-wrap:wrap;">
 
 <button type="button" onclick="generateFIR()">
 Generate FIR
+</button>
+
+<button type="button" onclick="exportJSON()">
+Export JSON
+</button>
+
+<button type="button" onclick="openJSONImport()">
+Import JSON
 </button>
 
 <button type="button" onclick="window.print()">
@@ -409,6 +417,14 @@ Print FIR
 </button>
 
 </div>
+
+<input
+    type="file"
+    id="jsonImport"
+    accept=".json,application/json"
+    style="display:none"
+    onchange="importJSON(event)"
+>
 
 </div>
 
@@ -689,6 +705,326 @@ document.getElementById("otherDetails").value;
 
 }
 
+/* =====================================================
+   EXPORT FIR DATA TO JSON
+===================================================== */
+
+function exportJSON(){
+
+    const data = {
+
+        // FIR DETAILS
+        firNo:
+            document.getElementById("firNo").value,
+
+        state:
+            document.getElementById("state").value,
+
+        policeStation:
+            document.getElementById("policeStation").value,
+
+        firDate:
+            document.getElementById("firDate").value,
+
+        reportTitle:
+            document.getElementById("reportTitle").value,
+
+        // REPORT DETAILS
+        complainant:
+            document.getElementById("complainant").value,
+
+        occurrence:
+            document.getElementById("occurrence").value,
+
+        reportDetails:
+            document.getElementById("reportDetails").value,
+
+        otherDetails:
+            document.getElementById("otherDetails").value,
+
+        // INFORMATION
+        formType: "FIR Generator",
+
+        version: "1.0",
+
+        exportedAt:
+            new Date().toISOString()
+
+    };
+
+
+    /* Convert object to JSON */
+
+    const json =
+        JSON.stringify(data, null, 4);
+
+
+    /* Create file */
+
+    const blob =
+        new Blob(
+            [json],
+            {
+                type:"application/json"
+            }
+        );
+
+
+    /* Create download */
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    /*
+       Give file a useful name
+    */
+
+    const firNo =
+        document.getElementById("firNo").value
+        .trim();
+
+    link.download =
+        firNo
+        ? "FIR-" + firNo + ".json"
+        : "FIR-Data.json";
+
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =====================================================
+   OPEN IMPORT
+===================================================== */
+
+function openJSONImport(){
+
+    document
+        .getElementById("jsonImport")
+        .click();
+
+}
+
+
+/* =====================================================
+   IMPORT JSON
+===================================================== */
+
+function importJSON(event){
+
+    const file =
+        event.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(e){
+
+            try{
+
+                const data =
+                    JSON.parse(e.target.result);
+
+
+                /*
+                   ONLY the fields required by
+                   this FIR form are taken.
+                */
+
+
+                document.getElementById("firNo").value =
+                    data.firNo || "";
+
+
+                document.getElementById("state").value =
+                    data.state || "";
+
+
+                document.getElementById("policeStation").value =
+                    data.policeStation || "";
+
+
+                document.getElementById("firDate").value =
+                    data.firDate || "";
+
+
+                document.getElementById("reportTitle").value =
+                    data.reportTitle || "";
+
+
+                document.getElementById("complainant").value =
+                    data.complainant || "";
+
+
+                document.getElementById("occurrence").value =
+                    data.occurrence || "";
+
+
+                document.getElementById("reportDetails").value =
+                    data.reportDetails || "";
+
+
+                document.getElementById("otherDetails").value =
+                    data.otherDetails || "";
+
+
+                /*
+                   Automatically update
+                   state logo and seal.
+                */
+
+                updateStateImages();
+
+
+                alert(
+                    "FIR data imported successfully."
+                );
+
+
+            }
+            catch(error){
+
+                alert(
+                    "Invalid JSON file."
+                );
+
+                console.error(error);
+
+            }
+
+        };
+
+
+    reader.readAsText(file);
+
+
+    /*
+       Allows same JSON file to be
+       imported again later.
+    */
+
+    event.target.value = "";
+
+}
+
+
+/* =====================================================
+   UPDATE STATE LOGO + SEAL
+===================================================== */
+
+function updateStateImages(){
+
+    const state =
+        document.getElementById("state").value;
+
+
+    const logoMap = {
+        "Andaman and Nicobar Islands":"logos/andamanandnicobarislands.png",
+        "Andhra Pradesh":"logos/andhrapradesh.png",
+        "Arunachal Pradesh":"logos/arunachalpradesh.png",
+        "Assam":"logos/assam.png",
+        "Bihar":"logos/bihar.png",
+        "Chandigarh":"logos/chandigarh.png",
+        "Chhattisgarh":"logos/chhattisgarh.png",
+        "Dadra and Nagar Haveli and Daman and Diu":"logos/dadraandnagarhavelianddamananddiu.png",
+        "Delhi":"logos/delhi.png",
+        "Goa":"logos/goa.png",
+        "Gujarat":"logos/gujarat.png",
+        "Haryana":"logos/haryana.png",
+        "Himachal Pradesh":"logos/himachalpradesh.png",
+        "Jammu and Kashmir":"logos/jammuandkashmir.png",
+        "Jharkhand":"logos/jharkhand.png",
+        "Karnataka":"logos/karnataka.png",
+        "Kerala":"logos/kerala.png",
+        "Ladakh":"logos/ladakh.png",
+        "Lakshadweep":"logos/lakshadweep.png",
+        "Madhya Pradesh":"logos/madhyapradesh.png",
+        "Maharashtra":"logos/maharashtra.png",
+        "Manipur":"logos/manipur.png",
+        "Meghalaya":"logos/meghalaya.png",
+        "Mizoram":"logos/mizoram.png",
+        "Nagaland":"logos/nagaland.png",
+        "Odisha":"logos/odisha.png",
+        "Puducherry":"logos/puducherry.png",
+        "Punjab":"logos/punjab.png",
+        "Rajasthan":"logos/rajasthan.png",
+        "Sikkim":"logos/sikkim.png",
+        "Tamil Nadu":"logos/tamilnadu.png",
+        "Telangana":"logos/telangana.png",
+        "Tripura":"logos/tripura.png",
+        "Uttar Pradesh":"logos/uttarpradesh.png",
+        "Uttarakhand":"logos/uttarakhand.png",
+        "West Bengal":"logos/westbengal.png"
+    };
+
+
+    const sealMap = {
+        "Andaman and Nicobar Islands":"seals/andamanandnicobarislandsseal.png",
+        "Andhra Pradesh":"seals/andhrapradeshseal.png",
+        "Arunachal Pradesh":"seals/arunachalpradeshseal.png",
+        "Assam":"seals/assamseal.png",
+        "Bihar":"seals/biharseal.png",
+        "Chandigarh":"seals/chandigarhseal.png",
+        "Chhattisgarh":"seals/chhattisgarhseal.png",
+        "Dadra and Nagar Haveli and Daman and Diu":"seals/dadraandnagarhavelianddamananddiuseal.png",
+        "Delhi":"seals/delhiseal.png",
+        "Goa":"seals/goaseal.png",
+        "Gujarat":"seals/gujaratseal.png",
+        "Haryana":"seals/haryanaseal.png",
+        "Himachal Pradesh":"seals/himachalpradeshseal.png",
+        "Jammu and Kashmir":"seals/jammuandkashmirseal.png",
+        "Jharkhand":"seals/jharkhandseal.png",
+        "Karnataka":"seals/karnatakaseal.png",
+        "Kerala":"seals/keralaseal.png",
+        "Ladakh":"seals/ladakhseal.png",
+        "Lakshadweep":"seals/lakshadweepseal.png",
+        "Madhya Pradesh":"seals/madhyapradeshseal.png",
+        "Maharashtra":"seals/maharashtraseal.png",
+        "Manipur":"seals/manipurseal.png",
+        "Meghalaya":"seals/meghalayaseal.png",
+        "Mizoram":"seals/mizoramseal.png",
+        "Nagaland":"seals/nagalandseal.png",
+        "Odisha":"seals/odishaseal.png",
+        "Puducherry":"seals/puducherryseal.png",
+        "Punjab":"seals/punjabseal.png",
+        "Rajasthan":"seals/rajasthanseal.png",
+        "Sikkim":"seals/sikkimseal.png",
+        "Tamil Nadu":"seals/tamilnaduseal.png",
+        "Telangana":"seals/telanganaseal.png",
+        "Tripura":"seals/tripuraseal.png",
+        "Uttar Pradesh":"seals/uttarpradeshseal.png",
+        "Uttarakhand":"seals/uttarakhandseal.png",
+        "West Bengal":"seals/westbengalseal.png"
+    };
+
+
+    document.getElementById("policeLogo").src =
+        logoMap[state] || "default.png";
+
+
+    document.getElementById("sealImage").src =
+        sealMap[state] || "";
+
+}
 </script>
 
 </body>
