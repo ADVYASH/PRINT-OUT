@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>Student Information & Case Record Sheet</title>
+
 
 <style>
 
@@ -24,19 +30,58 @@ body{
     overflow-x:hidden;
 }
 
-.print-btn{
+
+/* =========================
+   TOP BUTTONS
+========================= */
+
+.toolbar{
     position:fixed;
     top:15px;
     right:15px;
-    background:#004080;
-    color:#fff;
-    border:none;
-    padding:12px 25px;
-    font-size:16px;
-    cursor:pointer;
-    border-radius:5px;
+    display:flex;
+    gap:8px;
     z-index:9999;
 }
+
+.toolbar button{
+    border:none;
+    color:#fff;
+    padding:10px 16px;
+    font-size:14px;
+    cursor:pointer;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+.print-btn{
+    background:#004080;
+}
+
+.export-btn{
+    background:#16803c;
+}
+
+.import-btn{
+    background:#7b3fc6;
+}
+
+.clear-btn{
+    background:#b3261e;
+}
+
+.toolbar button:hover{
+    opacity:.85;
+}
+
+#importFile{
+    display:none;
+}
+
+
+/* =========================
+   PAGE
+========================= */
 
 .page{
     width:190mm;
@@ -47,6 +92,12 @@ body{
     position:relative;
     margin:auto;
 }
+
+
+/* =========================
+   HEADER
+========================= */
+
 .header{
     text-align:center;
     border-bottom:3px solid #000;
@@ -63,37 +114,32 @@ body{
     font-size:12px;
 }
 
+
+/* =========================
+   WATERMARK
+========================= */
+
 .watermark{
     position:absolute;
     top:50%;
     left:50%;
-    transform:translate(-50%,-50%) rotate(-30deg);
+    transform:
+        translate(-50%,-50%)
+        rotate(-30deg);
+
     font-size:90px;
+
     color:rgba(0,0,0,0.05);
+
     font-weight:bold;
+
     pointer-events:none;
 }
 
-.photo-box{
-    text-align:center;
-    margin-bottom:20px;
-}
 
-.photo-box img{
-    width:100px;
-    height:125px;
-    border:2px solid #000;
-    object-fit:cover;
-}
-
-.section-title{
-    background:#000;
-    color:#fff;
-    padding:4px 8px;
-    margin-top:8px;
-    margin-bottom:5px;
-    font-size:13px;
-}
+/* =========================
+   TABLE
+========================= */
 
 .info-table{
     width:100%;
@@ -105,6 +151,7 @@ body{
     padding:3px 6px;
     font-size:11px;
     line-height:1.2;
+    vertical-align:top;
 }
 
 .info-table td:first-child{
@@ -114,29 +161,68 @@ body{
     word-break:break-word;
 }
 
+
+/* =========================
+   SECTION
+========================= */
+
+.section-title{
+    background:#000;
+    color:#fff;
+    padding:3px 6px;
+    margin-top:4px;
+    margin-bottom:3px;
+    font-size:13px;
+}
+
+
+/* =========================
+   FORM FIELDS
+========================= */
+
 .input-field{
     width:100%;
     border:none;
     outline:none;
     font-size:11px;
     padding:1px;
-    white-space:normal;
+    background:transparent;
 }
 
-.textarea-field{
+.expand-field{
     width:100%;
-    min-height:60px;
     border:none;
     outline:none;
     resize:none;
-    font-size:12px;
+    overflow:hidden;
+    min-height:20px;
+    font-size:11px;
+    line-height:1.4;
+    text-transform:uppercase;
+    font-family:Arial, Helvetica, sans-serif;
+    background:transparent;
 }
+
+.date-field{
+    border:none;
+    outline:none;
+    font-size:11px;
+    width:100%;
+    background:transparent;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
 
 .footer-section{
     margin-top:20px;
     display:flex;
-    justify-content:space-between;
+    justify-content:flex-end;
     align-items:flex-end;
+    position:relative;
+    min-height:120px;
 }
 
 .signature-box{
@@ -162,14 +248,27 @@ body{
     filter:contrast(120%);
 }
 
-.footer-section{
-    margin-top:20px;
-    display:flex;
-    justify-content:flex-end;
-    align-items:flex-end;
-    position:relative;
-    min-height:120px;
+
+/* =========================
+   STATUS
+========================= */
+
+.status{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#000;
+    color:#fff;
+    padding:12px 18px;
+    border-radius:6px;
+    display:none;
+    z-index:99999;
 }
+
+
+/* =========================
+   PRINT
+========================= */
 
 @media print{
 
@@ -180,14 +279,18 @@ body{
         background:#fff;
     }
 
-    .print-btn{
+    .toolbar{
         display:none;
     }
 
+    .status{
+        display:none !important;
+    }
+
     .page{
-        width:100%;
+        width:180mm;          /* A4 210mm - 30mm side margins */
         min-height:auto;
-        margin:0;
+        margin:0 auto;        /* centers the page */
         border:none;
         padding:4mm;
         box-sizing:border-box;
@@ -200,12 +303,8 @@ body{
 }
 
 .input-field,
-.textarea-field{
-    text-transform: uppercase;
-}
-
-.info-table td:nth-child(2){
-    text-transform: uppercase;
+.expand-field{
+    text-transform:uppercase;
 }
 
 table,
@@ -214,176 +313,928 @@ td{
     page-break-inside:avoid;
 }
 
-.section-title{
-    margin-top:4px;
-    margin-bottom:3px;
-    padding:3px 6px;
-}
-
 .info-table td{
     word-wrap:break-word;
     overflow-wrap:break-word;
-    vertical-align:top;
 }
 
-.expand-field{
-    width:100%;
-    border:none;
-    outline:none;
-    resize:none;
-    overflow:hidden;
-    min-height:20px;
-    font-size:11px;
-    line-height:1.4;
-    text-transform:uppercase;
-    font-family:Arial, Helvetica, sans-serif;
-}
 </style>
+
 </head>
+
+
 <body>
 
-<button class="print-btn" onclick="window.print()">🖨 PRINT DOCUMENT</button>
+
+<!-- ==================================
+     TOOLBAR
+================================== -->
+
+<div class="toolbar">
+
+    <button
+        class="import-btn"
+        onclick="openImport()">
+        📂 IMPORT JSON
+    </button>
+
+    <button
+        class="export-btn"
+        onclick="exportJSON()">
+        💾 EXPORT JSON
+    </button>
+
+    <button
+        class="print-btn"
+        onclick="window.print()">
+        🖨 PRINT
+    </button>
+
+    <button
+        class="clear-btn"
+        onclick="clearForm()">
+        ✕ CLEAR
+    </button>
+
+</div>
+
+
+<input
+    type="file"
+    id="importFile"
+    accept=".json"
+    onchange="importJSON(event)">
+
 
 <div class="page">
 
+
+<!-- ==================================
+     HEADER
+================================== -->
+
 <div class="header">
-    <h1>STUDENT INFORMATION & CASE RECORD SHEET</h1>
-    <h2>Official Academic & Research Record</h2>
+
+    <h1>
+        STUDENT INFORMATION & CASE RECORD SHEET
+    </h1>
+
+    <h2>
+        Official Academic & Research Record
+    </h2>
+
 </div>
+
+
+<!-- ==================================
+     STUDENT DETAILS
+================================== -->
+
+<div class="section-title">
+    STUDENT DETAILS
+</div>
+
 
 <table class="info-table">
 
-<div class="section-title">
-STUDENT DETAILS
-</div>
-
 
 <tr>
+
 <td>Name</td>
-<td>Yash Kumar (Student)</td>
-<td rowspan="9" style="width:140px;text-align:center;vertical-align:top;">
-    <img src="myphoto.jpg"
-         alt="Student Photo"
-         style="width:90px;height:105px;border:2px solid #000;object-fit:cover;">
+
+<td>
+    <input
+        id="student_name"
+        class="input-field"
+        value="">
 </td>
+
+<td
+    rowspan="9"
+    style="
+        width:140px;
+        text-align:center;
+        vertical-align:top;
+    ">
+
+    <img
+        src="myphoto.jpg"
+        alt="Student Photo"
+        style="
+            width:90px;
+            height:105px;
+            border:2px solid #000;
+            object-fit:cover;
+        ">
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>College ID</td>
-<td>23GSOL1030102</td>
+
+<td>
+
+<input
+    id="college_id"
+    class="input-field">
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Course</td>
-<td>Integrated Bachelor of Business Administration and Bachelor of Legislative Law</td>
+
+<td>
+
+<textarea
+    id="course"
+    class="expand-field"></textarea>
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Division</td>
-<td>B</td>
+
+<td>
+
+<input
+    id="division"
+    class="input-field">
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Year</td>
-<td>IIIrd</td>
+
+<td>
+
+<input
+    id="year"
+    class="input-field">
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Semester</td>
-<td>VIth</td>
+
+<td>
+
+<input
+    id="semester"
+    class="input-field">
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Course Session</td>
-<td>2023 - 2028</td>
+
+<td>
+
+<input
+    id="course_session"
+    class="input-field">
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Current Session</td>
-<td>2025 - 2026</td>
+
+<td>
+
+<input
+    id="current_session"
+    class="input-field">
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Year of Graduation</td>
-<td>2028</td>
+
+<td>
+
+<input
+    id="graduation_year"
+    class="input-field">
+
+</td>
+
 </tr>
+
 
 </table>
 
+
+
+<!-- ==================================
+     CASE DETAILS
+================================== -->
+
 <div class="section-title">
-CASE DETAILS
+    CASE DETAILS
 </div>
+
 
 <table class="info-table">
 
+
 <tr>
+
 <td>Case Name</td>
-<td><textarea class="expand-field" placeholder="Enter Case Name"></textarea></td>
+
+<td>
+
+<textarea
+    id="case_name"
+    class="expand-field"
+    placeholder="Enter Case Name"></textarea>
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Petitioner Name</td>
-<td><textarea class="expand-field" placeholder="Enter Petitioner Name"></textarea></td>
+
+<td>
+
+<textarea
+    id="petitioner"
+    class="expand-field"
+    placeholder="Enter Petitioner Name"></textarea>
+
+</td>
+
 </tr>
 
-<tr>
-<td>Respondant Name</td>
-<td><textarea class="expand-field" placeholder="Enter Respondant Name"></textarea></td>
-</tr>
 
 <tr>
+
+<td>Respondent Name</td>
+
+<td>
+
+<textarea
+    id="respondent"
+    class="expand-field"
+    placeholder="Enter Respondent Name"></textarea>
+
+</td>
+
+</tr>
+
+
+<tr>
+
 <td>On Bench</td>
-<td><textarea class="expand-field" placeholder="Enter On Bench Judges Name"></textarea></td>
+
+<td>
+
+<textarea
+    id="bench"
+    class="expand-field"
+    placeholder="Enter On Bench Judges Name"></textarea>
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Judgement By</td>
-<td><textarea class="expand-field" placeholder="Enter Who Gave Judgement"></textarea></td>
+
+<td>
+
+<textarea
+    id="judgement_by"
+    class="expand-field"
+    placeholder="Enter Who Gave Judgement"></textarea>
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Judgement Date</td>
-<td><input type="date" class="date-field"></td>
+
+<td>
+
+<input
+    type="date"
+    id="judgement_date"
+    class="date-field">
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Citation</td>
-<td><textarea class="expand-field" placeholder="Enter Citation"></textarea></td>
+
+<td>
+
+<textarea
+    id="citation"
+    class="expand-field"
+    placeholder="Enter Citation"></textarea>
+
+</td>
+
 </tr>
 
+
 <tr>
+
 <td>Type of Offences</td>
-<td><textarea class="expand-field" placeholder="Write Type of Offences"></textarea></td>
+
+<td>
+
+<textarea
+    id="offences"
+    class="expand-field"
+    placeholder="Write Type of Offences"></textarea>
+
+</td>
+
 </tr>
+
 
 </table>
+
+
+
+<!-- ==================================
+     FOOTER
+================================== -->
 
 <div class="footer-section">
 
+
     <div class="stamp-image">
-        <img src="galstamp.png" alt="Official Stamp">
+
+        <img
+            src="galstamp.png"
+            alt="Official Stamp">
+
     </div>
+
 
     <div class="signature-box">
+
         <div class="signature-line"></div>
+
         Student Signature
+
     </div>
 
-</div>
 
 </div>
+
+
+</div>
+
+
+<div
+    id="status"
+    class="status">
+</div>
+
+
+
 <script>
-document.querySelectorAll('.expand-field').forEach(field => {
 
-    function autoGrow(){
-        this.style.height = 'auto';
-        this.style.height = this.scrollHeight + 'px';
+
+/* =====================================================
+   GET CURRENT FORM DATA
+===================================================== */
+
+function getFormData(){
+
+    return {
+
+        student:{
+
+            name:
+                document.getElementById(
+                    "student_name"
+                ).value,
+
+            collegeId:
+                document.getElementById(
+                    "college_id"
+                ).value,
+
+            course:
+                document.getElementById(
+                    "course"
+                ).value,
+
+            division:
+                document.getElementById(
+                    "division"
+                ).value,
+
+            year:
+                document.getElementById(
+                    "year"
+                ).value,
+
+            semester:
+                document.getElementById(
+                    "semester"
+                ).value,
+
+            courseSession:
+                document.getElementById(
+                    "course_session"
+                ).value,
+
+            currentSession:
+                document.getElementById(
+                    "current_session"
+                ).value,
+
+            graduationYear:
+                document.getElementById(
+                    "graduation_year"
+                ).value
+
+        },
+
+
+        case:{
+
+            caseName:
+                document.getElementById(
+                    "case_name"
+                ).value,
+
+            petitioner:
+                document.getElementById(
+                    "petitioner"
+                ).value,
+
+            respondent:
+                document.getElementById(
+                    "respondent"
+                ).value,
+
+            bench:
+                document.getElementById(
+                    "bench"
+                ).value,
+
+            judgementBy:
+                document.getElementById(
+                    "judgement_by"
+                ).value,
+
+            judgementDate:
+                document.getElementById(
+                    "judgement_date"
+                ).value,
+
+            citation:
+                document.getElementById(
+                    "citation"
+                ).value,
+
+            offences:
+                document.getElementById(
+                    "offences"
+                ).value
+
+        }
+
+    };
+
+}
+
+
+
+/* =====================================================
+   EXPORT JSON
+===================================================== */
+
+function exportJSON(){
+
+    const data =
+        getFormData();
+
+
+    const json =
+        JSON.stringify(
+            data,
+            null,
+            4
+        );
+
+
+    const blob =
+        new Blob(
+            [json],
+            {
+                type:
+                "application/json"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const link =
+        document.createElement("a");
+
+
+    link.href = url;
+
+
+    link.download =
+        "student-case-record.json";
+
+
+    document.body.appendChild(link);
+
+
+    link.click();
+
+
+    document.body.removeChild(link);
+
+
+    URL.revokeObjectURL(url);
+
+
+    showStatus(
+        "JSON exported successfully."
+    );
+
+}
+
+
+
+/* =====================================================
+   OPEN IMPORT
+===================================================== */
+
+function openImport(){
+
+    document
+        .getElementById("importFile")
+        .click();
+
+}
+
+
+
+/* =====================================================
+   IMPORT JSON
+===================================================== */
+
+function importJSON(event){
+
+    const file =
+        event.target.files[0];
+
+
+    if(!file){
+
+        return;
+
     }
 
-    field.addEventListener('input', autoGrow);
-    autoGrow.call(field);
 
-});
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(e){
+
+            try{
+
+                const data =
+                    JSON.parse(
+                        e.target.result
+                    );
+
+
+                /*
+                ==========================================
+                ONLY REQUIRED DATA IS TAKEN
+                ==========================================
+                */
+
+
+                /* STUDENT */
+
+                if(data.student){
+
+                    document.getElementById(
+                        "student_name"
+                    ).value =
+                        data.student.name || "";
+
+
+                    document.getElementById(
+                        "college_id"
+                    ).value =
+                        data.student.collegeId || "";
+
+
+                    document.getElementById(
+                        "course"
+                    ).value =
+                        data.student.course || "";
+
+
+                    document.getElementById(
+                        "division"
+                    ).value =
+                        data.student.division || "";
+
+
+                    document.getElementById(
+                        "year"
+                    ).value =
+                        data.student.year || "";
+
+
+                    document.getElementById(
+                        "semester"
+                    ).value =
+                        data.student.semester || "";
+
+
+                    document.getElementById(
+                        "course_session"
+                    ).value =
+                        data.student.courseSession || "";
+
+
+                    document.getElementById(
+                        "current_session"
+                    ).value =
+                        data.student.currentSession || "";
+
+
+                    document.getElementById(
+                        "graduation_year"
+                    ).value =
+                        data.student.graduationYear || "";
+
+                }
+
+
+
+                /* CASE */
+
+                if(data.case){
+
+                    document.getElementById(
+                        "case_name"
+                    ).value =
+                        data.case.caseName || "";
+
+
+                    document.getElementById(
+                        "petitioner"
+                    ).value =
+                        data.case.petitioner || "";
+
+
+                    document.getElementById(
+                        "respondent"
+                    ).value =
+                        data.case.respondent || "";
+
+
+                    document.getElementById(
+                        "bench"
+                    ).value =
+                        data.case.bench || "";
+
+
+                    document.getElementById(
+                        "judgement_by"
+                    ).value =
+                        data.case.judgementBy || "";
+
+
+                    document.getElementById(
+                        "judgement_date"
+                    ).value =
+                        data.case.judgementDate || "";
+
+
+                    document.getElementById(
+                        "citation"
+                    ).value =
+                        data.case.citation || "";
+
+
+                    document.getElementById(
+                        "offences"
+                    ).value =
+                        data.case.offences || "";
+
+                }
+
+
+                /*
+                ==========================================
+                UPDATE TEXTAREAS
+                ==========================================
+                */
+
+                document
+                    .querySelectorAll(
+                        ".expand-field"
+                    )
+                    .forEach(field => {
+
+                        autoGrow(field);
+
+                    });
+
+
+                showStatus(
+                    "JSON imported. Form automatically filled."
+                );
+
+
+            }
+
+            catch(error){
+
+                alert(
+                    "Invalid JSON file."
+                );
+
+            }
+
+        };
+
+
+    reader.readAsText(file);
+
+
+    /*
+       Allows the same JSON file
+       to be selected again.
+    */
+
+    event.target.value = "";
+
+}
+
+
+
+/* =====================================================
+   CLEAR FORM
+===================================================== */
+
+function clearForm(){
+
+    document
+        .querySelectorAll(
+            ".input-field, .expand-field, .date-field"
+        )
+        .forEach(field => {
+
+            field.value = "";
+
+        });
+
+
+    document
+        .querySelectorAll(
+            ".expand-field"
+        )
+        .forEach(field => {
+
+            autoGrow(field);
+
+        });
+
+
+    showStatus(
+        "Form cleared."
+    );
+
+}
+
+
+
+/* =====================================================
+   AUTO GROW TEXTAREAS
+===================================================== */
+
+function autoGrow(field){
+
+    field.style.height =
+        "auto";
+
+    field.style.height =
+        field.scrollHeight + "px";
+
+}
+
+
+document
+    .querySelectorAll(
+        ".expand-field"
+    )
+    .forEach(field => {
+
+        field.addEventListener(
+            "input",
+            function(){
+
+                autoGrow(this);
+
+            }
+        );
+
+
+        autoGrow(field);
+
+    });
+
+
+
+/* =====================================================
+   STATUS MESSAGE
+===================================================== */
+
+function showStatus(message){
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    status.textContent =
+        message;
+
+
+    status.style.display =
+        "block";
+
+
+    setTimeout(
+        function(){
+
+            status.style.display =
+                "none";
+
+        },
+        3000
+    );
+
+}
+
 </script>
+
 </body>
 </html>
