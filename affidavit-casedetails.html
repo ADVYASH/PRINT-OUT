@@ -282,7 +282,30 @@ button{
 </div>
 
 <button onclick="generateAffidavit()">Generate Affidavit</button>
-<button class="print-btn" onclick="window.print()">Print Affidavit</button>
+
+<button class="print-btn" onclick="window.print()">
+    Print Affidavit
+</button>
+
+<button type="button" onclick="exportJSON()">
+    Export JSON
+</button>
+
+<button type="button" onclick="openJSONImport()">
+    Import JSON
+</button>
+
+<button type="button" onclick="clearForm()">
+    Clear Form
+</button>
+
+<input
+    type="file"
+    id="jsonFile"
+    accept=".json,application/json"
+    style="display:none;"
+    onchange="importJSON(event)"
+>
 
 </div>
 
@@ -433,6 +456,411 @@ document.getElementById('sealText').innerHTML =
 `AFFIDAVIT<br>${this.value || 'N/A'}`;
 
 });
+
+/* =========================================================
+   JSON EXPORT / IMPORT SYSTEM
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   GET ALL FORM DATA
+   --------------------------------------------------------- */
+
+function getFormData(){
+
+    return {
+
+        caseName:
+            document.getElementById("caseName").value,
+
+        caseNo:
+            document.getElementById("caseNo").value,
+
+        courtName:
+            document.getElementById("courtName").value,
+
+        courtState:
+            document.getElementById("courtState").value,
+
+        bench:
+            document.getElementById("bench").value,
+
+        judgmentBy:
+            document.getElementById("judgmentBy").value,
+
+        judgmentDate:
+            document.getElementById("judgmentDate").value,
+
+        citationNo:
+            document.getElementById("citationNo").value,
+
+        petitioners:
+            document.getElementById("petitioners").value,
+
+        petAdv:
+            document.getElementById("petAdv").value,
+
+        respondents:
+            document.getElementById("respondents").value,
+
+        resAdv:
+            document.getElementById("resAdv").value,
+
+        firNo:
+            document.getElementById("firNo").value,
+
+        firDate:
+            document.getElementById("firDate").value,
+
+        policeStation:
+            document.getElementById("policeStation").value,
+
+        sections:
+            document.getElementById("sections").value,
+
+        nature:
+            document.getElementById("nature").value,
+
+        proceedingLocation:
+            document.getElementById("proceedingLocation").value,
+
+        caseCategory:
+            document.querySelector(
+                'input[name="caseCategory"]:checked'
+            )?.value || "Core Critical",
+
+        /* Optional information about the file */
+        exportedFrom:
+            "Affidavit Generator",
+
+        exportDate:
+            new Date().toISOString()
+
+    };
+
+}
+
+
+/* ---------------------------------------------------------
+   EXPORT JSON
+   --------------------------------------------------------- */
+
+function exportJSON(){
+
+    const data = getFormData();
+
+    const json =
+        JSON.stringify(data, null, 4);
+
+    const blob =
+        new Blob(
+            [json],
+            {
+                type: "application/json"
+            }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    /*
+       Create useful filename
+    */
+
+    const caseName =
+        document.getElementById("caseName").value
+        .trim()
+        .replace(/[^a-z0-9]/gi, "_");
+
+    link.download =
+        caseName
+        ? caseName + "_affidavit.json"
+        : "affidavit-data.json";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+    alert("JSON data exported successfully.");
+
+}
+
+
+/* ---------------------------------------------------------
+   OPEN FILE SELECTOR
+   --------------------------------------------------------- */
+
+function openJSONImport(){
+
+    document
+        .getElementById("jsonFile")
+        .click();
+
+}
+
+
+/* ---------------------------------------------------------
+   IMPORT JSON
+   --------------------------------------------------------- */
+
+function importJSON(event){
+
+    const file =
+        event.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload = function(e){
+
+        try{
+
+            const data =
+                JSON.parse(e.target.result);
+
+
+            /*
+             * Only the fields required by this form
+             * are read from the JSON.
+             *
+             * Extra JSON data is ignored.
+             */
+
+
+            if(data.caseName !== undefined)
+                document.getElementById("caseName").value =
+                    data.caseName;
+
+
+            if(data.caseNo !== undefined)
+                document.getElementById("caseNo").value =
+                    data.caseNo;
+
+
+            if(data.courtName !== undefined)
+                document.getElementById("courtName").value =
+                    data.courtName;
+
+
+            if(data.courtState !== undefined)
+                document.getElementById("courtState").value =
+                    data.courtState;
+
+
+            if(data.bench !== undefined)
+                document.getElementById("bench").value =
+                    data.bench;
+
+
+            if(data.judgmentBy !== undefined)
+                document.getElementById("judgmentBy").value =
+                    data.judgmentBy;
+
+
+            if(data.judgmentDate !== undefined)
+                document.getElementById("judgmentDate").value =
+                    data.judgmentDate;
+
+
+            if(data.citationNo !== undefined)
+                document.getElementById("citationNo").value =
+                    data.citationNo;
+
+
+            if(data.petitioners !== undefined)
+                document.getElementById("petitioners").value =
+                    data.petitioners;
+
+
+            if(data.petAdv !== undefined)
+                document.getElementById("petAdv").value =
+                    data.petAdv;
+
+
+            if(data.respondents !== undefined)
+                document.getElementById("respondents").value =
+                    data.respondents;
+
+
+            if(data.resAdv !== undefined)
+                document.getElementById("resAdv").value =
+                    data.resAdv;
+
+
+            if(data.firNo !== undefined)
+                document.getElementById("firNo").value =
+                    data.firNo;
+
+
+            if(data.firDate !== undefined)
+                document.getElementById("firDate").value =
+                    data.firDate;
+
+
+            if(data.policeStation !== undefined)
+                document.getElementById("policeStation").value =
+                    data.policeStation;
+
+
+            if(data.sections !== undefined)
+                document.getElementById("sections").value =
+                    data.sections;
+
+
+            if(data.nature !== undefined)
+                document.getElementById("nature").value =
+                    data.nature;
+
+
+            if(data.proceedingLocation !== undefined)
+                document.getElementById("proceedingLocation").value =
+                    data.proceedingLocation;
+
+
+            /*
+             * Restore case category
+             */
+
+            if(data.caseCategory !== undefined){
+
+                const radio =
+                    document.querySelector(
+                        `input[name="caseCategory"][value="${data.caseCategory}"]`
+                    );
+
+                if(radio){
+
+                    radio.checked = true;
+
+                }
+
+            }
+
+
+            /*
+             * Automatically regenerate affidavit
+             */
+
+            generateAffidavit();
+
+
+            /*
+             * Update seal date
+             */
+
+            document.getElementById("sealText").innerHTML =
+                `AFFIDAVIT<br>${data.judgmentDate || "N/A"}`;
+
+
+            alert(
+                "JSON imported successfully.\n\n" +
+                "The matching form fields have been filled automatically."
+            );
+
+
+        }
+        catch(error){
+
+            alert(
+                "Unable to import JSON.\n\n" +
+                "Please select a valid JSON data file."
+            );
+
+            console.error(error);
+
+        }
+
+    };
+
+
+    reader.readAsText(file);
+
+
+    /*
+     * Allows the same file to be selected again
+     */
+
+    event.target.value = "";
+
+}
+
+
+/* ---------------------------------------------------------
+   CLEAR FORM
+   --------------------------------------------------------- */
+
+function clearForm(){
+
+    const fields = [
+
+        "caseName",
+        "caseNo",
+        "courtName",
+        "courtState",
+        "bench",
+        "judgmentBy",
+        "judgmentDate",
+        "citationNo",
+        "petitioners",
+        "petAdv",
+        "respondents",
+        "resAdv",
+        "firNo",
+        "firDate",
+        "policeStation",
+        "sections",
+        "nature",
+        "proceedingLocation"
+
+    ];
+
+
+    fields.forEach(function(id){
+
+        document.getElementById(id).value = "";
+
+    });
+
+
+    /*
+     * Reset category
+     */
+
+    document.querySelector(
+        'input[name="caseCategory"][value="Core Critical"]'
+    ).checked = true;
+
+
+    /*
+     * Clear preview
+     */
+
+    document.getElementById(
+        "affidavitContent"
+    ).innerHTML =
+        "Generate affidavit to preview here.";
+
+
+    document.getElementById(
+        "sealText"
+    ).innerHTML =
+        "AFFIDAVIT<br>N/A";
+
+}
 </script>
 
 </body>
