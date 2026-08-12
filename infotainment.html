@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nyaya Setu | न्याय सेतु</title>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="websitelogo.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="websitelogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="websitelogo.png">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        /* =====================================================
+           BODY
+        ===================================================== */
+
+        body {
+            min-height: 100vh;
+
+            font-family: 'Poppins', sans-serif;
+
+            color: white;
+
+            background:
+                url("https://media.discordapp.net/attachments/1311247446051131453/1436771236909940796/Stars_Background_GIF.gif?ex=6a7e007c&is=6a7caefc&hm=ae4150a84c266953d747f46f1274e7fbee2ec1df88aef93ffeab651011bad02d&=")
+                no-repeat
+                center center
+                fixed;
+
+            background-size: cover;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           DARK OVERLAY
+        ===================================================== */
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.75);
+
+            z-index: -1;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        nav {
+            width: 100%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 28px;
+
+            padding: 21px 20px;
+
+            background: rgba(255, 255, 255, 0.06);
+
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+        }
+
+
+        nav a {
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 15px;
+
+            font-weight: 500;
+
+            position: relative;
+
+            padding-bottom: 6px;
+
+            transition: 0.3s ease;
+        }
+
+
+        nav a::after {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            bottom: 0;
+
+            width: 0%;
+
+            height: 2px;
+
+            background: #ff3cac;
+
+            transition: 0.3s ease;
+        }
+
+
+        nav a:hover {
+            color: #ffb7df;
+        }
+
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+
+        /* =====================================================
+           MAIN SECTION
+        ===================================================== */
+
+        .button-section {
+            width: min(1450px, calc(100% - 50px));
+
+            margin: 70px auto 100px;
+
+            padding: 55px;
+
+            background: rgba(255, 255, 255, 0.07);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            border: 1px solid rgba(255, 255, 255, 0.13);
+
+            border-radius: 26px;
+
+            box-shadow:
+                0 0 35px rgba(0, 0, 0, 0.30);
+        }
+
+
+        /* =====================================================
+           TITLE
+        ===================================================== */
+
+        .button-category h2 {
+            text-align: center;
+
+            margin-bottom: 42px;
+
+            font-size: 34px;
+
+            letter-spacing: 4px;
+
+            font-weight: 900;
+
+            text-shadow:
+                0 0 15px rgba(255, 60, 172, 0.25);
+        }
+
+
+        /* =====================================================
+           BUTTON GRID
+        ===================================================== */
+
+        .button-grid {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 27px;
+        }
+
+
+        /* =====================================================
+           FULL IMAGE BUTTON
+        ===================================================== */
+
+        .square-btn {
+            width: 100%;
+
+            aspect-ratio: 1 / 1;
+
+            display: block;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background: rgba(255, 255, 255, 0.075);
+
+            border: 1px solid rgba(255, 255, 255, 0.18);
+
+            border-radius: 20px;
+
+            text-decoration: none;
+
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            cursor: pointer;
+
+            transition:
+                transform 0.35s ease,
+                border-color 0.35s ease,
+                box-shadow 0.35s ease;
+        }
+
+
+        /* =====================================================
+           IMAGE
+        ===================================================== */
+
+        .square-btn img {
+            width: 100%;
+
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+
+            object-position: center;
+
+            border-radius: inherit;
+
+            pointer-events: none;
+
+            user-select: none;
+
+            -webkit-user-drag: none;
+
+            transition:
+                transform 0.35s ease,
+                filter 0.35s ease;
+        }
+
+
+        /* =====================================================
+           HOVER
+        ===================================================== */
+
+        .square-btn:hover {
+            transform: translateY(-9px) scale(1.035);
+
+            border-color: #ff3cac;
+
+            box-shadow:
+                0 0 20px rgba(255, 60, 172, 0.40),
+                0 0 45px rgba(255, 60, 172, 0.18);
+        }
+
+
+        .square-btn:hover img {
+            transform: scale(1.07);
+
+            filter: brightness(1.08);
+        }
+
+
+        /* =====================================================
+           CLICK
+        ===================================================== */
+
+        .square-btn:active {
+            transform: translateY(-3px) scale(0.99);
+        }
+
+
+        /* =====================================================
+           LARGE TABLET
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            nav {
+                gap: 20px;
+
+                padding: 19px 15px;
+            }
+
+
+            nav a {
+                font-size: 14px;
+            }
+
+
+            .button-section {
+                width: calc(100% - 35px);
+
+                padding: 42px;
+
+                margin-top: 55px;
+            }
+
+
+            .button-category h2 {
+                font-size: 30px;
+
+                margin-bottom: 35px;
+            }
+
+
+            .button-grid {
+                grid-template-columns: repeat(3, 1fr);
+
+                gap: 22px;
+            }
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            nav {
+                gap: 15px;
+
+                padding: 17px 12px;
+
+                flex-wrap: wrap;
+            }
+
+
+            nav a {
+                font-size: 13px;
+            }
+
+
+            .button-section {
+                width: calc(100% - 30px);
+
+                padding: 32px;
+
+                margin-top: 45px;
+            }
+
+
+            .button-category h2 {
+                font-size: 27px;
+
+                letter-spacing: 2.5px;
+
+                margin-bottom: 30px;
+            }
+
+
+            .button-grid {
+                grid-template-columns: repeat(2, 1fr);
+
+                gap: 17px;
+            }
+
+
+            .square-btn {
+                border-radius: 17px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 550px) {
+
+            nav {
+                gap: 11px;
+
+                padding: 15px 9px;
+            }
+
+
+            nav a {
+                font-size: 12px;
+
+                padding-bottom: 4px;
+            }
+
+
+            .button-section {
+                width: calc(100% - 20px);
+
+                padding: 22px;
+
+                margin-top: 35px;
+
+                margin-bottom: 60px;
+
+                border-radius: 20px;
+            }
+
+
+            .button-category h2 {
+                font-size: 22px;
+
+                letter-spacing: 1.5px;
+
+                margin-bottom: 24px;
+            }
+
+
+            .button-grid {
+                grid-template-columns: repeat(2, 1fr);
+
+                gap: 13px;
+            }
+
+
+            .square-btn {
+                border-radius: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           VERY SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 360px) {
+
+            nav {
+                gap: 8px;
+            }
+
+
+            nav a {
+                font-size: 11px;
+            }
+
+
+            .button-section {
+                padding: 17px;
+            }
+
+
+            .button-category h2 {
+                font-size: 19px;
+
+                margin-bottom: 20px;
+            }
+
+
+            .button-grid {
+                gap: 10px;
+            }
+
+
+            .square-btn {
+                border-radius: 12px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ===================================================== -->
+
+    <nav>
+
+        <a href="index.html">Home</a>
+
+        <a href="about.html">About</a>
+
+        <a href="rules.html">Rules</a>
+
+        <a href="spcial.html">Social</a>
+
+        <a href="minigames.html">Minigames</a>
+
+        <a href="asrp.html">ASRP</a>
+
+        <a href="wf.html">Whitelist Form</a>
+
+    </nav>
+
+
+    <!-- =====================================================
+         INFOTAINMENT
+    ===================================================== -->
+
+    <div class="button-section">
+
+        <div class="button-category">
+
+            <h2>INFOTAINMENT</h2>
+
+
+            <div class="button-grid">
+
+
+                <!-- =================================================
+                     1 — AIRTEL XSTREAM
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://www.airtelxstream.in/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/1.png"
+                        alt="Airtel Xstream"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     2 — AMAZON MINITV
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://www.amazon.in/minitv"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/2.png"
+                        alt="Amazon MiniTV"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     3 — AMAZON MUSIC
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://music.amazon.in/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/3.png"
+                        alt="Amazon Music"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     4 — AMAZON PRIME VIDEO
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://www.primevideo.com/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/4.png"
+                        alt="Amazon Prime"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     5 — DISNEY+ HOTSTAR
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://www.hotstar.com/in/home"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/5.png"
+                        alt="Disney+ Hotstar"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     6 — GAANA
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://gaana.com/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/6.png"
+                        alt="Gaana"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     7 — HUNGAMA
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://www.hungama.com/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/7.png"
+                        alt="Hungama"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     8 — JIOSAAVN
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://www.jiosaavn.com/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/8.png"
+                        alt="JioSaavn"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     9 — MX PLAYER
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://www.mxplayer.in/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/9.png"
+                        alt="MX Player"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     10 — NETFLIX
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://www.netflix.com/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/10.png"
+                        alt="Netflix"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     11 — SONGS PLAYLIST
+                     OPENS SAME TAB
+                ================================================== -->
+
+                <a
+                    href="songsplaylist.html"
+                    class="square-btn"
+                >
+                    <img
+                        src="infotainment/11.png"
+                        alt="Songs Playlist"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     12 — SONYLIV
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://www.sonyliv.com/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/12.png"
+                        alt="SonyLIV"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     13 — SPOTIFY
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://open.spotify.com/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/13.png"
+                        alt="Spotify"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     14 — YOUTUBE
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://www.youtube.com/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/14.png"
+                        alt="YouTube"
+                    >
+                </a>
+
+
+                <!-- =================================================
+                     15 — YOUTUBE MUSIC
+                     OPENS NEW TAB
+                ================================================== -->
+
+                <a
+                    href="https://music.youtube.com/"
+                    class="square-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        src="infotainment/15.png"
+                        alt="YouTube Music"
+                    >
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
