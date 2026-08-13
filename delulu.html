@@ -1,460 +1,1454 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Music</title>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Delulu Music</title>
+
 
 <style>
 
+/* =========================================================
+   RESET
+========================================================= */
+
 * {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
+
 
 html,
 body {
+
     margin: 0;
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-    background:
-        radial-gradient(
-            circle at center,
-            #202025 0%,
-            #0b0b0f 65%
-        );
+    background: #030403;
 
     color: white;
+
 }
 
 
-/* ================================
-   PAGE
-================================ */
+/* =========================================================
+   WALLPAPER
+========================================================= */
+
+body {
+
+    background-color: #030403;
+
+    background-image:
+
+        linear-gradient(
+            rgba(0,0,0,.38),
+            rgba(0,0,0,.55)
+        ),
+
+        url("genzz-wallpaper.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
+    background-attachment: fixed;
+
+}
+
+
+/* =========================================================
+   DARK OVERLAY
+========================================================= */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+
+        radial-gradient(
+            circle at 50% 40%,
+            transparent 0%,
+            rgba(0,0,0,.15) 35%,
+            rgba(0,0,0,.70) 100%
+        );
+
+    pointer-events: none;
+
+    z-index: 0;
+
+}
+
+
+/* =========================================================
+   GREEN ATMOSPHERE
+========================================================= */
+
+body::after {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+
+        radial-gradient(
+            circle at 50% 55%,
+            rgba(170,255,0,.08),
+            transparent 35%
+        );
+
+    mix-blend-mode: screen;
+
+    pointer-events: none;
+
+    z-index: 1;
+
+}
+
+
+/* =========================================================
+   GRAIN
+========================================================= */
+
+.grain {
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 2;
+
+    opacity: .055;
+
+    background-image:
+
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+}
+
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
 
 .page {
+
+    position: relative;
+
     width: 100%;
+
     height: 100vh;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
-    text-align: center;
+    z-index: 5;
+
 }
 
-.content h1 {
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.brand {
+
+    position: fixed;
+
+    top: 27px;
+
+    left: 32px;
+
+    z-index: 20;
+
+    font-size: 18px;
+
+    font-weight: 1000;
+
+    letter-spacing: -1px;
+
+}
+
+
+.brand span {
+
+    color: #aaff00;
+
+    text-shadow:
+
+        0 0 15px
+        rgba(170,255,0,.5);
+
+}
+
+
+.status {
+
+    position: fixed;
+
+    top: 30px;
+
+    right: 32px;
+
+    z-index: 20;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: #aaff00;
+
+}
+
+
+.status-dot {
+
+    width: 6px;
+
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #aaff00;
+
+    box-shadow:
+
+        0 0 7px #aaff00,
+
+        0 0 18px #aaff00;
+
+    animation:
+
+        pulse 1.5s infinite;
+
+}
+
+
+@keyframes pulse {
+
+    0%,
+    100% {
+
+        opacity: 1;
+
+        transform: scale(1);
+
+    }
+
+    50% {
+
+        opacity: .4;
+
+        transform: scale(.7);
+
+    }
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+
+    width: 100%;
+
+    text-align: center;
+
+    padding: 20px;
+
+    transform:
+        translateY(-45px);
+
+}
+
+
+/* =========================================================
+   SMALL LABEL
+========================================================= */
+
+.eyebrow {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 25px;
+
+    color: #aaff00;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 5px;
+
+    text-transform: uppercase;
+
+}
+
+
+.eyebrow::before,
+.eyebrow::after {
+
+    content: "";
+
+    width: 32px;
+
+    height: 1px;
+
+    background: #aaff00;
+
+    opacity: .7;
+
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.hero h1 {
+
     margin: 0;
 
-    font-size: clamp(
-        40px,
-        7vw,
-        80px
-    );
+    font-size:
 
-    letter-spacing: -3px;
+        clamp(
+            65px,
+            12vw,
+            150px
+        );
+
+    line-height: .82;
+
+    letter-spacing: -9px;
+
+    font-weight: 1000;
+
+    text-transform: uppercase;
+
+    text-shadow:
+
+        0 8px 40px
+        rgba(0,0,0,.7);
+
 }
 
-.content p {
-    margin-top: 12px;
-    color: #888;
+
+.hero h1 .white {
+
+    color: #fff;
+
 }
 
 
-/* ================================
+.hero h1 .green {
+
+    display: block;
+
+    color: #aaff00;
+
+    text-shadow:
+
+        0 0 25px
+        rgba(170,255,0,.15),
+
+        0 10px 50px
+        rgba(0,0,0,.8);
+
+}
+
+
+/* =========================================================
+   SUBTITLE
+========================================================= */
+
+.subtitle {
+
+    margin-top: 25px;
+
+    color: rgba(255,255,255,.65);
+
+    font-size: 12px;
+
+    letter-spacing: 4px;
+
+    text-transform: uppercase;
+
+}
+
+
+.subtitle span {
+
+    color: #aaff00;
+
+}
+
+
+/* =========================================================
+   HERO PLAY
+========================================================= */
+
+.hero-play {
+
+    margin-top: 30px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    height: 48px;
+
+    padding: 0 25px;
+
+    border:
+
+        1px solid
+        rgba(170,255,0,.65);
+
+    border-radius: 30px;
+
+    background:
+
+        rgba(0,0,0,.35);
+
+    color: #aaff00;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+    backdrop-filter:
+        blur(10px);
+
+}
+
+
+.hero-play:hover {
+
+    background: #aaff00;
+
+    color: #050505;
+
+    box-shadow:
+
+        0 0 30px
+        rgba(170,255,0,.25);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================================
    PLAYER
-================================ */
+========================================================= */
 
 .player {
+
     position: fixed;
 
     left: 50%;
-    bottom: 24px;
 
-    transform: translateX(-50%);
+    bottom: 22px;
 
-    width: min(
-        700px,
-        calc(100% - 30px)
-    );
+    transform:
+        translateX(-50%);
 
-    min-height: 82px;
+    width:
+        min(
+            900px,
+            calc(100% - 32px)
+        );
 
-    padding: 12px 16px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 14px;
-
-    background:
-        rgba(25, 25, 30, .95);
+    padding: 14px;
 
     border:
-        1px solid
-        rgba(255,255,255,.1);
 
-    border-radius: 20px;
+        1px solid
+        rgba(255,255,255,.14);
+
+    border-radius: 23px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(10,12,10,.94),
+            rgba(5,6,5,.90)
+        );
 
     box-shadow:
-        0 20px 60px
-        rgba(0,0,0,.55);
+
+        0 25px 80px
+        rgba(0,0,0,.75),
+
+        0 0 50px
+        rgba(0,0,0,.4),
+
+        inset 0 1px 0
+        rgba(255,255,255,.07);
 
     backdrop-filter:
-        blur(20px);
+        blur(25px);
+
+    -webkit-backdrop-filter:
+        blur(25px);
 
     z-index: 100;
+
 }
 
 
-/* ================================
+/* =========================================================
+   PLAYER TOP
+========================================================= */
+
+.player-main {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+}
+
+
+/* =========================================================
    ART
-================================ */
+========================================================= */
 
 .art {
-    width: 52px;
-    height: 52px;
+
+    width: 65px;
+
+    height: 65px;
 
     flex-shrink: 0;
 
+    border-radius: 15px;
+
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    border-radius: 14px;
-
     background:
+
         linear-gradient(
             135deg,
-            #ff0055,
-            #7b2cff
+            #aaff00,
+            #517800
         );
 
-    font-size: 24px;
+    color: #050505;
+
+    font-size: 26px;
+
+    font-weight: 900;
+
+    box-shadow:
+
+        0 0 25px
+        rgba(170,255,0,.18);
+
+    overflow: hidden;
+
 }
 
 
-/* ================================
-   INFORMATION
-================================ */
+/* =========================================================
+   SONG INFORMATION
+========================================================= */
 
 .info {
+
     flex: 1;
+
     min-width: 0;
-    text-align: left;
+
 }
 
+
 .title {
+
     font-size: 14px;
 
-    font-weight: 600;
+    font-weight: 800;
 
-    margin-bottom: 8px;
+    color: #fff;
 
     white-space: nowrap;
 
     overflow: hidden;
 
     text-overflow: ellipsis;
+
+    margin-bottom: 9px;
+
 }
 
 
-/* ================================
-   PROGRESS
-================================ */
-
-.progress {
-    position: relative;
-
-    width: 100%;
-    height: 5px;
-
-    background: #414147;
-
-    border-radius: 20px;
-
-    cursor: pointer;
-}
-
-.progress-fill {
-    position: absolute;
-
-    left: 0;
-    top: 0;
-
-    width: 0%;
-    height: 100%;
-
-    background: white;
-
-    border-radius: inherit;
-}
-
-
-/* ================================
-   TIME
-================================ */
-
-.time {
-    margin-top: 5px;
+.collection {
 
     font-size: 9px;
 
-    color: #777;
+    color: #aaff00;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 10px;
+
 }
 
 
-/* ================================
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 5px;
+
+    border-radius: 20px;
+
+    background:
+
+        rgba(255,255,255,.13);
+
+    cursor: pointer;
+
+}
+
+
+.progress-fill {
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #aaff00;
+
+    box-shadow:
+
+        0 0 10px
+        rgba(170,255,0,.7);
+
+}
+
+
+/* =========================================================
+   TIME
+========================================================= */
+
+.time {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 6px;
+
+    color: #777;
+
+    font-size: 9px;
+
+}
+
+
+/* =========================================================
    CONTROLS
-================================ */
+========================================================= */
 
 .controls {
+
     display: flex;
 
     align-items: center;
 
-    gap: 3px;
+    gap: 5px;
 
-    flex-shrink: 0;
 }
 
+
 button {
-    width: 40px;
-    height: 40px;
 
     border: none;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+}
+
+
+.control {
+
+    width: 40px;
+
+    height: 40px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(255,255,255,.04);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    color: #aaa;
+
+    font-size: 15px;
+
+    transition: .2s;
+
+}
+
+
+.control:hover {
+
+    color: white;
+
+    border-color:
+        rgba(170,255,0,.4);
+
+    background:
+        rgba(170,255,0,.08);
+
+}
+
+
+/* =========================================================
+   PLAY BUTTON
+========================================================= */
+
+.play {
+
+    width: 56px;
+
+    height: 56px;
+
+    border-radius: 50%;
+
+    background: #aaff00;
+
+    color: #050505;
+
+    font-size: 18px;
+
+    font-weight: 900;
+
+    box-shadow:
+
+        0 0 25px
+        rgba(170,255,0,.25);
+
+    transition: .2s;
+
+}
+
+
+.play:hover {
+
+    background: #c7ff58;
+
+    transform:
+        scale(1.06);
+
+    box-shadow:
+
+        0 0 35px
+        rgba(170,255,0,.4);
+
+}
+
+
+/* =========================================================
+   VOLUME
+========================================================= */
+
+.volume {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    margin-left: 5px;
+
+    padding-left: 8px;
+
+    border-left:
+
+        1px solid
+        rgba(255,255,255,.08);
+
+}
+
+
+.volume-button {
+
+    width: 40px;
+
+    height: 40px;
 
     border-radius: 50%;
 
     background: transparent;
 
-    color: white;
-
-    cursor: pointer;
+    color: #aaff00;
 
     font-size: 17px;
+
+}
+
+
+.volume-button:hover {
+
+    background:
+
+        rgba(170,255,0,.08);
+
+}
+
+
+/* =========================================================
+   VOLUME CONTROLS
+========================================================= */
+
+.volume-popup {
 
     display: flex;
 
     align-items: center;
-    justify-content: center;
-}
 
-button:hover {
+    gap: 4px;
+
+    padding: 3px 6px;
+
+    border-radius: 13px;
+
     background:
-        rgba(255,255,255,.1);
-}
 
+        rgba(255,255,255,.035);
 
-/* ================================
-   PLAY BUTTON
-================================ */
+    border:
 
-.play {
-    width: 46px;
-    height: 46px;
-
-    background: white;
-
-    color: black;
-
-    font-size: 18px;
-}
-
-.play:hover {
-    background: #eeeeee;
-}
-
-
-/* ================================
-   VOLUME BUTTONS
-================================ */
-
-.volume-button {
-    font-size: 22px;
-
-    font-weight: 300;
-}
-
-
-/* ================================
-   MOBILE
-================================ */
-
-@media(max-width:600px) {
-
-    .player {
-        bottom: 12px;
-
-        width:
-            calc(100% - 20px);
-
-        padding:
-            9px 10px;
-
-        gap: 7px;
-    }
-
-    .art {
-        width: 44px;
-        height: 44px;
-
-        border-radius: 11px;
-    }
-
-    .controls {
-        gap: 0;
-    }
-
-    .controls button:not(.play) {
-        display: none;
-    }
-
-    /*
-       Keep volume buttons visible
-       on mobile.
-    */
-
-    .controls #volumeDown,
-    .controls #volumeUp {
-        display: flex;
-    }
+        1px solid
+        rgba(255,255,255,.06);
 
 }
 
-/* ================================
+
+.volume-small {
+
+    width: 25px;
+
+    height: 25px;
+
+    border-radius: 7px;
+
+    color: #888;
+
+    background: transparent;
+
+    font-size: 16px;
+
+}
+
+
+.volume-small:hover {
+
+    color: #aaff00;
+
+    background:
+
+        rgba(170,255,0,.08);
+
+}
+
+
+.volume-level {
+
+    width: 65px;
+
+    height: 4px;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    background:
+
+        rgba(255,255,255,.12);
+
+    cursor: pointer;
+
+}
+
+
+.volume-fill {
+
+    width: 100%;
+
+    height: 100%;
+
+    background: #aaff00;
+
+    border-radius: inherit;
+
+    box-shadow:
+
+        0 0 8px
+        rgba(170,255,0,.5);
+
+}
+
+
+/* =========================================================
+   PLAYER BOTTOM
+========================================================= */
+
+.player-bottom {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 12px;
+
+    padding:
+
+        9px 12px;
+
+    border:
+
+        1px solid
+        rgba(255,255,255,.07);
+
+    border-radius: 15px;
+
+    background:
+
+        rgba(255,255,255,.025);
+
+}
+
+
+.track-count {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #aaa;
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+}
+
+
+.track-count-icon {
+
+    color: #aaff00;
+
+    font-size: 14px;
+
+}
+
+
+.extra-controls {
+
+    display: flex;
+
+    gap: 5px;
+
+}
+
+
+.extra-button {
+
+    width: 30px;
+
+    height: 30px;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #777;
+
+    font-size: 14px;
+
+}
+
+
+.extra-button:hover {
+
+    color: #aaff00;
+
+    background:
+
+        rgba(170,255,0,.08);
+
+}
+
+/* =========================================================
    LEFT NAVIGATION
-================================ */
+========================================================= */
 
-.side-nav {
+.left-nav {
+
     position: fixed;
 
-    left: 20px;
+    left: 24px;
     top: 50%;
 
     transform: translateY(-50%);
 
     display: flex;
+
     flex-direction: column;
 
     gap: 10px;
 
-    z-index: 200;
+    z-index: 50;
 }
 
-.side-nav a {
-    width: 110px;
-    height: 44px;
+
+/* NAV BUTTON */
+
+.nav-button {
+
+    width: 105px;
+    height: 42px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     text-decoration: none;
 
-    color: white;
-
-    background: rgba(25, 25, 30, 0.95);
-
-    border: 1px solid rgba(255,255,255,.1);
+    border: 1px solid rgba(170,255,0,.35);
 
     border-radius: 12px;
 
-    font-size: 14px;
-    font-weight: 600;
+    background:
+        rgba(0,0,0,.55);
+
+    color: #aaaaff;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    backdrop-filter: blur(12px);
+
+    -webkit-backdrop-filter: blur(12px);
 
     box-shadow:
-        0 8px 25px rgba(0,0,0,.35);
+        0 8px 25px rgba(0,0,0,.45),
+
+        inset 0 1px 0
+        rgba(255,255,255,.05);
 
     transition:
-        background .2s,
-        transform .2s;
-}
-
-.side-nav a:hover {
-    background: rgba(255,255,255,.12);
-
-    transform: translateX(3px);
-}
-
-
-/* Mobile */
-
-@media(max-width:600px) {
-
-    .side-nav {
-        left: 10px;
-    }
-
-    .side-nav a {
-        width: 90px;
-        height: 40px;
-
-        font-size: 13px;
-    }
+        .25s ease;
 
 }
 
-/* ================================
-   MOVING WALLPAPER
-================================ */
 
-.wallpaper {
-    position: fixed;
+/* HOVER */
 
-    inset: -30px;
+.nav-button:hover {
 
-    width: calc(100% + 60px);
-    height: calc(100% + 60px);
+    color: #050505;
 
-    z-index: -2;
+    background: #aaff00;
 
-    background-image:
-        linear-gradient(
-            rgba(5, 5, 10, 0.45),
-            rgba(5, 5, 10, 0.65)
-        ),
-        url("delulu.jpg");
+    border-color: #aaff00;
 
-    background-size: cover;
-    background-position: center;
+    transform: translateX(5px);
 
-    background-repeat: no-repeat;
+    box-shadow:
+
+        0 0 20px
+        rgba(170,255,0,.25),
+
+        0 10px 30px
+        rgba(0,0,0,.5);
+
+}
+
+
+/* ACTIVE / PRESS */
+
+.nav-button:active {
 
     transform:
-        translate3d(0, 0, 0)
-        scale(1.05);
+        translateX(5px)
+        scale(.96);
 
-    transition:
-        transform 0.15s ease-out;
-
-    will-change: transform;
 }
 
 
-/* Dark overlay */
+/* MOBILE */
 
-.wallpaper-overlay {
-    position: fixed;
+@media(max-width:700px) {
 
-    inset: 0;
+    .left-nav {
 
-    z-index: -1;
+        left: 10px;
 
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(20, 20, 30, 0.05),
-            rgba(0, 0, 0, 0.55)
-        );
+        top: 50%;
 
-    pointer-events: none;
+        gap: 7px;
+
+    }
+
+    .nav-button {
+
+        width: 78px;
+
+        height: 36px;
+
+        border-radius: 10px;
+
+        font-size: 8px;
+
+        letter-spacing: 1.5px;
+
+    }
+
 }
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width: 700px) {
+
+
+    body {
+
+        background-position:
+            center center;
+
+    }
+
+
+    .brand {
+
+        top: 20px;
+
+        left: 20px;
+
+        font-size: 16px;
+
+    }
+
+
+    .status {
+
+        top: 23px;
+
+        right: 20px;
+
+        font-size: 7px;
+
+        letter-spacing: 1.5px;
+
+    }
+
+
+    .hero {
+
+        transform:
+            translateY(-50px);
+
+    }
+
+
+    .eyebrow {
+
+        font-size: 8px;
+
+        letter-spacing: 3px;
+
+    }
+
+
+    .hero h1 {
+
+        font-size:
+
+            clamp(
+                62px,
+                20vw,
+                100px
+            );
+
+        letter-spacing: -6px;
+
+    }
+
+
+    .subtitle {
+
+        font-size: 8px;
+
+        letter-spacing: 2px;
+
+    }
+
+
+    .hero-play {
+
+        height: 43px;
+
+        font-size: 9px;
+
+        padding:
+            0 20px;
+
+    }
+
+
+    .player {
+
+        width:
+
+            calc(
+                100% - 16px
+            );
+
+        bottom: 8px;
+
+        padding: 10px;
+
+        border-radius: 19px;
+
+    }
+
+
+    .player-main {
+
+        gap: 9px;
+
+    }
+
+
+    .art {
+
+        width: 46px;
+
+        height: 46px;
+
+        border-radius: 11px;
+
+        font-size: 19px;
+
+    }
+
+
+    .title {
+
+        font-size: 11px;
+
+    }
+
+
+    .collection {
+
+        font-size: 7px;
+
+        margin-bottom: 7px;
+
+    }
+
+
+    .controls {
+
+        gap: 2px;
+
+    }
+
+
+    .control {
+
+        display: none;
+
+    }
+
+
+    .play {
+
+        display: flex;
+
+        width: 45px;
+
+        height: 45px;
+
+        font-size: 15px;
+
+    }
+
+
+    .volume {
+
+        margin-left: 0;
+
+        padding-left: 3px;
+
+        border-left: none;
+
+    }
+
+
+    .volume-popup {
+
+        display: none;
+
+    }
+
+
+    .volume-button {
+
+        width: 36px;
+
+        height: 36px;
+
+    }
+
+
+    .player-bottom {
+
+        display: none;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media(max-width:380px) {
+
+
+    .art {
+
+        width: 40px;
+
+        height: 40px;
+
+    }
+
+
+    .play {
+
+        width: 40px;
+
+        height: 40px;
+
+    }
+
+
+    .volume-button {
+
+        width: 32px;
+
+        height: 32px;
+
+    }
+
+}
+
 </style>
 
 </head>
@@ -462,52 +1456,117 @@ button:hover {
 
 <body>
 
-<!-- ================================
-     MOVING WALLPAPER
-================================ -->
-
-<div class="wallpaper" id="wallpaper"></div>
-
-<div class="wallpaper-overlay"></div>
-<!-- ================================
+<!-- =======================================================
      LEFT NAVIGATION
-================================ -->
+======================================================= -->
 
-<nav class="side-nav">
+<nav class="left-nav">
 
-    <a href="index.html">
-        🏠 Home
+    <a
+        href="index.html"
+        class="nav-button"
+    >
+        HOME
     </a>
 
-    <a href="playlist.html">
-        🎵 Playlist
+    <a
+        href="1.html"
+        class="nav-button"
+    >
+        PLAYLIST
     </a>
 
 </nav>
+<!-- GRAIN -->
 
-<!-- ================================
-     PAGE
-================================ -->
+<div class="grain"></div>
 
-<div class="page">
 
-    <div class="content">
+<!-- =======================================================
+     HEADER
+======================================================= -->
 
-        <h1>डेलुलू</h1>
-        <h1>रेडियो</h1>        
+<div class="brand">
 
-        <p>
-            songs for situations that never happened 😭, 24/7.
-        </p>
-
-    </div>
+    GEN<span>ZZ</span>
 
 </div>
 
 
-<!-- ================================
+<div class="status">
+
+    <div class="status-dot"></div>
+
+    MUSIC ONLINE
+
+</div>
+
+
+<!-- =======================================================
+     HERO
+======================================================= -->
+
+<main class="page">
+
+    <section class="hero">
+
+
+        <div class="eyebrow">
+
+            FEEL THE VIBES
+
+        </div>
+
+
+        <h1>
+
+            <span class="white">
+              डेलुलू
+            </span>
+        </h1>
+        <h1>
+            <span class="green">
+                रेडियो
+            </span>
+
+        </h1>
+
+
+        <div class="subtitle">
+
+            UNBELIEVABLE TRACKS
+
+            <span>•</span>
+
+            ONE PLAYER
+
+            <span>•</span>
+
+            ENDLESS FEELINGS
+
+        </div>
+
+
+        <button
+            class="hero-play"
+            id="heroPlay"
+        >
+
+            ▶
+
+            PRESS PLAY & DISAPPEAR
+
+        </button>
+
+
+    </section>
+
+</main>
+
+
+<!-- =======================================================
      AUDIO
-================================ -->
+======================================================= -->
 
 <audio
     id="audio"
@@ -515,123 +1574,235 @@ button:hover {
 ></audio>
 
 
-<!-- ================================
-     CUSTOM PLAYER
-================================ -->
+<!-- =======================================================
+     PLAYER
+======================================================= -->
 
 <div class="player">
 
 
-    <!-- MUSIC ICON -->
-
-    <div class="art">
-        ♫
-    </div>
+    <div class="player-main">
 
 
-    <!-- SONG INFORMATION -->
+        <!-- ART -->
 
-    <div class="info">
+        <div class="art">
 
-        <div
-            class="title"
-            id="title"
-        >
-            Select a song
+            ♫
+
         </div>
 
 
-        <div
-            class="progress"
-            id="progress"
-        >
+        <!-- INFO -->
+
+        <div class="info">
+
 
             <div
-                class="progress-fill"
-                id="progressFill"
-            ></div>
+                class="title"
+                id="title"
+            >
+
+                Select a song
+
+            </div>
+
+
+            <div class="collection">
+
+              GENZZ COLLECTION
+
+            </div>
+
+
+            <div
+                class="progress"
+                id="progress"
+            >
+
+                <div
+                    class="progress-fill"
+                    id="progressFill"
+                ></div>
+
+            </div>
+
+
+            <div class="time">
+
+                <span id="current">
+
+                    0:00
+
+                </span>
+
+                <span id="duration">
+
+                    0:00
+
+                </span>
+
+            </div>
 
         </div>
 
 
-        <div class="time">
+        <!-- CONTROLS -->
 
-            <span id="current">
-                0:00
-            </span>
+        <div class="controls">
 
-            /
 
-            <span id="duration">
-                0:00
-            </span>
+            <button
+                class="control"
+                id="previous"
+                title="Previous"
+            >
+
+                ⏮
+
+            </button>
+
+
+            <button
+                class="play"
+                id="play"
+                title="Play"
+            >
+
+                ▶
+
+            </button>
+
+
+            <button
+                class="control"
+                id="next"
+                title="Next"
+            >
+
+                ⏭
+
+            </button>
+
+
+            <!-- VOLUME -->
+
+            <div class="volume">
+
+
+                <button
+                    class="volume-button"
+                    id="volumeButton"
+                    title="Mute"
+                >
+
+                    🔊
+
+                </button>
+
+
+                <div class="volume-popup">
+
+
+                    <button
+                        class="volume-small"
+                        id="volumeDown"
+                    >
+
+                        −
+
+                    </button>
+
+
+                    <div
+                        class="volume-level"
+                        id="volumeLevel"
+                    >
+
+                        <div
+                            class="volume-fill"
+                            id="volumeFill"
+                        ></div>
+
+                    </div>
+
+
+                    <button
+                        class="volume-small"
+                        id="volumeUp"
+                    >
+
+                        +
+
+                    </button>
+
+                </div>
+
+            </div>
 
         </div>
 
     </div>
 
 
-    <!-- ================================
-         CONTROLS
+    <!-- ===================================================
+         PLAYER BOTTOM
+    =================================================== -->
 
-         THE VOLUME BUTTONS ARE HERE
-    ================================= -->
-
-    <div class="controls">
+    <div class="player-bottom">
 
 
-        <!-- PREVIOUS -->
+        <div class="track-count">
 
-        <button
-            id="previous"
-            title="Previous"
-        >
-            ⏮
-        </button>
+            <span class="track-count-icon">
 
+                ♫
 
-        <!-- PLAY -->
+            </span>
 
-        <button
-            id="play"
-            class="play"
-            title="Play / Pause"
-        >
-            ▶
-        </button>
+            <span>
+
+                UNFILTERED FEELINGS IN YOUR COLLECTION
+
+            </span>
+
+        </div>
 
 
-        <!-- NEXT -->
+        <div class="extra-controls">
 
-        <button
-            id="next"
-            title="Next"
-        >
-            ⏭
-        </button>
+            <button
+                class="extra-button"
+                title="Repeat"
+                id="repeat"
+            >
 
+                ↻
 
-        <!-- VOLUME DOWN -->
-
-        <button
-            id="volumeDown"
-            class="volume-button"
-            title="Volume Down"
-        >
-            −
-        </button>
+            </button>
 
 
-        <!-- VOLUME UP -->
+            <button
+                class="extra-button"
+                title="Shuffle"
+                id="shuffle"
+            >
 
-        <button
-            id="volumeUp"
-            class="volume-button"
-            title="Volume Up"
-        >
-            +
-        </button>
+                ⤨
 
+            </button>
+
+
+            <button
+                class="extra-button"
+                title="Playlist"
+            >
+
+                ☷
+
+            </button>
+
+        </div>
 
     </div>
 
@@ -640,44 +1811,305 @@ button:hover {
 
 <script>
 
-
-/* =========================================
-   YOUR SONGS
-========================================= */
+/* =========================================================
+   SONGS
+========================================================= */
 
 const songs = [
 
     {
-        title: "Tum Hi Ho",
-        file: "dululu/Tum Hi Ho.mp3"
+        title: "Abhi Na Jao Chhod Kar",
+        file: "dululu/01.mp3"
     },
 
     {
-        title: "Kesariya",
-        file: "dululu/Kesariya.mp3"
+        title: "Abrar’s Entry _ Jamal Kudu",
+        file: "dululu/02.mp3"
     },
 
     {
-        title: "Apna Bana Le",
-        file: "dululu/Apna Bana Le.mp3"
+        title: "Bairan",
+        file: "dululu/03.mp3"
     },
 
     {
-        title: "Heeriye",
-        file: "dululu/Heeriye.mp3"
+        title: "Bangles",
+        file: "dululu/04.mp3"
     },
 
     {
-        title: "O Maahi",
-        file: "dululu/O Maahi.mp3"
+        title: "Barsaat",
+        file: "dululu/05.mp3"
+    },
+
+    {
+        title: "Boom Shaka",
+        file: "dululu/06.mp3"
+    },
+
+    {
+        title: "Chanel",
+        file: "dululu/07.mp3"
+    },
+
+    {
+        title: "Darkhaast",
+        file: "dululu/08.mp3"
+    },
+
+    {
+        title: "Deja Vu",
+        file: "dululu/09.mp3"
+    },
+
+    {
+        title: "Dooron Dooron",
+        file: "dululu/10.mp3"
+    },
+
+    {
+        title: "Eenie Meenie",
+        file: "dululu/11.mp3"
+    },
+
+    {
+        title: "Excuses",
+        file: "dululu/12.mp3"
+    },
+
+    {
+        title: "Finding Her",
+        file: "dululu/13.mp3"
+    },
+
+    {
+        title: "For A Reason",
+        file: "dululu/14.mp3"
+    },
+
+    {
+        title: "Gal Sun",
+        file: "dululu/15.mp3"
+    },
+
+    {
+        title: "Gehra Hua",
+        file: "dululu/16.mp3"
+    },
+
+    {
+        title: "Har Kisi Ko",
+        file: "dululu/17.mp3"
+    },
+
+    {
+        title: "Harleys In Hawaii",
+        file: "dululu/18.mp3"
+    },
+
+    {
+        title: "Him & I",
+        file: "dululu/19.mp3"
+    },
+
+    {
+        title: "Husn",
+        file: "dululu/20.mp3"
+    },
+
+    {
+        title: "I Wanna Be Yours",
+        file: "dululu/21.mp3"
+    },
+
+    {
+        title: "Ishqa Ve",
+        file: "dululu/22.mp3"
+    },
+
+    {
+        title: "Jaana Samjho Na",
+        file: "dululu/23.mp3"
+    },
+
+    {
+        title: "Kahani Suno 2.0",
+        file: "dululu/24.mp3"
+    },
+
+    {
+        title: "Khat",
+        file: "dululu/25.mp3"
+    },
+
+    {
+        title: "Khayaal",
+        file: "dululu/26.mp3"
+    },
+
+    {
+        title: "Lag Ja Gale",
+        file: "dululu/27.mp3"
+    },
+
+    {
+        title: "Lamberghini",
+        file: "dululu/28.mp3"
+    },
+
+    {
+        title:
+            "Let Me Down Slowly x Main Dhoondne Ko Zamaane Mein",
+
+        file: "dululu/29.mp3"
+    },
+
+    {
+        title: "Love Story",
+        file: "dululu/30.mp3"
+    },
+
+    {
+        title: "Maand",
+        file: "dululu/31.mp3"
+    },
+
+    {
+        title: "Majboor",
+        file: "dululu/32.mp3"
+    },
+
+    {
+        title: "Mann Mera",
+        file: "dululu/33.mp3"
+    },
+
+    {
+        title: "Nadaaniyan",
+        file: "dululu/34.mp3"
+    },
+
+    {
+        title: "O Meri Laila",
+        file: "dululu/35.mp3"
+    },
+
+    {
+        title: "Paaro",
+        file: "dululu/36.mp3"
+    },
+
+    {
+        title: "Pal Pal",
+        file: "dululu/37.mp3"
+    },
+
+    {
+        title: "Qatal",
+        file: "dululu/38.mp3"
+    },
+
+    {
+        title: "Raanjhan",
+        file: "dululu/39.mp3"
+    },
+
+    {
+        title: "Ranjheya Ve",
+        file: "dululu/40.mp3"
+    },
+
+    {
+        title: "Ride It",
+        file: "dululu/41.mp3"
+    },
+
+    {
+        title: "Runaway",
+        file: "dululu/42.mp3"
+    },
+
+    {
+        title: "Sadi Sun",
+        file: "dululu/43.mp3"
+    },
+
+    {
+        title: "Sahiba",
+        file: "dululu/44.mp3"
+    },
+
+    {
+        title: "Saiyyan",
+        file: "dululu/45.mp3"
+    },
+
+    {
+        title: "Satranga",
+        file: "dululu/46.mp3"
+    },
+
+    {
+        title: "Saudebaazi",
+        file: "dululu/47.mp3"
+    },
+
+    {
+        title: "She Dont Know",
+        file: "dululu/48.mp3"
+    },
+
+    {
+        title: "Sirra",
+        file: "dululu/49.mp3"
+    },
+
+    {
+        title: "Snowman",
+        file: "dululu/50.mp3"
+    },
+
+    {
+        title: "Softly",
+        file: "dululu/51.mp3"
+    },
+
+    {
+        title: "Sun Saathiya",
+        file: "dululu/52.mp3"
+    },
+
+    {
+        title: "Suniyan Suniyan",
+        file: "dululu/53.mp3"
+    },
+
+    {
+        title: "Tere Liye",
+        file: "dululu/54.mp3"
+    },
+
+    {
+        title: "Teri Deewani",
+        file: "dululu/55.mp3"
+    },
+
+    {
+        title: "Tu",
+        file: "dululu/56.mp3"
+    },
+
+    {
+        title: "Tum Ho Toh",
+        file: "dululu/57.mp3"
     }
 
 ];
 
 
-/* =========================================
+/* =========================================================
    ELEMENTS
-========================================= */
+========================================================= */
 
 const audio =
     document.getElementById("audio");
@@ -685,17 +2117,14 @@ const audio =
 const playButton =
     document.getElementById("play");
 
+const heroPlay =
+    document.getElementById("heroPlay");
+
 const previousButton =
     document.getElementById("previous");
 
 const nextButton =
     document.getElementById("next");
-
-const volumeDown =
-    document.getElementById("volumeDown");
-
-const volumeUp =
-    document.getElementById("volumeUp");
 
 const title =
     document.getElementById("title");
@@ -712,20 +2141,46 @@ const currentTime =
 const duration =
     document.getElementById("duration");
 
+const volumeButton =
+    document.getElementById("volumeButton");
+
+const volumeUp =
+    document.getElementById("volumeUp");
+
+const volumeDown =
+    document.getElementById("volumeDown");
+
+const volumeLevel =
+    document.getElementById("volumeLevel");
+
+const volumeFill =
+    document.getElementById("volumeFill");
+
+const repeatButton =
+    document.getElementById("repeat");
+
+const shuffleButton =
+    document.getElementById("shuffle");
+
+
+/* =========================================================
+   STATE
+========================================================= */
 
 let currentSong = 0;
 
+let volume = 1;
 
-/* =========================================
-   VOLUME
-========================================= */
+let previousVolume = 1;
 
-audio.volume = 0.7;
+let repeat = false;
+
+let shuffle = false;
 
 
-/* =========================================
+/* =========================================================
    LOAD SONG
-========================================= */
+========================================================= */
 
 function loadSong(index) {
 
@@ -734,48 +2189,61 @@ function loadSong(index) {
     const song =
         songs[currentSong];
 
+
     title.textContent =
         song.title;
+
 
     audio.src =
         song.file;
 
+
     audio.load();
+
+
+    progressFill.style.width =
+        "0%";
+
+
+    currentTime.textContent =
+        "0:00";
+
+
+    duration.textContent =
+        "0:00";
 
 }
 
 
-/* =========================================
-   PLAY SONG
-========================================= */
+/* =========================================================
+   PLAY
+========================================================= */
 
 function playSong() {
 
     audio.play()
+
         .then(() => {
 
             playButton.textContent =
                 "❚❚";
 
         })
+
         .catch(error => {
 
             console.error(
-                "Could not play:",
                 error
             );
-
-            title.textContent =
-                "MP3 file not found";
 
         });
 
 }
 
 
-/* =========================================
-   PAUSE SONG
-========================================= */
+/* =========================================================
+   PAUSE
+========================================================= */
 
 function pauseSong() {
 
@@ -787,35 +2255,70 @@ function pauseSong() {
 }
 
 
-/* =========================================
-   PLAY BUTTON
-========================================= */
+/* =========================================================
+   PLAY / PAUSE
+========================================================= */
+
+function togglePlay() {
+
+    if (audio.paused) {
+
+        playSong();
+
+    }
+
+    else {
+
+        pauseSong();
+
+    }
+
+}
+
 
 playButton.addEventListener(
     "click",
-    function() {
-
-        if (audio.paused) {
-
-            playSong();
-
-        } else {
-
-            pauseSong();
-
-        }
-
-    }
+    togglePlay
 );
 
 
-/* =========================================
-   NEXT BUTTON
-========================================= */
-
-nextButton.addEventListener(
+heroPlay.addEventListener(
     "click",
-    function() {
+    togglePlay
+);
+
+
+/* =========================================================
+   NEXT
+========================================================= */
+
+function nextSong() {
+
+    if (shuffle) {
+
+        let next;
+
+        do {
+
+            next =
+                Math.floor(
+                    Math.random() *
+                    songs.length
+                );
+
+        }
+
+        while (
+            next === currentSong &&
+            songs.length > 1
+        );
+
+        currentSong =
+            next;
+
+    }
+
+    else {
 
         currentSong++;
 
@@ -828,128 +2331,119 @@ nextButton.addEventListener(
 
         }
 
-        loadSong(currentSong);
-
-        playSong();
-
     }
+
+
+    loadSong(currentSong);
+
+    playSong();
+
+}
+
+
+nextButton.addEventListener(
+    "click",
+    nextSong
 );
 
 
-/* =========================================
-   PREVIOUS BUTTON
-========================================= */
+/* =========================================================
+   PREVIOUS
+========================================================= */
+
+function previousSong() {
+
+    if (
+        audio.currentTime > 3
+    ) {
+
+        audio.currentTime = 0;
+
+        return;
+
+    }
+
+
+    currentSong--;
+
+
+    if (
+        currentSong < 0
+    ) {
+
+        currentSong =
+            songs.length - 1;
+
+    }
+
+
+    loadSong(currentSong);
+
+    playSong();
+
+}
+
 
 previousButton.addEventListener(
     "click",
-    function() {
-
-        currentSong--;
-
-        if (
-            currentSong < 0
-        ) {
-
-            currentSong =
-                songs.length - 1;
-
-        }
-
-        loadSong(currentSong);
-
-        playSong();
-
-    }
+    previousSong
 );
 
 
-/* =========================================
+/* =========================================================
    AUTO NEXT
-========================================= */
+========================================================= */
 
 audio.addEventListener(
     "ended",
     function() {
 
-        currentSong++;
+        if (repeat) {
 
-        if (
-            currentSong >=
-            songs.length
-        ) {
+            audio.currentTime = 0;
 
-            currentSong = 0;
+            playSong();
 
         }
 
-        loadSong(currentSong);
+        else {
 
-        playSong();
+            nextSong();
 
-    }
-);
-
-
-/* =========================================
-   VOLUME DOWN
-========================================= */
-
-volumeDown.addEventListener(
-    "click",
-    function() {
-
-        audio.volume =
-            Math.max(
-                0,
-                audio.volume - 0.1
-            );
+        }
 
     }
 );
 
 
-/* =========================================
-   VOLUME UP
-========================================= */
-
-volumeUp.addEventListener(
-    "click",
-    function() {
-
-        audio.volume =
-            Math.min(
-                1,
-                audio.volume + 0.1
-            );
-
-    }
-);
-
-
-/* =========================================
-   UPDATE PROGRESS
-========================================= */
+/* =========================================================
+   PROGRESS
+========================================================= */
 
 audio.addEventListener(
     "timeupdate",
     function() {
 
         if (
-            !audio.duration
+            !audio.duration ||
+            isNaN(audio.duration)
         ) {
 
             return;
 
         }
 
-        const percentage =
+
+        const percent =
+
             (
                 audio.currentTime /
                 audio.duration
             ) * 100;
 
+
         progressFill.style.width =
-            percentage + "%";
+            percent + "%";
 
 
         currentTime.textContent =
@@ -961,9 +2455,9 @@ audio.addEventListener(
 );
 
 
-/* =========================================
+/* =========================================================
    DURATION
-========================================= */
+========================================================= */
 
 audio.addEventListener(
     "loadedmetadata",
@@ -978,9 +2472,9 @@ audio.addEventListener(
 );
 
 
-/* =========================================
-   CLICK PROGRESS BAR
-========================================= */
+/* =========================================================
+   SEEK
+========================================================= */
 
 progress.addEventListener(
     "click",
@@ -994,26 +2488,32 @@ progress.addEventListener(
 
         }
 
+
         const rect =
             progress.getBoundingClientRect();
 
-        const percentage =
+
+        const percent =
+
             (
                 event.clientX -
                 rect.left
-            ) / rect.width;
+            ) /
+            rect.width;
+
 
         audio.currentTime =
-            percentage *
+
+            percent *
             audio.duration;
 
     }
 );
 
 
-/* =========================================
+/* =========================================================
    FORMAT TIME
-========================================= */
+========================================================= */
 
 function formatTime(seconds) {
 
@@ -1025,66 +2525,361 @@ function formatTime(seconds) {
 
     }
 
+
     const minutes =
         Math.floor(
             seconds / 60
         );
 
-    const secs =
+
+    const secondsPart =
         Math.floor(
             seconds % 60
         );
 
+
     return (
+
         minutes +
         ":" +
-        String(secs).padStart(
-            2,
-            "0"
-        )
+        String(secondsPart)
+            .padStart(2, "0")
+
     );
 
 }
 
 
-/* =========================================
-   START
-========================================= */
+/* =========================================================
+   VOLUME UI
+========================================================= */
 
-loadSong(0);
+function updateVolume() {
 
-/* =========================================
-   MOUSE MOVING WALLPAPER
-========================================= */
-
-const wallpaper =
-    document.getElementById("wallpaper");
-
-document.addEventListener(
-    "mousemove",
-    function(event) {
-
-        const x =
-            (event.clientX /
-            window.innerWidth) - 0.5;
-
-        const y =
-            (event.clientY /
-            window.innerHeight) - 0.5;
+    const percent =
+        audio.volume * 100;
 
 
-        const moveX =
-            x * 25;
-
-        const moveY =
-            y * 25;
+    volumeFill.style.width =
+        percent + "%";
 
 
-        wallpaper.style.transform =
-            `translate3d(${moveX}px, ${moveY}px, 0) scale(1.05)`;
+    if (
+        audio.muted ||
+        audio.volume === 0
+    ) {
+
+        volumeButton.textContent =
+            "🔇";
+
+        volumeButton.title =
+            "Unmute";
+
+    }
+
+    else if (
+        audio.volume < .5
+    ) {
+
+        volumeButton.textContent =
+            "🔉";
+
+        volumeButton.title =
+            "Mute";
+
+    }
+
+    else {
+
+        volumeButton.textContent =
+            "🔊";
+
+        volumeButton.title =
+            "Mute";
+
+    }
+
+}
+
+
+/* =========================================================
+   SET VOLUME
+========================================================= */
+
+function setVolume(value) {
+
+    audio.muted = false;
+
+
+    audio.volume =
+
+        Math.max(
+            0,
+            Math.min(
+                1,
+                value
+            )
+        );
+
+
+    volume =
+        audio.volume;
+
+
+    if (
+        audio.volume > 0
+    ) {
+
+        previousVolume =
+            audio.volume;
+
+    }
+
+
+    updateVolume();
+
+}
+
+
+/* =========================================================
+   VOLUME UP
+========================================================= */
+
+volumeUp.addEventListener(
+    "click",
+    function() {
+
+        setVolume(
+            audio.volume + .1
+        );
 
     }
 );
+
+
+/* =========================================================
+   VOLUME DOWN
+========================================================= */
+
+volumeDown.addEventListener(
+    "click",
+    function() {
+
+        setVolume(
+            audio.volume - .1
+        );
+
+    }
+);
+
+
+/* =========================================================
+   MUTE
+========================================================= */
+
+volumeButton.addEventListener(
+    "click",
+    function() {
+
+        if (
+            audio.muted ||
+            audio.volume === 0
+        ) {
+
+            audio.muted = false;
+
+            audio.volume =
+                previousVolume > 0
+                    ? previousVolume
+                    : 1;
+
+        }
+
+        else {
+
+            previousVolume =
+                audio.volume;
+
+            audio.muted = true;
+
+        }
+
+
+        updateVolume();
+
+    }
+);
+
+
+/* =========================================================
+   CLICK VOLUME BAR
+========================================================= */
+
+volumeLevel.addEventListener(
+    "click",
+    function(event) {
+
+        const rect =
+            volumeLevel.getBoundingClientRect();
+
+
+        const percent =
+
+            (
+                event.clientX -
+                rect.left
+            ) /
+            rect.width;
+
+
+        setVolume(
+            percent
+        );
+
+    }
+);
+
+
+/* =========================================================
+   REPEAT
+========================================================= */
+
+repeatButton.addEventListener(
+    "click",
+    function() {
+
+        repeat =
+            !repeat;
+
+
+        repeatButton.style.color =
+            repeat
+                ? "#aaff00"
+                : "#777";
+
+    }
+);
+
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+shuffleButton.addEventListener(
+    "click",
+    function() {
+
+        shuffle =
+            !shuffle;
+
+
+        shuffleButton.style.color =
+            shuffle
+                ? "#aaff00"
+                : "#777";
+
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+
+        /* SPACE */
+
+        if (
+            event.code === "Space"
+        ) {
+
+            event.preventDefault();
+
+            togglePlay();
+
+        }
+
+
+        /* RIGHT */
+
+        if (
+            event.code === "ArrowRight"
+        ) {
+
+            nextSong();
+
+        }
+
+
+        /* LEFT */
+
+        if (
+            event.code === "ArrowLeft"
+        ) {
+
+            previousSong();
+
+        }
+
+
+        /* UP */
+
+        if (
+            event.code === "ArrowUp"
+        ) {
+
+            event.preventDefault();
+
+            setVolume(
+                audio.volume + .1
+            );
+
+        }
+
+
+        /* DOWN */
+
+        if (
+            event.code === "ArrowDown"
+        ) {
+
+            event.preventDefault();
+
+            setVolume(
+                audio.volume - .1
+            );
+
+        }
+
+
+        /* MUTE */
+
+        if (
+            event.code === "KeyM"
+        ) {
+
+            volumeButton.click();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+audio.volume = 1;
+
+loadSong(0);
+
+updateVolume();
+
 </script>
 
 </body>
