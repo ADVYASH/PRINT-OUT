@@ -2020,6 +2020,298 @@ font-size:14px;
     }
 
 }
+
+/* =====================================================
+   QUICK ACCESS POPUP
+===================================================== */
+
+.medium-btn{
+    border:none;
+    cursor:pointer;
+    font-family:'Poppins',sans-serif;
+}
+
+
+/* ================= POPUP OVERLAY ================= */
+
+.popup-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:30px;
+
+    background:rgba(0,0,0,0.75);
+
+    backdrop-filter:blur(10px);
+
+    z-index:9999;
+
+}
+
+
+/* SHOW POPUP */
+
+.popup-overlay.active{
+
+    display:flex;
+
+    animation:popupFade 0.25s ease;
+
+}
+
+
+/* ================= POPUP BOX ================= */
+
+.popup-box{
+
+    position:relative;
+
+    width:min(900px,95vw);
+
+    max-height:85vh;
+
+    overflow-y:auto;
+
+    padding:35px;
+
+    background:rgba(20,20,25,0.92);
+
+    backdrop-filter:blur(25px);
+
+    border:1px solid rgba(255,255,255,0.18);
+
+    border-radius:22px;
+
+    box-shadow:
+        0 0 40px rgba(0,0,0,0.5),
+        0 0 80px rgba(255,60,172,0.12);
+
+    animation:popupScale 0.3s ease;
+
+}
+
+
+/* ================= TITLE ================= */
+
+.popup-box h2{
+
+    text-align:center;
+
+    font-size:25px;
+
+    letter-spacing:2px;
+
+    margin-bottom:5px;
+
+}
+
+
+.popup-box > p{
+
+    text-align:center;
+
+    font-size:13px;
+
+    opacity:0.6;
+
+    margin-bottom:25px;
+
+}
+
+
+/* ================= CLOSE BUTTON ================= */
+
+.popup-close{
+
+    position:absolute;
+
+    top:15px;
+    right:18px;
+
+    width:40px;
+    height:40px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,0.08);
+
+    color:white;
+
+    font-size:28px;
+
+    line-height:40px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+}
+
+
+.popup-close:hover{
+
+    background:#ff3cac;
+
+    transform:rotate(90deg);
+
+    box-shadow:0 0 20px rgba(255,60,172,0.5);
+
+}
+
+
+/* ================= POPUP BUTTON GRID ================= */
+
+.popup-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+
+}
+
+
+/* ================= POPUP LINK ================= */
+
+.popup-grid a{
+
+    min-height:70px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,0.06);
+
+    border:1px solid rgba(255,255,255,0.14);
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    transition:0.3s ease;
+
+}
+
+
+.popup-grid a:hover{
+
+    transform:translateY(-5px);
+
+    background:rgba(255,60,172,0.18);
+
+    border-color:#ff3cac;
+
+    box-shadow:
+        0 0 15px rgba(255,60,172,0.35);
+
+}
+
+
+/* ================= ANIMATION ================= */
+
+@keyframes popupFade{
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+
+
+@keyframes popupScale{
+
+    from{
+        opacity:0;
+        transform:scale(0.9) translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1) translateY(0);
+    }
+
+}
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width:700px){
+
+    .popup-overlay{
+
+        padding:15px;
+
+    }
+
+    .popup-box{
+
+        padding:25px 18px;
+
+        max-height:90vh;
+
+    }
+
+    .popup-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+        gap:10px;
+
+    }
+
+    .popup-grid a{
+
+        min-height:65px;
+
+        padding:10px;
+
+        font-size:12px;
+
+    }
+
+}
+
+
+/* ================= SMALL MOBILE ================= */
+
+@media(max-width:400px){
+
+    .popup-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
 </style>
 </head>
 
@@ -2181,37 +2473,6 @@ font-size:14px;
                 <a href="https://ladcsdashboard.nalsa.gov.in/" class="square-btn" target="_blank">
                     <img src="digitalbutton/19.png" alt="Supreme">
                     <span>LADC</span>
-                </a>
-
-            </div>
-        </div>
-
-
-        <!-- FORM -->
-        <div class="button-category">
-
-            <h2>Smart Zone</h2>
-
-            <div class="button-grid">
-
-                <a href="ai.html" class="square-btn">
-                    <img src="digitalbutton/20.png">
-                    <span>AI</span>
-                </a>
-
-                <a href="important.html" class="square-btn">
-                    <img src="digitalbutton/21.png">
-                    <span>Important</span>
-                </a>
-
-                <a href="infotainment.html" class="square-btn">
-                    <img src="digitalbutton/22.png">
-                    <span>Infotainment</span>
-                </a>
-
-                <a href="games.html" class="square-btn">
-                    <img src="digitalbutton/23.png">
-                    <span>Games</span>
                 </a>
 
             </div>
@@ -2428,62 +2689,306 @@ font-size:14px;
     </div>
 
 
-    <!-- ================= RIGHT: 9 BUTTONS ================= -->
+ <!-- ================= QUICK ACCESS ================= -->
 
-    <div class="nine-buttons-box">
+<div class="nine-buttons-box">
 
-        <h2>⚡ QUICK ACCESS</h2>
+    <h2>⚡ QUICK ACCESS</h2>
 
-        <div class="nine-button-grid">
+    <div class="nine-button-grid">
 
-            <a href="aboutus.html" target="_blank" class="medium-btn">
-                <img src="digitalbutton/25.png" alt="News">
-                <span>About Us</span>
-            </a>
+        <button class="medium-btn" onclick="openPopup('aboutPopup')">
+            <img src="digitalbutton/25.png" alt="About Us">
+            <span>About Us</span>
+        </button>
 
-            <a href="judgesjudges.html" target="_blank" class="medium-btn">
-                <img src="digitalbutton/26.png" alt="Events">
-                <span>Judges</span>
-            </a>
+        <button class="medium-btn" onclick="openPopup('judgesPopup')">
+            <img src="digitalbutton/26.png" alt="Judges">
+            <span>Judges</span>
+        </button>
 
-            <a href="collegium.html" target="_blank" class="medium-btn">
-                <img src="digitalbutton/27.png" alt="Updates">
-                <span>Collegium Resolutions</span>
-            </a>
+        <button class="medium-btn" onclick="openPopup('collegiumPopup')">
+            <img src="digitalbutton/27.png" alt="Collegium">
+            <span>Publications</span>
+        </button>
 
-            <a href="ser.html" target="_blank" class="medium-btn">
-                <img src="digitalbutton/28.png" alt="Discord">
-                <span>Services</span>
-            </a>
+        <button class="medium-btn" onclick="openPopup('servicesPopup')">
+            <img src="digitalbutton/28.png" alt="Services">
+            <span>Services</span>
+        </button>
 
-            <a href="eser.html" target="_blank" class="medium-btn">
-                <img src="digitalbutton/29.png" alt="YouTube">
-                <span>e-Services</span>
-            </a>
+        <button class="medium-btn" onclick="openPopup('eservicesPopup')">
+            <img src="digitalbutton/29.png" alt="e-Services">
+            <span>e-Services</span>
+        </button>
 
-            <a href="advocates.html" target="_blank" class="medium-btn">
-                <img src="digitalbutton/30.png" alt="Instagram">
-                <span>Advocates</span>
-            </a>
+        <button class="medium-btn" onclick="openPopup('advocatesPopup')">
+            <img src="digitalbutton/30.png" alt="Advocates">
+            <span>Advocates</span>
+        </button>
 
-            <a href="cfiling.html" target="_blank" class="medium-btn">
-                <img src="digitalbutton/31.png" alt="Creators">
-                <span>Court Filings</span>
-            </a>
+        <button class="medium-btn" onclick="openPopup('filingPopup')">
+            <img src="digitalbutton/31.png" alt="Court Filing">
+            <span>Court Filings</span>
+        </button>
 
-            <a href="qanoti.html" target="_blank" class="medium-btn">
-                <img src="digitalbutton/32.png" alt="Leaderboard">
-                <span>Notices</span>
-            </a>
+        <button class="medium-btn" onclick="openPopup('noticesPopup')">
+            <img src="digitalbutton/32.png" alt="Notices">
+            <span>Notices</span>
+        </button>
 
-            <a href="nae.html" target="_blank" class="medium-btn">
-                <img src="digitalbutton/33.png" alt="Contact">
-                <span>News & Events</span>
-            </a>
+        <button class="medium-btn" onclick="openPopup('newsPopup')">
+            <img src="digitalbutton/33.png" alt="News">
+            <span>News & Events</span>
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     POPUPS
+===================================================== -->
+
+<!-- ABOUT US - 8 -->
+<div class="popup-overlay" id="aboutPopup">
+    <div class="popup-box">
+
+        <button class="popup-close" onclick="closePopup('aboutPopup')">×</button>
+
+        <h2>ABOUT US</h2>
+        <p>Select an option</p>
+
+        <div class="popup-grid">
+
+            <a href="aboutus.html" target="_blank">History</a>
+            <a href="about.html" target="_blank">Constitutions</a>
+            <a href="rules.html" target="_blank">Jurisdictions</a>
+            <a href="contact.html" target="_blank">Calendar</a>
+            <a href="team.html" target="_blank">Commiittees</a>
+            <a href="mission.html" target="_blank">Organizations Chart</a>
+            <a href="vision.html" target="_blank">Registry Officer</a>
+            <a href="disclaimer.html" target="_blank">Contact Us</a>
 
         </div>
 
     </div>
+</div>
+
+
+<!-- JUDGES - 6 -->
+<div class="popup-overlay" id="judgesPopup">
+    <div class="popup-box">
+
+        <button class="popup-close" onclick="closePopup('judgesPopup')">×</button>
+
+        <h2>JUDGES</h2>
+        <p>Select an option</p>
+
+        <div class="popup-grid">
+
+            <a href="judgesjudges.html" target="_blank">Cheif Justice & Judges</a>
+            <a href="chief-justice.html" target="_blank">Former Chief Justice</a>
+            <a href="current-judges.html" target="_blank">Former Judges</a>
+            <a href="former-judges.html" target="_blank">Judges Roster</a>
+            <a href="judge-profile.html" target="_blank">Judge Library</a>
+            <a href="judicial-members.html" target="_blank">Assets of Judges</a>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- SERVICES - 7 -->
+<div class="popup-overlay" id="servicesPopup">
+    <div class="popup-box">
+
+        <button class="popup-close" onclick="closePopup('servicesPopup')">×</button>
+
+        <h2>SERVICES</h2>
+        <p>Select a service</p>
+
+        <div class="popup-grid">
+
+            <a href="ser.html" target="_blank">Cause List</a>
+            <a href="case-status.html" target="_blank">Case Status</a>
+            <a href="cause-list.html" target="_blank">Daily Orders</a>
+            <a href="orders.html" target="_blank">Judgements</a>
+            <a href="judgments.html" target="_blank">Office Report</a>
+            <a href="certified-copy.html" target="_blank">Caveat</a>
+            <a href="legal-services.html" target="_blank">Display Boards</a>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- E-SERVICES - 18 -->
+<div class="popup-overlay" id="eservicesPopup">
+    <div class="popup-box">
+
+        <button class="popup-close" onclick="closePopup('eservicesPopup')">×</button>
+
+        <h2>E-SERVICES</h2>
+        <p>Select an e-Service</p>
+
+        <div class="popup-grid">
+
+            <a href="eser.html" target="_blank">e-filing (SC-eFM 2.0) (Existing)</a>
+            <a href="#" target="_blank">e-filing (SC-eFM 3.0) (New)</a>
+            <a href="#" target="_blank">Online Appearance Slips</a>
+            <a href="#" target="_blank">SuSwagatam (e-Pass)</a>
+            <a href="#" target="_blank">Guided Tour</a>
+            <a href="#" target="_blank">Online RTI Portal</a>
+            <a href="#" target="_blank">Physical Hearing (Hybrid Option)</a>
+            <a href="#" target="_blank">Certified Copy</a>
+            <a href="#" target="_blank">National Judicial Data Grid</a>
+            <a href="#" target="_blank">SCR</a>
+            <a href="#" target="_blank">Neutral Citation</a>
+            <a href="#" target="_blank">Verdict Finder</a>            
+            <a href="#" target="_blank">Virtual Justice Clock</a>
+            <a href="#" target="_blank">Proximity Card Registration</a>
+            <a href="#" target="_blank">Premise Payment Management System (PPMS)</a>
+            <a href="#" target="_blank">Parking Authorization Record Keeper</a>
+            <a href="#" target="_blank">Integrated Online Payment System</a>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- ADVOCATES - 11 -->
+<div class="popup-overlay" id="advocatesPopup">
+    <div class="popup-box">
+
+        <button class="popup-close" onclick="closePopup('advocatesPopup')">×</button>
+
+        <h2>ADVOCATES</h2>
+        <p>Select an option</p>
+
+        <div class="popup-grid">
+
+            <a href="advocates.html" target="_blank">Advocates-on-Record</a>
+            <a href="#" target="_blank">AOR Examinaion</a>
+            <a href="#" target="_blank">Guidelines & Orders</a>
+            <a href="#" target="_blank">Senior Advocates Designation</a>
+            <a href="#" target="_blank">Forms</a>
+            <a href="#" target="_blank">Law Officers</a>
+            <a href="#" target="_blank">Nodal Officers for Bail Petitions</a>
+            <a href="#" target="_blank">Lawyers' Chamber Allotment</a>
+            <a href="#" target="_blank">Legal Aid</a>
+            <a href="#" target="_blank">SCAORA</a>
+            <a href="#" target="_blank">SCBA</a>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- COURT FILING - 5 -->
+<div class="popup-overlay" id="filingPopup">
+    <div class="popup-box">
+
+        <button class="popup-close" onclick="closePopup('filingPopup')">×</button>
+
+        <h2>COURT FILINGS</h2>
+        <p>Select a filing service</p>
+
+        <div class="popup-grid">
+
+            <a href="cfiling.html" target="_blank">Court Fees Calculator</a>
+            <a href="#" target="_blank">Limitation Calculator</a>
+            <a href="#" target="_blank">Interiocutory Applications</a>
+            <a href="#" target="_blank">Case Category</a>
+            <a href="#" target="_blank">Default List</a>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- NOTICES - 5 -->
+<div class="popup-overlay" id="noticesPopup">
+    <div class="popup-box">
+
+        <button class="popup-close" onclick="closePopup('noticesPopup')">×</button>
+
+        <h2>NOTICES</h2>
+        <p>Select a notice category</p>
+
+        <div class="popup-grid">
+
+            <a href="qanoti.html" target="_blank">Notices and Circulars</a>
+            <a href="#" target="_blank">FDRs & Depsits</a>
+            <a href="#" target="_blank">Tenders</a>
+            <a href="#" target="_blank">Judicial Clerkship</a>
+            <a href="#" target="_blank">Recruitments</a>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- NEWS - 9 -->
+<div class="popup-overlay" id="newsPopup">
+    <div class="popup-box">
+
+        <button class="popup-close" onclick="closePopup('newsPopup')">×</button>
+
+        <h2>NEWS & EVENTS</h2>
+        <p>Select a category</p>
+
+        <div class="popup-grid">
+
+            <a href="nae.html" target="_blank">Press Release</a>
+            <a href="#" target="_blank">Live Streaming</a>
+            <a href="#" target="_blank">Basic Structure Judgement</a>
+            <a href="#" target="_blank">Webcast</a>
+            <a href="#" target="_blank">Multimedia</a>
+            <a href="#" target="_blank">Photo Gallery</a>
+            <a href="#" target="_blank">Full Court Reference</a>
+            <a href="#" target="_blank">Ceremonial Bench</a>
+            <a href="#" target="_blank">Hackathon</a>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- COLLEGIUM - 10 -->
+<div class="popup-overlay" id="collegiumPopup">
+    <div class="popup-box">
+
+        <button class="popup-close" onclick="closePopup('collegiumPopup')">×</button>
+
+        <h2>Publications</h2>
+        <p>Select a resolution</p>
+
+        <div class="popup-grid">
+
+            <a href="collegium.html" target="_blank">Collegium Resolutions</a>
+            <a href="#" target="_blank">Supreme Court Chronicle</a>
+            <a href="#" target="_blank">Dr. B.R. Ambedkar</a>
+            <a href="#" target="_blank">Courts of India</a>
+            <a href="#" target="_blank">Court News</a>
+            <a href="#" target="_blank">Annual Reports</a>
+            <a href="#" target="_blank">Reports</a>
+            <a href="#" target="_blank">Supreme Court Rules</a>
+            <a href="#" target="_blank">Practice & Procedure</a>
+            <a href="#" target="_blank">National Court Management System</a>
+
+        </div>
+
+    </div>
+</div>
 
 </div>
 
@@ -3391,6 +3896,85 @@ function updateLastUpdated(){
 }
 
 updateLastUpdated();
+
+/* =====================================================
+   QUICK ACCESS POPUPS
+===================================================== */
+
+function openPopup(popupId){
+
+    const popup =
+        document.getElementById(popupId);
+
+    if(popup){
+
+        popup.classList.add("active");
+
+        document.body.style.overflow = "hidden";
+
+    }
+
+}
+
+
+function closePopup(popupId){
+
+    const popup =
+        document.getElementById(popupId);
+
+    if(popup){
+
+        popup.classList.remove("active");
+
+        document.body.style.overflow = "";
+
+    }
+
+}
+
+
+/* =====================================================
+   CLOSE WHEN CLICKING OUTSIDE POPUP
+===================================================== */
+
+document.querySelectorAll(".popup-overlay")
+.forEach(function(popup){
+
+    popup.addEventListener("click", function(event){
+
+        if(event.target === popup){
+
+            popup.classList.remove("active");
+
+            document.body.style.overflow = "";
+
+        }
+
+    });
+
+});
+
+
+/* =====================================================
+   ESC KEY CLOSE
+===================================================== */
+
+document.addEventListener("keydown", function(event){
+
+    if(event.key === "Escape"){
+
+        document.querySelectorAll(".popup-overlay")
+        .forEach(function(popup){
+
+            popup.classList.remove("active");
+
+        });
+
+        document.body.style.overflow = "";
+
+    }
+
+});
 </script>
 
 </body>
